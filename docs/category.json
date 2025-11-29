@@ -7,6 +7,9 @@
     "user/ppl/interfaces/endpoint.rst",
     "user/ppl/interfaces/protocol.rst"
   ],
+  "ppl_cli_markdown": [
+    "user/ppl/cmd/search.md"
+  ],
   "sql_cli": [
     "user/dql/expressions.rst",
     "user/general/comments.rst",

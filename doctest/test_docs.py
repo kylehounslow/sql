@@ -13,6 +13,7 @@ import sys
 import unittest
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from functools import partial
+from typing import List
 
 import click
 import zc.customdoctests
@@ -20,6 +21,13 @@ from opensearch_sql_cli.formatter import Formatter
 from opensearch_sql_cli.opensearch_connection import OpenSearchConnection
 from opensearch_sql_cli.utils import OutputSettings
 from opensearchpy import OpenSearch, helpers
+
+# Import Markdown parser
+from markdown_parser import (
+    MarkdownDocTestParser,
+    ppl_markdown_transform,
+    sql_markdown_transform,
+)
 
 
 ENDPOINT = "http://localhost:9200"
@@ -100,11 +108,11 @@ def requires_calcite(doc_category):
 
 
 class CategoryManager:
-    
+
     def __init__(self, category_file_path='../docs/category.json'):
         self._categories = self.load_categories(category_file_path)
         self._all_docs_cache = None
-    
+
     def load_categories(self, file_path):
         try:
             with open(file_path) as json_file:
@@ -120,45 +128,49 @@ class CategoryManager:
             return categories
         except Exception as e:
             raise Exception(f"Failed to load categories from {file_path}: {e}")
-    
+
     def get_all_categories(self):
         return list(self._categories.keys())
-    
+
     def get_category_files(self, category_name):
         return self._categories.get(category_name, [])
-    
+
     def get_all_docs(self):
         if self._all_docs_cache is None:
             self._all_docs_cache = []
             for category_name, docs in self._categories.items():
                 self._all_docs_cache.extend(docs)
         return self._all_docs_cache
-    
+
     def find_file_category(self, file_path):
         # Convert to relative path from docs root
         if file_path.startswith('../docs/'):
             rel_path = file_path[8:]  # Remove '../docs/' prefix
         else:
             rel_path = file_path
-        
+
         for category_name, docs in self._categories.items():
             if rel_path in docs:
                 debug(f"Found file {rel_path} in category {category_name}")
                 return category_name
-        
+
         # Fallback to path-based detection
         debug(f"File {rel_path} not found in categories, using path-based detection")
         return detect_doc_type_from_path(file_path)
-    
+
     def requires_calcite(self, category_name):
         return category_name.endswith('_calcite')
-    
+
+    def is_markdown_category(self, category_name):
+        """Check if category uses Markdown files."""
+        return category_name.endswith("_markdown")
+
     def get_setup_function(self, category_name):
         if self.requires_calcite(category_name):
             return set_up_test_indices_with_calcite
         else:
             return set_up_test_indices_without_calcite
-    
+
     def get_parser_for_category(self, category_name):
         if category_name.startswith('bash'):
             return bash_parser
@@ -169,11 +181,21 @@ class CategoryManager:
         else:
             # Default fallback
             return sql_cli_parser
-    
+
     def find_matching_files(self, search_filename):
-        if not search_filename.endswith('.rst'):
-            search_filename += '.rst'
-        
+        # Support both .rst and .md extensions
+        if not search_filename.endswith(".rst") and not search_filename.endswith(".md"):
+            # Try both extensions
+            all_docs = self.get_all_docs()
+            matches = [
+                doc
+                for doc in all_docs
+                if doc.endswith(search_filename + ".rst")
+                or doc.endswith(search_filename + ".md")
+                or doc.endswith(search_filename)
+            ]
+            return matches
+
         all_docs = self.get_all_docs()
         matches = [doc for doc in all_docs if doc.endswith(search_filename)]
         return matches
@@ -204,7 +226,7 @@ class DocTestConnection(OpenSearchConnection):
 
 
 class CalciteManager:
-    
+
     @staticmethod
     def set_enabled(enabled):
         import requests
@@ -216,16 +238,17 @@ class CalciteManager:
         response = requests.put(f"{ENDPOINT}/_plugins/_query/settings", 
                                 json=calcite_settings, 
                                 timeout=10)
-        
+
         if response.status_code != 200:
             raise Exception(f"Failed to set Calcite setting: {response.status_code} {response.text}")
 
-class TestDataManager:
-    
+
+class DataManager:
+
     def __init__(self):
         self.client = OpenSearch([ENDPOINT], verify_certs=True)
         self.is_loaded = False
-    
+
     def load_file(self, filename, index_name):
         mapping_file_path = './test_mapping/' + filename
         if os.path.isfile(mapping_file_path):
@@ -298,7 +321,7 @@ test_data_manager = None
 def get_test_data_manager():
     global test_data_manager
     if test_data_manager is None:
-        test_data_manager = TestDataManager()
+        test_data_manager = DataManager()
     return test_data_manager
 
 
@@ -365,6 +388,99 @@ def create_cli_suite(filepaths, parser, setup_func):
         setUp=setup_func
     )
 
+
+def create_markdown_suite(filepaths, category_name, setup_func):
+    """
+    Create test suite for Markdown files.
+
+    Args:
+        filepaths: List of Markdown file paths
+        category_name: Category name (e.g., 'ppl_cli_markdown', 'sql_cli_markdown')
+        setup_func: Setup function to initialize test environment
+
+    Returns:
+        doctest.DocTestSuite
+    """
+    print(f"📝 Creating Markdown test suite...")
+    print(f"   Category: {category_name}")
+
+    # Determine transform based on category
+    if "sql" in category_name:
+        transform = sql_markdown_transform
+        input_langs = ["sql"]
+        print(f"   Language: SQL")
+    elif "ppl" in category_name:
+        transform = ppl_markdown_transform
+        input_langs = ["ppl"]
+        print(f"   Language: PPL")
+    else:
+        # Default to PPL
+        transform = ppl_markdown_transform
+        input_langs = ["ppl", "sql"]
+        print(f"   Language: PPL/SQL (default)")
+
+    parser = MarkdownDocTestParser(
+        input_languages=input_langs,
+        output_languages=["text", "console", "output"],
+        transform=transform,
+    )
+    print(f"   ✓ Markdown parser initialized")
+
+    all_tests = []
+
+    print(f"   📋 Processing {len(filepaths)} file(s)...")
+
+    for filepath in filepaths:
+        print(f"   📄 Parsing: {filepath}")
+
+        # Check if file exists
+        import os
+
+        if not os.path.exists(filepath):
+            print(f"      ✗ ERROR: File not found: {filepath}")
+            print(f"      Current directory: {os.getcwd()}")
+            continue
+
+        try:
+            with open(filepath, "r", encoding="utf-8") as f:
+                content = f.read()
+
+            print(f"      ✓ File read successfully ({len(content)} bytes)")
+
+            doctest_obj = parser.parse(content, name=filepath)
+
+            # Only add if there are examples
+            if doctest_obj.examples:
+                print(f"      ✓ Found {len(doctest_obj.examples)} test example(s)")
+                all_tests.append(doctest_obj)
+            else:
+                print(f"      ⚠ No test examples found")
+        except Exception as e:
+            print(f"      ✗ ERROR parsing file: {e}")
+            import traceback
+
+            traceback.print_exc()
+
+    print(f"   ✓ Total: {len(all_tests)} file(s) with tests")
+
+    # Create test suite manually
+    suite = unittest.TestSuite()
+
+    for doctest_obj in all_tests:
+        # Create a test case for each doctest
+        test_case = doctest.DocTestCase(
+            doctest_obj,
+            optionflags=doctest.NORMALIZE_WHITESPACE | doctest.ELLIPSIS,
+            setUp=setup_func,
+        )
+        suite.addTest(test_case)
+
+    print(
+        f"   ✓ Markdown test suite created with {suite.countTestCases()} test case(s)\n"
+    )
+    return suite
+
+
 # Entry point for unittest discovery
 def load_tests(loader, suite, ignore):
     tests = []
@@ -391,7 +507,18 @@ def load_tests(loader, suite, ignore):
 def get_test_suite(category_manager: CategoryManager, category_name, filepaths):
     setup_func = category_manager.get_setup_function(category_name)
 
-    if category_name.startswith('bash'):
+    # Check if this is a Markdown category
+    if category_manager.is_markdown_category(category_name):
+        # Convert generator to list to avoid consumption issues
+        filepaths_list = list(filepaths)
+        print(f"\n{'='*60}")
+        print(f"🔵 MARKDOWN TEST SUITE DETECTED")
+        print(f"{'='*60}")
+        print(f"Category: {category_name}")
+        print(f"Files: {filepaths_list}")
+        print(f"{'='*60}\n")
+        return create_markdown_suite(filepaths_list, category_name, setup_func)
+    elif category_name.startswith("bash"):
         return create_bash_suite(filepaths, setup_func)
     else:
         parser = category_manager.get_parser_for_category(category_name)
@@ -399,21 +526,21 @@ def get_test_suite(category_manager: CategoryManager, category_name, filepaths):
 
 def list_available_docs(category_manager: CategoryManager):
     categories = category_manager.get_all_categories()
-    
+
     print(f"Available documentation files for testing:\n")
-    
+
     total = 0
-    for category_name in categories.items():
+    for category_name in categories:
         files = category_manager.get_category_files(category_name)
         total += len(files)
         print(f"{category_name} docs ({len(files)} files):\n")
         for doc in sorted(files):
             print(f"  ../docs/{doc}\n")
-    
+
     print(f"Total: {total} documentation files available for testing\n")
 
 
-def resolve_files(category_manager: CategoryManager, file_paths: list[str]):
+def resolve_files(category_manager: CategoryManager, file_paths: List[str]):
     result = []
     for file_param in file_paths:
         resolved_files = category_manager.find_matching_files(file_param)
@@ -444,7 +571,7 @@ Performance Tips:
   - If a filename matches multiple files, all matches will be executed
         """
     )
-    
+
     parser.add_argument('file_paths', nargs='*', help='Path(s) to the documentation file(s) to test')
     parser.add_argument('--verbose', '-v', action='store_true', 
                        help='Enable verbose output with detailed diff information')
@@ -452,14 +579,14 @@ Performance Tips:
                        help='Custom OpenSearch endpoint (default: http://localhost:9200)')
     parser.add_argument('--list', '-l', action='store_true',
                        help='List all available documentation files')
-    
+
     args = parser.parse_args()
     category_manager = CategoryManager()
 
     if args.list:
         list_available_docs(category_manager)
         return
-    
+
     if not args.file_paths:
         print("No specific files provided. Running full doctest suite...")
         unittest.main(module=None, argv=['test_docs.py'], exit=False)
@@ -467,8 +594,8 @@ Performance Tips:
 
     if args.endpoint:
         global ENDPOINT
-        ENDPOINT = endpoint
-        print(f"Using custom endpoint: {endpoint}")
+        ENDPOINT = args.endpoint
+        print(f"Using custom endpoint: {args.endpoint}")
 
     all_files_to_test = resolve_files(category_manager, args.file_paths)
 

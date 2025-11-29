@@ -1,0 +1,283 @@
+"""
+Markdown-based doctest parser for clean copy-paste documentation.
+
+Parses Markdown code fences instead of RST directives.
+"""
+
+import re
+import doctest
+from typing import List, Tuple
+
+
+class MarkdownDocTestParser:
+    """
+    Parses Markdown files looking for paired code blocks:
+    1. Input code block (sql, ppl, or bash)
+    2. Output code block (text, console, or output)
+    
+    Example Markdown format:
+    
+        ```sql
+        SELECT * FROM accounts
+        ```
+        
+        ```text
+        +------+
+        | name |
+        +------+
+        | John |
+        +------+
+        ```
+    """
+    
+    # Regex to match Markdown code fences
+    CODE_FENCE_PATTERN = re.compile(
+        r'^```(\w+)\s*\n'           # ```language
+        r'(.*?)'                     # code content (non-greedy)
+        r'^```\s*$',                 # closing ```
+        re.MULTILINE | re.DOTALL
+    )
+    
+    def __init__(self, input_languages=None, output_languages=None, transform=None):
+        """
+        Args:
+            input_languages: List of languages for input blocks (e.g., ['sql', 'ppl'])
+            output_languages: List of languages for output blocks (e.g., ['text', 'console'])
+            transform: Function to transform input code before execution
+        """
+        self.input_languages = input_languages or ['sql', 'ppl', 'bash', 'sh']
+        self.output_languages = output_languages or ['text', 'console', 'output']
+        self.transform = transform or (lambda x: x)
+    
+    def parse(self, text: str, name: str = '<string>') -> doctest.DocTest:
+        """
+        Parse Markdown text and extract test cases from code fence pairs.
+        
+        Returns a DocTest object compatible with doctest.DocTestRunner.
+        """
+        examples = []
+        blocks = self._extract_code_blocks(text)
+        
+        print(f"         🔍 Extracted {len(blocks)} code block(s) from Markdown")
+        
+        # Find pairs of input/output blocks
+        i = 0
+        pairs_found = 0
+        while i < len(blocks) - 1:
+            lang1, code1, lineno1 = blocks[i]
+            lang2, code2, lineno2 = blocks[i + 1]
+            
+            # Check if this is an input/output pair
+            if lang1 in self.input_languages and lang2 in self.output_languages:
+                pairs_found += 1
+                print(f"         ✓ Pair {pairs_found}: {lang1} → {lang2} (line {lineno1})")
+                
+                # Create a doctest Example
+                source = code1.rstrip('\n')
+                want = code2.rstrip('\n') + '\n'  # doctest expects trailing newline
+                
+                # Apply transform to source
+                transformed_source = self.transform(source)
+                
+                example = doctest.Example(
+                    source=transformed_source,
+                    want=want,
+                    lineno=lineno1,
+                    indent=0,
+                    options={}
+                )
+                examples.append(example)
+                
+                # Skip the output block since we've paired it
+                i += 2
+            else:
+                # Not a pair, move to next block
+                i += 1
+        
+        if pairs_found == 0:
+            print(f"         ⚠ No input/output pairs found")
+        
+        return doctest.DocTest(
+            examples=examples,
+            globs={},
+            name=name,
+            filename=name,
+            lineno=0,
+            docstring=text
+        )
+    
+    def _extract_code_blocks(self, text: str) -> List[Tuple[str, str, int]]:
+        """
+        Extract all code blocks from Markdown text.
+        
+        Returns list of (language, code, line_number) tuples.
+        """
+        blocks = []
+        for match in self.CODE_FENCE_PATTERN.finditer(text):
+            language = match.group(1).lower()
+            code = match.group(2)
+            lineno = text[:match.start()].count('\n') + 1
+            blocks.append((language, code, lineno))
+        return blocks
+
+
+def create_markdown_suite(filepath: str, transform=None, setup=None, globs=None):
+    """
+    Create a test suite from a Markdown file.
+    
+    Args:
+        filepath: Path to Markdown file
+        transform: Function to transform input code
+        setup: Setup function to run before tests
+        globs: Global variables for test execution
+    
+    Returns:
+        doctest.DocTestSuite
+    """
+    parser = MarkdownDocTestParser(transform=transform)
+    
+    with open(filepath, 'r', encoding='utf-8') as f:
+        content = f.read()
+    
+    doctest_obj = parser.parse(content, name=filepath)
+    
+    # Set up globs if provided
+    if globs:
+        doctest_obj.globs.update(globs)
+    
+    # Create a test case
+    test = doctest.DocTestCase(
+        doctest_obj,
+        optionflags=doctest.NORMALIZE_WHITESPACE | doctest.ELLIPSIS,
+        setUp=setup
+    )
+    
+    return doctest.DocTestSuite(test_finder=lambda: [doctest_obj])
+
+
+# Transform functions for different languages
+def sql_markdown_transform(code: str) -> str:
+    """Transform SQL code for execution."""
+    return f'sql_cmd.process({repr(code.strip().rstrip(";"))})'
+
+
+def ppl_markdown_transform(code: str) -> str:
+    """Transform PPL code for execution."""
+    return f'ppl_cmd.process({repr(code.strip().rstrip(";"))})'
+
+
+def bash_markdown_transform(code: str) -> str:
+    """Transform bash code for execution."""
+    if code.strip().startswith("opensearchsql"):
+        match = re.search(r'opensearchsql\s+-q\s+"(.*?)"', code)
+        if match:
+            query = match.group(1)
+            return f'cmd.process({repr(query.strip().rstrip(";"))})'
+    return f'pretty_print(sh("""{code}""").stdout.decode("utf-8"))'
+
+
+def detect_markdown_format(filepath: str) -> bool:
+    """
+    Check if a file uses Markdown code fences.
+    
+    Returns:
+        True if file uses ```language``` code fences
+        False otherwise
+    """
+    with open(filepath, 'r', encoding='utf-8') as f:
+        content = f.read()
+    
+    # Check for Markdown code fences
+    return bool(re.search(r'^```\w+\s*\n', content, re.MULTILINE))
+
+
+def create_hybrid_markdown_suite(filepaths, doc_type, setup_func):
+    """
+    Create test suite for Markdown files.
+    
+    Args:
+        filepaths: List of Markdown file paths
+        doc_type: 'sql', 'ppl', or 'bash'
+        setup_func: Setup function to initialize test environment
+    
+    Returns:
+        doctest.DocTestSuite
+    """
+    # Choose transform based on doc type
+    if 'sql' in doc_type:
+        transform = sql_markdown_transform
+        input_langs = ['sql']
+    elif 'ppl' in doc_type:
+        transform = ppl_markdown_transform
+        input_langs = ['ppl']
+    else:  # bash
+        transform = bash_markdown_transform
+        input_langs = ['bash', 'sh']
+    
+    parser = MarkdownDocTestParser(
+        input_languages=input_langs,
+        output_languages=['text', 'console', 'output'],
+        transform=transform
+    )
+    
+    all_tests = []
+    
+    for filepath in filepaths:
+        with open(filepath, 'r', encoding='utf-8') as f:
+            content = f.read()
+        
+        doctest_obj = parser.parse(content, name=filepath)
+        
+        # Only add if there are examples
+        if doctest_obj.examples:
+            all_tests.append(doctest_obj)
+    
+    # Create test suite
+    def setUp(test):
+        if setup_func:
+            setup_func(test)
+    
+    suite = doctest.DocTestSuite(
+        test_finder=lambda: all_tests,
+        setUp=setUp,
+        optionflags=doctest.NORMALIZE_WHITESPACE | doctest.ELLIPSIS
+    )
+    
+    return suite
+
+
+if __name__ == '__main__':
+    # Test the Markdown parser
+    test_md = """
+# Example Test
+
+Query example:
+
+```sql
+SELECT * FROM accounts
+```
+
+Expected output:
+
+```text
++------+
+| name |
++------+
+| John |
++------+
+```
+"""
+    
+    parser = MarkdownDocTestParser(
+        input_languages=['sql'],
+        output_languages=['text']
+    )
+    
+    doctest_obj = parser.parse(test_md, 'test.md')
+    
+    print(f"Found {len(doctest_obj.examples)} example(s)")
+    
+    if doctest_obj.examples:
+        example = doctest_obj.examples[0]
+        print(f"\nInput code:\n{example.source}")
+        print(f"\nExpected output:\n{example.want}")
