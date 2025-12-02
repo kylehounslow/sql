@@ -12,15 +12,24 @@ kmeans <centroids> <iterations> <distance_type>
 ## Example: Clustering of Iris Dataset
 
 This example shows how to classify three Iris species (Iris setosa, Iris virginica and Iris versicolor) based on the combination of four features measured from each sample: the length and the width of the sepals and petals.
-PPL query
-    > source=iris_data | fields sepal_length_in_cm, sepal_width_in_cm, petal_length_in_cm, petal_width_in_cm | kmeans centroids=3
-    +--------------------+-------------------+--------------------+-------------------+-----------+
-    | sepal_length_in_cm | sepal_width_in_cm | petal_length_in_cm | petal_width_in_cm | ClusterID |
-    |--------------------+-------------------+--------------------+-------------------+-----------|
-    | 5.1                | 3.5               | 1.4                | 0.2               | 1         |
-    | 5.6                | 3.0               | 4.1                | 1.3               | 0         |
-    | 6.7                | 2.5               | 5.8                | 1.8               | 2         |
-    +--------------------+-------------------+--------------------+-------------------+-----------+
+```ppl
+source=iris_data
+| fields sepal_length_in_cm, sepal_width_in_cm, petal_length_in_cm, petal_width_in_cm
+| kmeans centroids=3
+```
+
+Expected output:
+
+```text
++--------------------+-------------------+--------------------+-------------------+-----------+
+| sepal_length_in_cm | sepal_width_in_cm | petal_length_in_cm | petal_width_in_cm | ClusterID |
+|--------------------+-------------------+--------------------+-------------------+-----------|
+| 5.1                | 3.5               | 1.4                | 0.2               | 1         |
+| 5.6                | 3.0               | 4.1                | 1.3               | 0         |
+| 6.7                | 2.5               | 5.8                | 1.8               | 2         |
++--------------------+-------------------+--------------------+-------------------+-----------+
+```
+
 ## Limitations
 
 The `kmeans` command can only work with `plugins.calcite.enabled=false`.

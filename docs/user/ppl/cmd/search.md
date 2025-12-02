@@ -201,6 +201,14 @@ fetched rows / total rows = 3/3
 | FATAL        |
 | ERROR        |
 +--------------+
+```
+```ppl
+search severityText="INFO" AND `resource.attributes.service.name`="cart-service" source=otellogs 
+| fields body 
+| head 1;
+```
+Expected output
+```text
 fetched rows / total rows = 1/1
 +----------------------------------------------------------------------------------+
 | body                                                                             |
@@ -294,6 +302,15 @@ fetched rows / total rows = 3/3
 | ERROR        |
 | ERROR2       |
 +--------------+
+```
+```ppl
+search body=user* source=otellogs 
+| sort @timestamp 
+| fields body 
+| head 2;
+```
+Expected output: 
+```text
 fetched rows / total rows = 2/2
 +----------------------------------------------------------------------------------+
 | body                                                                             |
@@ -349,6 +366,13 @@ fetched rows / total rows = 3/3
 | 17             |
 | 18             |
 +----------------+
+```
+```ppl
+search `attributes.payment.amount`>=1000.0 AND `attributes.payment.amount`<=2000.0 source=otellogs 
+| fields body;
+```
+Expected output:
+```text
 fetched rows / total rows = 1/1
 +---------------------------------------------------------+
 | body                                                    |
@@ -444,6 +468,13 @@ fetched rows / total rows = 1/1
 |---------------------------------------------------------|
 | Payment failed: Insufficient funds for user@example.com |
 +---------------------------------------------------------+
+```
+```ppl
+search `attributes.user.email`="user@example.com" source=otellogs 
+| fields body;
+```
+Expected output:
+```text
 fetched rows / total rows = 1/1
 +---------------------------------------------------------+
 | body                                                    |
@@ -473,6 +504,13 @@ fetched rows / total rows = 3/3
 | WARN         |
 | ERROR        |
 +--------------+
+```
+```ppl
+search `attributes.user.email`="user@example.com" OR (`attributes.error.code`="INSUFFICIENT_FUNDS" AND severityNumber>15) source=otellogs 
+| fields body;
+```
+Expected output:
+```
 fetched rows / total rows = 1/1
 +---------------------------------------------------------+
 | body                                                    |
