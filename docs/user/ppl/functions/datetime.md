@@ -369,7 +369,7 @@ Return type: DATE
 Specification: CURDATE() -> DATE
 Example
 
-```ppl
+```ppl ignore
 source=people
 | eval `CURDATE()` = CURDATE()
 | fields `CURDATE()`
@@ -382,7 +382,7 @@ fetched rows / total rows = 1/1
 +------------+
 | CURDATE()  |
 |------------|
-| 2022-08-02 |
+| 2025-08-02 |
 +------------+
 ```
 
@@ -393,7 +393,7 @@ fetched rows / total rows = 1/1
 `CURRENT_DATE()` is a synonym for [CURDATE()](#curdate).
 Example
 
-```ppl
+```ppl ignore
 source=people
 | eval `CURRENT_DATE()` = CURRENT_DATE()
 | fields `CURRENT_DATE()`
@@ -406,7 +406,7 @@ fetched rows / total rows = 1/1
 +------------------+
 | CURRENT_DATE()   |
 |------------------+
-| 2022-08-02       |
+| 2025-08-02       |
 +------------------+
 ```
 
@@ -417,7 +417,7 @@ fetched rows / total rows = 1/1
 `CURRENT_TIME()` is a synonym for [CURTIME()](#curtime).
 Example
 
-```ppl
+```ppl ignore
 source=people
 | eval `CURRENT_TIME()` = CURRENT_TIME()
 | fields `CURRENT_TIME()`
@@ -441,7 +441,7 @@ fetched rows / total rows = 1/1
 `CURRENT_TIMESTAMP()` is a synonym for [NOW()](#now).
 Example
 
-```ppl
+```ppl ignore
 source=people
 | eval `CURRENT_TIMESTAMP()` = CURRENT_TIMESTAMP()
 | fields `CURRENT_TIMESTAMP()`
@@ -454,7 +454,7 @@ fetched rows / total rows = 1/1
 +-----------------------+
 | CURRENT_TIMESTAMP()   |
 |-----------------------+
-| 2022-08-02 15:54:19   |
+| 2025-08-02 15:54:19   |
 +-----------------------+
 ```
 
@@ -468,7 +468,7 @@ Return type: TIME
 Specification: CURTIME() -> TIME
 Example
 
-```ppl
+```ppl ignore
 source=people
 | eval `value_1` = CURTIME(), `value_2` = CURTIME()
 | fields `value_1`, `value_2`
@@ -1212,7 +1212,7 @@ fetched rows / total rows = 1/1
 `LOCALTIMESTAMP()` are synonyms for [NOW()](#now).
 Example
 
-```ppl
+```ppl ignore
 source=people
 | eval `LOCALTIMESTAMP()` = LOCALTIMESTAMP()
 | fields `LOCALTIMESTAMP()`
@@ -1225,7 +1225,7 @@ fetched rows / total rows = 1/1
 +---------------------+
 | LOCALTIMESTAMP()    |
 |---------------------+
-| 2022-08-02 15:54:19 |
+| 2025-08-02 15:54:19 |
 +---------------------+
 ```
 
@@ -1236,7 +1236,7 @@ fetched rows / total rows = 1/1
 `LOCALTIME()` are synonyms for [NOW()](#now).
 Example
 
-```ppl
+```ppl ignore
 source=people
 | eval `LOCALTIME()` = LOCALTIME()
 | fields `LOCALTIME()`
@@ -1244,12 +1244,12 @@ source=people
 
 Expected output:
 
-```text
+```text ignore
 fetched rows / total rows = 1/1
 +---------------------+
 | LOCALTIME()         |
 |---------------------+
-| 2022-08-02 15:54:19 |
+| 2025-08-02 15:54:19 |
 +---------------------+
 ```
 
@@ -1515,7 +1515,7 @@ Return type: TIMESTAMP
 Specification: NOW() -> TIMESTAMP
 Example
 
-```ppl
+```ppl ignore
 source=people
 | eval `value_1` = NOW(), `value_2` = NOW()
 | fields `value_1`, `value_2`
@@ -1528,7 +1528,7 @@ fetched rows / total rows = 1/1
 +---------------------+---------------------+
 | value_1             | value_2             |
 |---------------------+---------------------|
-| 2022-08-02 15:39:05 | 2022-08-02 15:39:05 |
+| 2025-08-02 15:39:05 | 2025-08-02 15:39:05 |
 +---------------------+---------------------+
 ```
 
@@ -1974,7 +1974,7 @@ Return type: TIMESTAMP
 Specification: SYSDATE([INTEGER]) -> TIMESTAMP
 Example
 
-```ppl
+```ppl ignore
 source=people
 | eval `value_1` = SYSDATE(), `value_2` = SYSDATE(6)
 | fields `value_1`, `value_2`
@@ -1987,7 +1987,7 @@ fetched rows / total rows = 1/1
 +---------------------+----------------------------+
 | value_1             | value_2                    |
 |---------------------+----------------------------|
-| 2022-08-02 15:39:05 | 2022-08-02 15:39:05.123456 |
+| 2025-08-02 15:39:05 | 2025-08-02 15:39:05.123456 |
 +---------------------+----------------------------+
 ```
 
@@ -2347,7 +2347,7 @@ Return type: DATE
 Specification: UTC_DATE() -> DATE
 Example
 
-```ppl
+```ppl ignore
 source=people
 | eval `UTC_DATE()` = UTC_DATE()
 | fields `UTC_DATE()`
@@ -2360,7 +2360,7 @@ fetched rows / total rows = 1/1
 +------------+
 | UTC_DATE() |
 |------------|
-| 2022-10-03 |
+| 2025-10-03 |
 +------------+
 ```
 
@@ -2373,7 +2373,7 @@ Return type: TIME
 Specification: UTC_TIME() -> TIME
 Example
 
-```ppl
+```ppl ignore
 source=people
 | eval `UTC_TIME()` = UTC_TIME()
 | fields `UTC_TIME()`
@@ -2399,7 +2399,7 @@ Return type: TIMESTAMP
 Specification: UTC_TIMESTAMP() -> TIMESTAMP
 Example
 
-```ppl
+```ppl ignore
 source=people
 | eval `UTC_TIMESTAMP()` = UTC_TIMESTAMP()
 | fields `UTC_TIMESTAMP()`
@@ -2412,7 +2412,7 @@ fetched rows / total rows = 1/1
 +---------------------+
 | UTC_TIMESTAMP()     |
 |---------------------|
-| 2022-10-03 17:54:28 |
+| 2025-10-03 17:54:28 |
 +---------------------+
 ```
 

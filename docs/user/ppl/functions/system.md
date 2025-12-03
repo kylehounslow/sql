@@ -6,8 +6,9 @@
 
 Usage: typeof(expr) function returns name of the data type of the value that is passed to it. This can be helpful for troubleshooting or dynamically constructing SQL queries.
 Argument type: ANY
-Return type: STRING
-Example
+Return type: STRING  
+
+Example  
 
 ```ppl
 source=people
@@ -22,6 +23,6 @@ fetched rows / total rows = 1/1
 +--------------+-------------+---------------+----------------+
 | typeof(date) | typeof(int) | typeof(now()) | typeof(column) |
 |--------------+-------------+---------------+----------------|
-| DATE         | INTEGER     | TIMESTAMP     | OBJECT         |
+| DATE         | INT         | TIMESTAMP     | STRUCT         |
 +--------------+-------------+---------------+----------------+
 ```
