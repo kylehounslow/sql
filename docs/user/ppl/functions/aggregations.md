@@ -299,7 +299,7 @@ source=accounts
 Expected output:
 
 ```text
-fetched rows / total rows = 4/4
+fetched rows / total rows = 2/2
 +-----------------+---------------+--------+
 | distinct_states | dc_states_alt | gender |
 |-----------------+---------------+--------|
@@ -482,23 +482,31 @@ For convenience, OpenSearch PPL provides shortcut functions for common percentil
 - `PERC<percent>(expr)` - Equivalent to `PERCENTILE(expr, <percent>)`
 - `P<percent>(expr)` - Equivalent to `PERCENTILE(expr, <percent>)`
 Both integer and decimal percentiles from 0 to 100 are supported (e.g., `PERC95`, `P99.5`).
-```bash
-ppl> source=accounts | stats perc99.5(age);
+```ppl
+source=accounts 
+| stats perc99.5(age);
+```
+Expected output:
+```text
 fetched rows / total rows = 1/1
 +---------------+
 | perc99.5(age) |
 |---------------|
 | 36            |
 +---------------+
-
-ppl> source=accounts | stats p50(age);
+```
+```ppl
+source=accounts 
+| stats p50(age);
+```
+Expected output:
+```text
 fetched rows / total rows = 1/1
 +---------+
 | p50(age) |
 |---------|
 | 32      |
 +---------+
-
 ```
 
 ### MEDIAN
@@ -593,11 +601,11 @@ Expected output:
 
 ```text
 fetched rows / total rows = 1/1
-+-------------------------------------+
-| list(firstname)                     |
-|-------------------------------------|
-| ["Amber","Hattie","Nanette","Dale"] |
-+-------------------------------------+
++-----------------------------+
+| list(firstname)             |
+|-----------------------------|
+| [Amber,Hattie,Nanette,Dale] |
++-----------------------------+
 ```
 
 ### VALUES
@@ -620,9 +628,9 @@ Expected output:
 
 ```text
 fetched rows / total rows = 1/1
-+-------------------------------------+
-| values(firstname)                   |
-|-------------------------------------|
-| ["Amber","Dale","Hattie","Nanette"] |
-+-------------------------------------+
++-----------------------------+
+| values(firstname)           |
+|-----------------------------|
+| [Amber,Dale,Hattie,Nanette] |
++-----------------------------+
 ```
