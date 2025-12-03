@@ -5,8 +5,8 @@
 The `regex` command filters search results by matching field values against a regular expression pattern. Only documents where the specified field matches the pattern are included in the results.
 ## Syntax
 
-regex <field> = <pattern>
-regex <field> != <pattern>
+regex \<field\> = \<pattern\>
+regex \<field\> != \<pattern\>
 * field: mandatory. The field name to match against.
 * pattern: mandatory string. The regular expression pattern to match. Supports Java regex syntax including named groups, lookahead/lookbehind, and character classes.
 * = : operator for positive matching (include matches)

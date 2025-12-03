@@ -5,9 +5,9 @@
 The `search` command retrieves document from the index. The `search` command can only be used as the first command in the PPL query.
 ## Syntax
 
-search source=[<remote-cluster>:]<index> [search-expression]
+search source=[\<remote-cluster\>:]\<index\> [search-expression]
 * search: search keyword, which could be ignored.
-* index: mandatory. search command must specify which index to query from. The index name can be prefixed by "<cluster name>:" for cross-cluster search.
+* index: mandatory. search command must specify which index to query from. The index name can be prefixed by "\<cluster name\>:" for cross-cluster search.
 * search-expression: optional. Search expression that gets converted to OpenSearch [query_string](https://docs.opensearch.org/latest/query-dsl/full-text/query-string/) function which uses [Lucene Query Syntax](https://lucene.apache.org/core/2_9_4/queryparsersyntax.html).
 ## Search Expression
 

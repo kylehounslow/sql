@@ -7,7 +7,7 @@ The flattened fields will be ordered **lexicographically** by their original key
 Note that `flatten` should not be applied to arrays. Use the `expand` command to expand an array field into multiple rows instead. However, since an array can be stored in a non-array field in OpenSearch, when flattening a field storing a nested array, only the first element of the array will be flattened.
 ## Syntax
 
-flatten <field> [as (<alias-list>)]
+flatten \<field\> [as (\<alias-list\>)]
 * field: mandatory. The field to be flattened. Only object and nested fields are supported.
 * alias-list: optional. The names to use instead of the original key names. Names are separated by commas. It is advised to put the alias-list in parentheses if there is more than one alias. The length must match the number of keys in the struct field. The provided alias names **must** follow the lexicographical order of the corresponding original keys in the struct.
 ## Example: flatten an object field with aliases

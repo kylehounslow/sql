@@ -7,7 +7,7 @@ Use the `ml` command to train/predict/train and predict on any algorithm in the 
 
 ## AD - Fixed In Time RCF For Time-series Data:
 
-ml action='train' algorithm='rcf' <number_of_trees> <shingle_size> <sample_size> <output_after> <time_decay> <anomaly_rate> <time_field> <date_format> <time_zone>
+ml action='train' algorithm='rcf' \<number_of_trees\> \<shingle_size\> \<sample_size\> \<output_after\> \<time_decay\> \<anomaly_rate\> \<time_field\> \<date_format\> \<time_zone\>
 * number_of_trees: optional integer. Number of trees in the forest. **Default:** 30.
 * shingle_size: optional integer. A shingle is a consecutive sequence of the most recent records. **Default:** 8.
 * sample_size: optional integer. The sample size used by stream samplers in this forest. **Default:** 256.
@@ -20,7 +20,7 @@ ml action='train' algorithm='rcf' <number_of_trees> <shingle_size> <sample_size>
 * category_field: optional string. It specifies the category field used to group inputs. Each category will be independently predicted.
 ## AD - Batch RCF for Non-time-series Data:
 
-ml action='train' algorithm='rcf' <number_of_trees> <sample_size> <output_after> <training_data_size> <anomaly_score_threshold>
+ml action='train' algorithm='rcf' \<number_of_trees\> \<sample_size\> \<output_after\> \<training_data_size\> \<anomaly_score_threshold\>
 * number_of_trees: optional integer. Number of trees in the forest. **Default:** 30.
 * sample_size: optional integer. Number of random samples given to each tree from the training data set. **Default:** 256.
 * output_after: optional integer. The number of points required by stream samplers before results are returned. **Default:** 32.
@@ -29,7 +29,7 @@ ml action='train' algorithm='rcf' <number_of_trees> <sample_size> <output_after>
 * category_field: optional string. It specifies the category field used to group inputs. Each category will be independently predicted.
 ## KMEANS:
 
-ml action='train' algorithm='kmeans' <centroids> <iterations> <distance_type>
+ml action='train' algorithm='kmeans' \<centroids\> \<iterations\> \<distance_type\>
 * centroids: optional integer. The number of clusters you want to group your data points into. **Default:** 2.
 * iterations: optional integer. Number of iterations. **Default:** 10.
 * distance_type: optional string. The distance type can be COSINE, L1, or EUCLIDEAN. **Default:** EUCLIDEAN.

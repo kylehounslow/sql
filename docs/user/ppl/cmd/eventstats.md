@@ -20,7 +20,7 @@ The `stats` and `eventstats` commands are both used for calculating statistics, 
   * `eventstats`: Useful when you need to enrich events with statistical context for further analysis or filtering. Can be used mid-search to add statistics that can be used in subsequent commands.
 ## Syntax
 
-eventstats [bucket_nullable=bool] <function>... [by-clause]
+eventstats [bucket_nullable=bool] \<function\>... [by-clause]
 * function: mandatory. An aggregation function or window function.
 * bucket_nullable: optional. Controls whether the eventstats command consider null buckets as a valid group in group-by aggregations. When set to `false`, it will not treat null group-by values as a distinct group during aggregation. **Default:** Determined by `plugins.ppl.syntax.legacy.preferred`.
  * When `plugins.ppl.syntax.legacy.preferred=true`, `bucket_nullable` defaults to `true`
@@ -36,10 +36,11 @@ eventstats [bucket_nullable=bool] <function>... [by-clause]
     * week (w)
     * month (M, case sensitive)
     * quarter (q)
-    * year (y)
+    * year (y)  
+
 ## Aggregation Functions
 
-The eventstats command supports the following aggregation functions:
+The eventstats command supports the following aggregation functions:  
 * COUNT: Count of values
 * SUM: Sum of numeric values
 * AVG: Average of numeric values
@@ -51,17 +52,20 @@ The eventstats command supports the following aggregation functions:
 * STDDEV_POP: Population standard deviation
 * DISTINCT_COUNT/DC: Distinct count of values
 * EARLIEST: Earliest value by timestamp
-* LATEST: Latest value by timestamp
+* LATEST: Latest value by timestamp  
+
 For detailed documentation of each function, see [Aggregation Functions](../functions/aggregations.md).
 ## Usage
 
 Eventstats
-    source = table | eventstats avg(a)
-    source = table | where a < 50 | eventstats count(c)
-    source = table | eventstats min(c), max(c) by b
-    source = table | eventstats count(c) as count_by by b | where count_by > 1000
-    source = table | eventstats dc(field) as distinct_count
-    source = table | eventstats distinct_count(category) by region
+```
+source = table | eventstats avg(a)
+source = table | where a < 50 | eventstats count(c)
+source = table | eventstats min(c), max(c) by b
+source = table | eventstats count(c) as count_by by b | where count_by > 1000
+source = table | eventstats dc(field) as distinct_count
+source = table | eventstats distinct_count(category) by region
+```
 ## Example 1: Calculate the average, sum and count of a field by group
 
 This example shows calculating the average age, sum of age, and count of events for all accounts grouped by gender.

@@ -5,7 +5,7 @@
 The `rename` command renames one or more fields in the search result.
 ## Syntax
 
-rename <source-field> AS <target-field>["," <source-field> AS <target-field>]...
+rename \<source-field\> AS \<target-field\>["," \<source-field\> AS \<target-field\>]...
 * source-field: mandatory. The name of the field you want to rename. Supports wildcard patterns using `*`.
 * target-field: mandatory. The name you want to rename to. Must have same number of wildcards as the source.
 ## Behavior

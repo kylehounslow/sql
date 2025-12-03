@@ -5,7 +5,7 @@
 The `grok` command parses a text field with a grok pattern and appends the results to the search result.
 ## Syntax
 
-grok <field> <pattern>
+grok \<field\> \<pattern\>
 * field: mandatory. The field must be a text field.
 * pattern: mandatory. The grok pattern used to extract new fields from the given text field. If a new field name already exists, it will replace the original field.
 ## Example 1: Create the new field

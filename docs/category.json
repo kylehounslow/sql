@@ -135,5 +135,8 @@
   ],
   "bash_settings": [
     "user/ppl/admin/settings.rst"
+  ],
+  "bash_markdown_settings": [
+    "user/ppl/admin/settings.md"
   ]
 }

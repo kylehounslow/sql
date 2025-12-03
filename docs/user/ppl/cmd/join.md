@@ -8,7 +8,7 @@ The `join` command combines two datasets together. The left side could be an ind
 
 ### Basic syntax:
 
-[joinType] join [leftAlias] [rightAlias] (on | where) <joinCriteria> <right-dataset>
+[joinType] join [leftAlias] [rightAlias] (on | where) \<joinCriteria\> \<right-dataset\>
 * joinType: optional. The type of join to perform. Options: `left`, `semi`, `anti`, and performance sensitive types `right`, `full`, `cross`. **Default:** `inner`.
 * leftAlias: optional. The subsearch alias to use with the left join side, to avoid ambiguous naming. Pattern: `left = <leftAlias>`
 * rightAlias: optional. The subsearch alias to use with the right join side, to avoid ambiguous naming. Pattern: `right = <rightAlias>`
@@ -17,7 +17,7 @@ The `join` command combines two datasets together. The left side could be an ind
 
 ### Extended syntax:
 
-join [type=<joinType>] [overwrite=<bool>] [max=n] (<join-field-list> | [leftAlias] [rightAlias] (on | where) <joinCriteria>) <right-dataset>
+join [type=<joinType>] [overwrite=<bool>] [max=n] (\<join-field-list\> | [leftAlias] [rightAlias] (on | where) \<joinCriteria\>) \<right-dataset\>
 * type: optional. Join type using extended syntax. Options: `left`, `outer` (alias of `left`), `semi`, `anti`, and performance sensitive types `right`, `full`, `cross`. **Default:** `inner`.
 * overwrite: optional boolean. Only works with `join-field-list`. Specifies whether duplicate-named fields from right-dataset should replace corresponding fields in the main search results. **Default:** `true`.
 * max: optional integer. Controls how many subsearch results could be joined against each row in main search. **Default:** 0 (unlimited).

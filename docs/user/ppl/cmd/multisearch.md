@@ -17,7 +17,7 @@ Use Cases:
 * **Time-series Data Merging**: Interleave events from multiple sources based on timestamps
 ## Syntax
 
-multisearch <subsearch1> <subsearch2> <subsearch3> ...
+multisearch \<subsearch1\> \<subsearch2\> \<subsearch3\> ...
 * subsearch1, subsearch2, ...: mandatory. At least two subsearches required. Each subsearch must be enclosed in square brackets and start with the `search` keyword. Format: `[search source=index | commands...]`. All PPL commands are supported within subsearches.
 * result-processing: optional. Commands applied to the merged results after the multisearch operation, such as `stats`, `sort`, `head`, etc.
 ## Usage

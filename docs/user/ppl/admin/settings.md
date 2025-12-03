@@ -173,7 +173,7 @@ This configuration indicates how many aggregation buckets will return in a singl
 You can change the value to any value not greater than the maximum number of aggregation buckets allowed in a single response (`search.max_buckets`), here is an example
 
 ```bash ppl
-curl -H 'Content-Type: application/json' -X PUT localhost:9200/_plugins/_query/settings -d '{
+curl -sS -H 'Content-Type: application/json' -X PUT localhost:9200/_plugins/_query/settings -d '{
 	  "transient" : {
 	    "plugins.query.buckets" : 1000
 	  }
@@ -184,12 +184,12 @@ Expected output:
 
 ```json
 {
-  "acknowledged" : true,
-  "persistent" : { },
-  "transient" : {
-    "plugins" : {
-      "query" : {
-        "buckets" : "1000"
+  "acknowledged": true,
+  "persistent": {},
+  "transient": {
+    "plugins": {
+      "query": {
+        "buckets": "1000"
       }
     }
   }

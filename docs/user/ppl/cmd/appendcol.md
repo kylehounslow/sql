@@ -5,7 +5,7 @@
 The `appendcol` command appends the result of a sub-search and attaches it alongside with the input search results (The main search).
 ## Syntax
 
-appendcol [override=<boolean>] <sub-search>
+appendcol [override=\<boolean\>] \<sub-search\>
 * override=<boolean>: optional. Boolean field to specify should result from main-result be overwritten in the case of column name conflict. **Default:** false.
 * sub-search: mandatory. Executes PPL commands as a secondary search. The sub-search uses the same data specified in the source clause of the main search results as its input.
 ## Example 1: Append a count aggregation to existing search result

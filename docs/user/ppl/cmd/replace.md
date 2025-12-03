@@ -5,7 +5,7 @@
 The `replace` replaces text in one or more fields in the search result. Supports literal string replacement and wildcard patterns using `*`.
 ## Syntax
 
-replace '<pattern>' WITH '<replacement>' [, '<pattern>' WITH '<replacement>']... IN <field-name>[, <field-name>]...
+replace '\<pattern\>' WITH '\<replacement\>' [, '\<pattern\>' WITH '\<replacement\>']... IN \<field-name\>[, \<field-name\>]...
 * pattern: mandatory. The text pattern you want to replace.
 * replacement: mandatory. The text you want to replace with.
 * field-name: mandatory. One or more field names where the replacement should occur.

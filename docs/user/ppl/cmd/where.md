@@ -5,7 +5,7 @@
 The `where` command filters the search result. The `where` command only returns the result when the bool-expression evaluates to true.
 ## Syntax
 
-where <boolean-expression>
+where \<boolean-expression\>
 * bool-expression: optional. Any expression which could be evaluated to boolean value.
 ## Example 1: Filter result set with condition
 

@@ -2317,7 +2317,7 @@ Usage: Converts given argument to Unix time (seconds since Epoch - very beginnin
 The date argument may be a DATE, or TIMESTAMP string, or a number in YYMMDD, YYMMDDhhmmss, YYYYMMDD, or YYYYMMDDhhmmss format. If the argument includes a time part, it may optionally include a fractional seconds part.
 If argument is in invalid format or outside of range 1970-01-01 00:00:00 - 3001-01-18 23:59:59.999999 (0 to 32536771199.999999 epoch time), function returns NULL.
 You can use [FROM_UNIXTIME](#from_unixtime) to do reverse conversion.
-Argument type: <NONE>/DOUBLE/DATE/TIMESTAMP
+Argument type: \<NONE\>/DOUBLE/DATE/TIMESTAMP
 Return type: DOUBLE
 Example
 

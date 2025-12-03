@@ -5,12 +5,12 @@
 The `top` command finds the most common tuple of values of all fields in the field list.
 ## Syntax
 
-top [N] [top-options] <field-list> [by-clause]
+top [N] [top-options] \<field-list\> [by-clause]
 * N: optional. number of results to return. **Default**: 10
-* top-options: optional. options for the top command. Supported syntax is [countfield=<string>] [showcount=<bool>].
-  * showcount=<bool>: optional. whether to create a field in output that represent a count of the tuple of values. **Default:** true.
-  * countfield=<string>: optional. the name of the field that contains count. **Default:** 'count'.
-  * usenull=<bool>: optional (since 3.4.0). whether to output the null value. **Default:** Determined by `plugins.ppl.syntax.legacy.preferred`.
+* top-options: optional. options for the top command. Supported syntax is [countfield=\<string\>] [showcount=\<bool\>].
+  * showcount=\<bool\>: optional. whether to create a field in output that represent a count of the tuple of values. **Default:** true.
+  * countfield=\<string\>: optional. the name of the field that contains count. **Default:** 'count'.
+  * usenull=\<bool\>: optional (since 3.4.0). whether to output the null value. **Default:** Determined by `plugins.ppl.syntax.legacy.preferred`.
     * When `plugins.ppl.syntax.legacy.preferred=true`, `usenull` defaults to `true`
     * When `plugins.ppl.syntax.legacy.preferred=false`, `usenull` defaults to `false`
 * field-list: mandatory. comma-delimited list of field names.

@@ -6,11 +6,11 @@ The `patterns` command extracts log patterns from a text field and appends the r
 `patterns` command allows users to select different log parsing algorithms to get high log pattern grouping accuracy. Two pattern methods are supported: `simple_pattern` and `brain`.  
 `simple_pattern` algorithm is basically a regex parsing method vs `brain` algorithm is an automatic log grouping algorithm with high grouping accuracy and keeps semantic meaning.  
 `patterns` command supports two modes: `label` and `aggregation`. `label` mode returns individual pattern labels. `aggregation` mode returns aggregated results on target field.  
-Calcite engine by default labels the variables with '<*>' placeholder. If `show_numbered_token` option is turned on, Calcite engine's `label` mode not only labels pattern of text but also labels variable tokens in map. In `aggregation` mode, it will also output labeled pattern as well as variable tokens per pattern. The variable placeholder is in the format of '<token%d>' instead of '<\*>'.  
+Calcite engine by default labels the variables with '\<*\>' placeholder. If `show_numbered_token` option is turned on, Calcite engine's `label` mode not only labels pattern of text but also labels variable tokens in map. In `aggregation` mode, it will also output labeled pattern as well as variable tokens per pattern. The variable placeholder is in the format of '<token%d>' instead of '<\*>'.  
 
 ## Syntax
 
-patterns <field> [by byClause...] [method=simple_pattern | brain] [mode=label | aggregation] [max_sample_count=integer] [buffer_limit=integer] [show_numbered_token=boolean] [new_field=<new-field-name>] (algorithm parameters...)
+patterns \<field\> [by byClause...] [method=simple_pattern | brain] [mode=label | aggregation] [max_sample_count=integer] [buffer_limit=integer] [show_numbered_token=boolean] [new_field=\<new-field-name\>] (algorithm parameters...)
 * field: mandatory. The text field to analyze for patterns.
 * byClause: optional. Fields or scalar functions used to group logs for labeling/aggregation.
 * method: optional. Algorithm choice: `simple_pattern` or `brain`. **Default:** `simple_pattern`.

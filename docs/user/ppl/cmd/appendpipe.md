@@ -6,7 +6,7 @@ The `appendpipe` command appends the result of the subpipeline to the search res
 The command aligns columns with the same field names and types. For different column fields between the main search and sub-search, NULL values are filled in the respective rows.
 ## Syntax
 
-appendpipe [<subpipeline>]
+appendpipe [\<subpipeline\>]
 * subpipeline: mandatory. A list of commands that are applied to the search results from the commands that occur in the search before the `appendpipe` command.
 ## Example 1: Append rows from a total count to existing search result
 

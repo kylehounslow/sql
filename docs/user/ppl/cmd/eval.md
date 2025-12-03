@@ -5,7 +5,7 @@
 The `eval` command evaluates the expression and appends the result to the search result.
 ## Syntax
 
-eval <field>=<expression> ["," <field>=<expression> ]...
+eval \<field\>=\<expression\> ["," \<field\>=\<expression\> ]...
 * field: mandatory. If the field name does not exist, a new field is added. If the field name already exists, it will be overridden.
 * expression: mandatory. Any expression supported by the system.
 ## Example 1: Create a new field

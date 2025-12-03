@@ -5,7 +5,7 @@
 The `spath` command allows extracting fields from structured text data. It currently allows selecting from JSON data with JSON paths.
 ## Syntax
 
-spath input=<field> [output=<field>] [path=]<path>
+spath input=\<field\> [output=\<field\>] [path=]\<path\>
 * input: mandatory. The field to scan for JSON data.
 * output: optional. The destination field that the data will be loaded to. **Default:** value of `path`.
 * path: mandatory. The path of the data to load for the object. For more information on path syntax, see [json_extract](../functions/json.md#json_extract).

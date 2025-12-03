@@ -5,9 +5,9 @@
 The `fillnull` command fills null values with the provided value in one or more fields in the search result.
 ## Syntax
 
-fillnull with <replacement> [in <field-list>]
-fillnull using <field> = <replacement> [, <field> = <replacement>]
-fillnull value=<replacement> [<field-list>]
+fillnull with \<replacement\> [in \<field-list\>]
+fillnull using \<field\> = \<replacement\> [, \<field\> = \<replacement\>]
+fillnull value=\<replacement\> [\<field-list\>]
 * replacement: mandatory. The value used to replace null values.
 * field-list: optional. List of fields to apply the replacement to. Can be comma-delimited (with `with` or `using` syntax) or space-delimited (with `value=` syntax). **Default:** all fields.
 * field: mandatory when using `using` syntax. Individual field name to assign a specific replacement value.
@@ -17,7 +17,7 @@ fillnull value=<replacement> [<field-list>]
   * `value=<replacement> [<field-list>]` - Alternative syntax with optional space-delimited field list
 ## Example 1: Replace null values with a specified value on one field
 
-This example shows replacing null values in the email field with '<not found>'.
+This example shows replacing null values in the email field with '\<not found\>'.
 ```ppl
 source=accounts
 | fields email, employer
@@ -40,7 +40,7 @@ fetched rows / total rows = 4/4
 
 ## Example 2: Replace null values with a specified value on multiple fields
 
-This example shows replacing null values in both email and employer fields with the same replacement value '<not found>'.
+This example shows replacing null values in both email and employer fields with the same replacement value '\<not found\>'.
 ```ppl
 source=accounts
 | fields email, employer
@@ -159,10 +159,8 @@ fetched rows / total rows = 4/4
 * When applying the same value to all fields without specifying field names, all fields must be the same type. For mixed types, use separate fillnull commands or explicitly specify fields.
 * The replacement value type must match ALL field types in the field list. When applying the same value to multiple fields, all fields must be the same type (all strings or all numeric).
   **Example:**
-```sql
+```sql ignore
   # This FAILS - same value for mixed-type fields
   source=accounts | fillnull value=0 firstname, age
   # ERROR: fillnull failed: replacement value type INTEGER is not compatible with field 'firstname' (type: VARCHAR). The replacement value type must match the field type.
-
-
 ```

@@ -10,7 +10,7 @@ Key aspects of `expand`:
 * If the specified field is an empty array, the row is retained with the expanded field set to null.
 ## Syntax
 
-expand <field> [as alias]
+expand \<field\> [as alias]
 * field: mandatory. The field to be expanded (exploded). Currently only nested arrays are supported.
 * alias: optional. The name to use instead of the original field name.
 ## Example 1: Expand address field with an alias

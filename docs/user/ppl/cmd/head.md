@@ -5,7 +5,7 @@
 The `head` command returns the first N number of specified results after an optional offset in search order.
 ## Syntax
 
-head [<size>] [from <offset>]
+head [\<size\>] [from \<offset\>]
 * size: optional integer. Number of results to return. **Default:** 10
 * offset: optional integer after `from`. Number of results to skip. **Default:** 0
 ## Example 1: Get first 10 results

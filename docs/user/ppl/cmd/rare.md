@@ -6,13 +6,13 @@ The `rare` command finds the least common tuple of values of all fields in the f
 **Note**: A maximum of 10 results is returned for each distinct tuple of values of the group-by fields.
 ## Syntax
 
-rare [rare-options] <field-list> [by-clause]
+rare [rare-options] \<field-list\> [by-clause]
 * field-list: mandatory. Comma-delimited list of field names.
 * by-clause: optional. One or more fields to group the results by.
-* rare-options: optional. Options for the rare command. Supported syntax is [countfield=<string>] [showcount=<bool>].
-* showcount=<bool>: optional. Whether to create a field in output that represent a count of the tuple of values. **Default:** `true`.
-* countfield=<string>: optional. The name of the field that contains count. **Default:** `'count'`.
-* usenull=<bool>: optional. whether to output the null value. **Default:** Determined by `plugins.ppl.syntax.legacy.preferred`:
+* rare-options: optional. Options for the rare command. Supported syntax is [countfield=\<string\>] [showcount=\<bool\>].
+* showcount=\<bool\>: optional. Whether to create a field in output that represent a count of the tuple of values. **Default:** `true`.
+* countfield=\<string\>: optional. The name of the field that contains count. **Default:** `'count'`.
+* usenull=\<bool\>: optional. whether to output the null value. **Default:** Determined by `plugins.ppl.syntax.legacy.preferred`:
   * When `plugins.ppl.syntax.legacy.preferred=true`, `usenull` defaults to `true`
   * When `plugins.ppl.syntax.legacy.preferred=false`, `usenull` defaults to `false`
 ## Example 1: Find the least common values in a field

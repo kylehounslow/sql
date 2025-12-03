@@ -5,7 +5,7 @@
 The `stats` command calculates the aggregation from the search result.
 ## Syntax
 
-stats [bucket_nullable=bool] <aggregation>... [by-clause]
+stats [bucket_nullable=bool] \<aggregation\>... [by-clause]
 * aggregation: mandatory. An aggregation function.
 * bucket_nullable: optional. Controls whether the stats command includes null buckets in group-by aggregations. When set to `false`, the aggregation ignores records where the group-by field is null, resulting in faster performance by excluding null bucket. **Default:** Determined by `plugins.ppl.syntax.legacy.preferred`.
   * When `plugins.ppl.syntax.legacy.preferred=true`, `bucket_nullable` defaults to `true`
@@ -37,7 +37,7 @@ The stats command supports the following aggregation functions:
 * DISTINCT_COUNT_APPROX: Approximate distinct count
 * TAKE: List of original values
 * PERCENTILE/PERCENTILE_APPROX: Percentile calculations
-* PERC<percent>/P<percent>: Percentile shortcut functions
+* PERC\<percent\>/P\<percent\>: Percentile shortcut functions
 * MEDIAN: 50th percentile
 * EARLIEST: Earliest value by timestamp
 * LATEST: Latest value by timestamp

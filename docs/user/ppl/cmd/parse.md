@@ -5,7 +5,7 @@
 The `parse` command parses a text field with a regular expression and appends the result to the search result.
 ## Syntax
 
-parse <field> <pattern>
+parse \<field> \<pattern>
 * field: mandatory. The field must be a text field.
 * pattern: mandatory. The regular expression pattern used to extract new fields from the given text field. If a new field name already exists, it will replace the original field.
 ## Regular Expression
@@ -86,18 +86,28 @@ fetched rows / total rows = 3/3
 There are a few limitations with parse command:
 - Fields defined by parse cannot be parsed again.
 The following command will not work
-    source=accounts | parse address '\d+ (?<street>.+)' | parse street '\w+ (?<road>\w+)' ;
+```
+source=accounts | parse address '\d+ (?<street>.+)' | parse street '\w+ (?<road>\w+)' ;
+```
 - Fields defined by parse cannot be overridden with other commands.
-`where` will not match any documents since `street` cannot be overridden
-    source=accounts | parse address '\d+ (?<street>.+)' | eval street='1' | where street='1' ;
+`where` will not match any documents since `street` cannot be overridden  
+```
+source=accounts | parse address '\d+ (?<street>.+)' | eval street='1' | where street='1' ;
+```
 - The text field used by parse cannot be overridden.
-`street` will not be successfully parsed since `address` is overridden
-    source=accounts | parse address '\d+ (?<street>.+)' | eval address='1' ;
+`street` will not be successfully parsed since `address` is overridden  
+```
+source=accounts | parse address '\d+ (?<street>.+)' | eval address='1' ;
+```
 - Fields defined by parse cannot be filtered/sorted after using them in `stats` command.
-`where` in the following command will not work
-    source=accounts | parse email '.+@(?<host>.+)' | stats avg(age) by host | where host=pyrami.com ;
-- Fields defined by parse will not appear in the final result unless the original source field is included in the `fields` command.
-For example, the following query will not display the parsed fields `host` unless the source field `email` is also explicitly included
-    source=accounts | parse email '.+@(?<host>.+)' | fields email, host ;
+`where` in the following command will not work  
+```
+source=accounts | parse email '.+@(?<host>.+)' | stats avg(age) by host | where host=pyrami.com ;
+```
+- Fields defined by parse will not appear in the final result unless the original source field is included in the `fields` command.  
+For example, the following query will not display the parsed fields `host` unless the source field `email` is also explicitly included  
+```
+source=accounts | parse email '.+@(?<host>.+)' | fields email, host ;
+```
 - Named capture group must start with a letter and contain only letters and digits.
   For detailed Java regex pattern syntax and usage, refer to the [official Java Pattern documentation](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html)

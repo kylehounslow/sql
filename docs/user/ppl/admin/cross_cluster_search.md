@@ -23,7 +23,7 @@ PUT _cluster/settings
 
 ## Using Cross-Cluster Search in PPL
 
-Perform cross-cluster search by using "<cluster-name>:<index-name>" as the index identifier.
+Perform cross-cluster search by using "\<cluster-name\>:\<index-name\>" as the index identifier.
 Example PPL query
 
 ```ppl

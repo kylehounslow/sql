@@ -7,7 +7,7 @@ The `ad` command applies Random Cut Forest (RCF) algorithm in the ml-commons plu
 
 ## Fixed In Time RCF For Time-series Data
 
-ad [number_of_trees] [shingle_size] [sample_size] [output_after] [time_decay] [anomaly_rate] <time_field> [date_format] [time_zone] [category_field]
+ad [number_of_trees] [shingle_size] [sample_size] [output_after] [time_decay] [anomaly_rate] \<time_field\> [date_format] [time_zone] [category_field]
 * number_of_trees: optional. Number of trees in the forest. **Default:** 30.
 * shingle_size: optional. A shingle is a consecutive sequence of the most recent records. **Default:** 8.
 * sample_size: optional. The sample size used by stream samplers in this forest. **Default:** 256.

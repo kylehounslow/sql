@@ -5,7 +5,7 @@
 The `bin` command groups numeric values into buckets of equal intervals, making it useful for creating histograms and analyzing data distribution. It takes a numeric or time-based field and generates a new field with values that represent the lower bound of each bucket.
 ## Syntax
 
-bin <field> [span=<interval>] [minspan=<interval>] [bins=<count>] [aligntime=(earliest | latest | <time-specifier>)] [start=<value>] [end=<value>]
+bin \<field\> [span=\<interval\>] [minspan=\<interval\>] [bins=\<count\>] [aligntime=(earliest | latest | \<time-specifier\>)] [start=\<value\>] [end=\<value\>]
 * field: mandatory. The field to bin. Accepts numeric or time-based fields.
 * span: optional. The interval size for each bin. Cannot be used with bins or minspan parameters.
   * Supports numeric (e.g., `1000`), logarithmic (e.g., `log10`, `2log10`), and time intervals
@@ -24,7 +24,7 @@ bin <field> [span=<interval>] [minspan=<interval>] [bins=<count>] [aligntime=(ea
 * aligntime: optional. Align the bin times for time-based fields. Valid only for time-based discretization. Options:
   * earliest: Align bins to the earliest timestamp in the data
   * latest: Align bins to the latest timestamp in the data
-  * <time-specifier>: Align bins to a specific epoch time value or time modifier expression
+  * \<time-specifier\>: Align bins to a specific epoch time value or time modifier expression
 * start: optional. The starting value for binning range. **Default:** minimum field value.
 * end: optional. The ending value for binning range. **Default:** maximum field value.
 **Parameter Behavior**

@@ -5,7 +5,7 @@
 The `rex` command extracts fields from a raw text field using regular expression named capture groups.
 ## Syntax
 
-rex [mode=<mode>] field=<field> <pattern> [max_match=<int>] [offset_field=<string>]
+rex [mode=\<mode\>] field=\<field\> \<pattern\> [max_match=\<int\>] [offset_field=\<string\>]
 * field: mandatory. The field must be a string field to extract data from.
 * pattern: mandatory string. The regular expression pattern with named capture groups used to extract new fields. Pattern must contain at least one named capture group using `(?<name>pattern)` syntax.
 * mode: optional. Either `extract` or `sed`. **Default:** extract
