@@ -32,7 +32,7 @@ class MarkdownDocTestParser:
     
     # Regex to match Markdown code fences with optional attributes
     CODE_FENCE_PATTERN = re.compile(
-        r'^```(\w+)(\s+.*?)?\s*\n'   # ```language [attributes]
+        r'^```(\w+)([^\n]*?)\s*\n'   # ```language [attributes] (no newlines in attributes)
         r'(.*?)'                     # code content (non-greedy)
         r'^```\s*$',                 # closing ```
         re.MULTILINE | re.DOTALL

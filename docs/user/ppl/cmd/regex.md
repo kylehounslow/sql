@@ -89,11 +89,7 @@ fetched rows / total rows = 1/1
 
 This example shows how to use complex regex patterns with character classes and quantifiers.
 ```ppl
-source=accounts
-| regex address="\d{3,4}\s+[A-Z][a-z]+\s+(Street
-| Lane
-| Court)"
-| fields account_number, address
+source=accounts | regex address="\\d{3,4}\\s+[A-Z][a-z]+\\s+(Street|Lane|Court)" | fields account_number, address
 ```
 
 Expected output:

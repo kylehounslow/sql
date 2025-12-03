@@ -171,6 +171,15 @@ fetched rows / total rows = 8/8
 | Rick  | Canada  | B.C        | 4     | 2023 | 70  | 63.5        |
 | David | USA     | Washington | 4     | 2023 | 40  | 40.0        |
 +-------+---------+------------+-------+------+-----+-------------+
+```
+```ppl
+source=state_country 
+| streamstats window=2 global=false avg(age) as running_avg by country ;
+```
+
+Expected output:
+
+```text
 fetched rows / total rows = 8/8
 +-------+---------+------------+-------+------+-----+-------------+
 | name  | country | state      | month | year | age | running_avg |

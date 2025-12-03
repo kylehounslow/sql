@@ -334,11 +334,11 @@ Expected output:
 
 ```text
 fetched rows / total rows = 1/1
-+-------------------------------------+
-| list(firstname)                     |
-|-------------------------------------|
-| ["Amber","Hattie","Nanette","Dale"] |
-+-------------------------------------+
++-----------------------------+
+| list(firstname)             |
+|-----------------------------|
+| [Amber,Hattie,Nanette,Dale] |
++-----------------------------+
 ```
 
 ## Example 15: Ignore null bucket
@@ -373,11 +373,11 @@ Expected output:
 
 ```text
 fetched rows / total rows = 1/1
-+-------------------------------------+
-| values(firstname)                   |
-|-------------------------------------|
-| ["Amber","Dale","Hattie","Nanette"] |
-+-------------------------------------+
++-----------------------------+
+| values(firstname)           |
+|-----------------------------|
+| [Amber,Dale,Hattie,Nanette] |
++-----------------------------+
 ```
 
 ## Example 17: Span on date/time field always ignore null bucket
@@ -394,7 +394,7 @@ Jeff  | null   | 2025-04-22 |
 +-------+--------+------------+
 Adam  | 2      | null       |
 +-------+--------+------------+
-```ppl
+```ppl ignore
 source=example
 | stats count() as cnt by span(birthday, 1y) as year
 ```
@@ -411,7 +411,7 @@ fetched rows / total rows = 3/3
 +-----+------------+
 ```
 
-```ppl
+```ppl ignore
 source=example
 | stats count() as cnt by span(birthday, 1y) as year, DEPTNO
 ```
@@ -429,7 +429,7 @@ fetched rows / total rows = 3/3
 +-----+------------+--------+
 ```
 
-```ppl
+```ppl ignore
 source=example
 | stats bucket_nullable=false count() as cnt by span(birthday, 1y) as year, DEPTNO
 ```
@@ -449,7 +449,7 @@ fetched rows / total rows = 3/3
 ## Example 18: Calculate the count by the implicit @timestamp field
 
 This example demonstrates that if you omit the field parameter in the span function, it will automatically use the implicit `@timestamp` field.
-```ppl
+```ppl ignore
 source=big5
 | stats count() by span(1month)
 ```

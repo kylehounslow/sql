@@ -159,11 +159,11 @@ class CategoryManager:
         return detect_doc_type_from_path(file_path)
 
     def requires_calcite(self, category_name):
-        return category_name.endswith('_calcite')
+        return category_name.endswith("_calcite")
 
     def is_markdown_category(self, category_name):
         """Check if category uses Markdown files."""
-        return category_name.endswith("_markdown")
+        return "_markdown" in category_name
 
     def get_setup_function(self, category_name):
         if self.requires_calcite(category_name):
@@ -211,18 +211,29 @@ class DocTestConnection(OpenSearchConnection):
 
     def process(self, statement):
         debug(f"Executing {self.query_language.upper()} query: {statement}")
-        
-        data = self.execute_query(statement, use_console=False)
-        debug(f"Query result: {data}")
-        
-        if data is None:
-            debug("Query returned None - this may indicate an error or unsupported function")
-            print("Error: Query returned no data")
-            return
-            
-        output = self.formatter.format_output(data)
-        output = "\n".join(output)
-        click.echo(output)
+
+        try:
+            data = self.execute_query(statement, use_console=False)
+            debug(f"Query result: {data}")
+
+            if data is None:
+                debug(
+                    "Query returned None - this may indicate an error or unsupported function"
+                )
+                print("Error: Query returned no data")
+                return
+
+            output = self.formatter.format_output(data)
+            output = "\n".join(output)
+            click.echo(output)
+        except Exception as e:
+            # Print detailed error information
+            print(f"Error executing query: {statement}")
+            print(f"Error type: {type(e).__name__}")
+            print(f"Error message: {str(e)}")
+            if hasattr(e, "info"):
+                print(f"Error info: {e.info}")
+            raise
 
 
 class CalciteManager:
@@ -246,7 +257,7 @@ class CalciteManager:
 class DataManager:
 
     def __init__(self):
-        self.client = OpenSearch([ENDPOINT], verify_certs=True)
+        self.client = OpenSearch([ENDPOINT], verify_certs=True, timeout=60)
         self.is_loaded = False
 
     def load_file(self, filename, index_name):
