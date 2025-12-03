@@ -36,7 +36,7 @@ Datasource configuration Restrictions.
 * In case of security disabled domains, authorization is disbaled.
 * All the datasource names should be unique and match the following regex[`[@*A-Za-z]+?[*a-zA-Z_\-0-9]*`].
 * Allowed Connectors.
-    * [`prometheus`` [More details: `Prometheus Connector](connectors/prometheus_connector.md)]
+    * `prometheus` [More details: [Prometheus Connector](connectors/prometheus_connector.md)]]
 * All the allowed config parameters in `properties` are defined in individual connector pages mentioned above.
 * From version 2.13, we have introduced a new optional field `status` which can be used to enable and disable a datasource.When a datasource is disabled, it blocks new queries, resulting in 400 errors for any attempts made on it. By default when a datasource is created, status is ACTIVE.
 ## Datasource configuration APIs
@@ -189,8 +189,6 @@ For example: with below datasource configuration, only admins and users with pro
     },
     "allowedRoles" : ["prometheus_access"]
 }
-
-
 ```
 
 ## Moving from keystore datasource configuration

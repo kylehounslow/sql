@@ -41,7 +41,7 @@ fetched rows / total rows = 4/4
 
 ### Description
 
-A delimited identifier is an identifier enclosed in back ticks `````. In this case, the identifier enclosed is not necessarily a regular identifier. In other words, it can contain any special character not allowed by regular identifier.
+A delimited identifier is an identifier enclosed in back ticks `` ` ``. In this case, the identifier enclosed is not necessarily a regular identifier. In other words, it can contain any special character not allowed by regular identifier.
 ### Use Cases
 
 Here are typical examples of the use of delimited identifiers:
@@ -162,7 +162,7 @@ One can also provide meta-field name(s) to retrieve reserved-fields (beginning w
 as default field list (`search source=<index>`) and must be explicitly included to be returned.
 ### Examples
 
-Query metadata fields
+Query metadata fields:
 
 ```ppl
 source=accounts

@@ -256,17 +256,16 @@ Error: Query returned no data
 
 ## Comparison with Related Commands
 
-================================== ============ ============
-Feature                             rex          parse
-================================== ============ ============
-Pattern Type                        Java Regex   Java Regex
-Named Groups Required               Yes          Yes
-Multiple Named Groups               Yes          No
-Multiple Matches                    Yes          No
-Text Substitution                   Yes          No
-Offset Tracking                     Yes          No
-Special Characters in Group Names   No           No
-================================== ============ ============
+| Feature | rex | parse |
+| --- | --- | --- |
+| Pattern Type | Java Regex | Java Regex |
+| Named Groups Required | Yes | Yes |
+| Multiple Named Groups | Yes | No |
+| Multiple Matches | Yes | No |
+| Text Substitution | Yes | No |
+| Offset Tracking | Yes | No |
+| Special Characters in Group Names | No | No |
+
 ## Limitations
 
 **Named Capture Group Naming:**

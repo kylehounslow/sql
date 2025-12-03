@@ -23,14 +23,15 @@ multisearch <subsearch1> <subsearch2> <subsearch3> ...
 ## Usage
 
 Basic multisearch
-    | multisearch [search source=table | where condition1] [search source=table | where condition2]
-    | multisearch [search source=index1 | fields field1, field2] [search source=index2 | fields field1, field2]
-    | multisearch [search source=table | where status="success"] [search source=table | where status="error"]
+```
+| multisearch [search source=table | where condition1] [search source=table | where condition2]
+| multisearch [search source=index1 | fields field1, field2] [search source=index2 | fields field1, field2]
+| multisearch [search source=table | where status="success"] [search source=table | where status="error"]
+```
 ## Example 1: Basic Age Group Analysis
 
 This example combines young and adult customers into a single result set for further analysis.
 ```ppl
-
 | multisearch [search source=accounts
 | where age < 30
 | eval age_group = "young"
@@ -59,7 +60,6 @@ fetched rows / total rows = 4/4
 
 This example combines high-balance and all valid accounts for comparison analysis.
 ```ppl
-
 | multisearch [search source=accounts
 | where balance > 20000
 | eval query_type = "high_balance"
@@ -88,7 +88,6 @@ fetched rows / total rows = 4/4
 
 This example combines time-series data from multiple sources with automatic timestamp-based ordering.
 ```ppl
-
 | multisearch [search source=time_data
 | where category IN ("A", "B")] [search source=time_data2
 | where category IN ("E", "F")]
@@ -115,7 +114,6 @@ fetched rows / total rows = 5/5
 
 This example demonstrates how missing fields are handled with NULL insertion.
 ```ppl
-
 | multisearch [search source=accounts
 | where age < 30
 | eval young_flag = "yes"

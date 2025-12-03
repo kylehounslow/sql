@@ -5,7 +5,8 @@
 The `join` command combines two datasets together. The left side could be an index or results from a piped commands, the right side could be either an index or a subsearch.
 ## Syntax
 
-## Basic syntax:
+
+### Basic syntax:
 
 [joinType] join [leftAlias] [rightAlias] (on | where) <joinCriteria> <right-dataset>
 * joinType: optional. The type of join to perform. Options: `left`, `semi`, `anti`, and performance sensitive types `right`, `full`, `cross`. **Default:** `inner`.
@@ -13,7 +14,8 @@ The `join` command combines two datasets together. The left side could be an ind
 * rightAlias: optional. The subsearch alias to use with the right join side, to avoid ambiguous naming. Pattern: `right = <rightAlias>`
 * joinCriteria: mandatory. Any comparison expression. Must follow `on` or `where` keyword.
 * right-dataset: mandatory. Right dataset could be either an `index` or a `subsearch` with/without alias.
-## Extended syntax:
+
+### Extended syntax:
 
 join [type=<joinType>] [overwrite=<bool>] [max=n] (<join-field-list> | [leftAlias] [rightAlias] (on | where) <joinCriteria>) <right-dataset>
 * type: optional. Join type using extended syntax. Options: `left`, `outer` (alias of `left`), `semi`, `anti`, and performance sensitive types `right`, `full`, `cross`. **Default:** `inner`.
@@ -26,52 +28,60 @@ join [type=<joinType>] [overwrite=<bool>] [max=n] (<join-field-list> | [leftAlia
 * right-dataset: mandatory. Same as basic syntax.
 ## Configuration
 
-## plugins.ppl.join.subsearch_maxout
+### plugins.ppl.join.subsearch_maxout
 
 The size configures the maximum of rows from subsearch to join against. The default value is: `50000`. A value of `0` indicates that the restriction is unlimited.
 Change the join.subsearch_maxout to 5000
-    sh$ curl -sS -H 'Content-Type: application/json' \
-    ... -X PUT localhost:9200/_plugins/_query/settings \
-    ... -d '{"persistent" : {"plugins.ppl.join.subsearch_maxout" : "5000"}}'
-    {
-      "acknowledged": true,
-      "persistent": {
-        "plugins": {
-          "ppl": {
-            "join": {
-              "subsearch_maxout": "5000"
-            }
-          }
+```bash ignore
+curl -sS -H 'Content-Type: application/json' \
+-X PUT localhost:9200/_plugins/_query/settings \
+-d '{"persistent" : {"plugins.ppl.join.subsearch_maxout" : "5000"}}'
+```
+```json
+{
+  "acknowledged": true,
+  "persistent": {
+    "plugins": {
+      "ppl": {
+        "join": {
+          "subsearch_maxout": "5000"
         }
-      },
-      "transient": {}
+      }
     }
+  },
+  "transient": {}
+}
+```
 ## Usage
 
-Basic join syntax
-    source = table1 | inner join left = l right = r on l.a = r.a table2 | fields l.a, r.a, b, c
-    source = table1 | inner join left = l right = r where l.a = r.a table2 | fields l.a, r.a, b, c
-    source = table1 | left join left = l right = r on l.a = r.a table2 | fields l.a, r.a, b, c
-    source = table1 | right join left = l right = r on l.a = r.a table2 | fields l.a, r.a, b, c
-    source = table1 | full left = l right = r on l.a = r.a table2 | fields l.a, r.a, b, c
-    source = table1 | cross join left = l right = r on 1=1 table2
-    source = table1 | left semi join left = l right = r on l.a = r.a table2
-    source = table1 | left anti join left = l right = r on l.a = r.a table2
-    source = table1 | join left = l right = r [ source = table2 | where d > 10 | head 5 ]
-    source = table1 | inner join on table1.a = table2.a table2 | fields table1.a, table2.a, table1.b, table1.c
-    source = table1 | inner join on a = c table2 | fields a, b, c, d
-    source = table1 as t1 | join left = l right = r on l.a = r.a table2 as t2 | fields l.a, r.a
-    source = table1 as t1 | join left = l right = r on l.a = r.a table2 as t2 | fields t1.a, t2.a
-    source = table1 | join left = l right = r on l.a = r.a [ source = table2 ] as s | fields l.a, s.a
-Extended syntax with options
-    source = table1 | join type=outer left = l right = r on l.a = r.a table2 | fields l.a, r.a, b, c
-    source = table1 | join type=left left = l right = r where l.a = r.a table2 | fields l.a, r.a, b, c
-    source = table1 | join type=inner max=1 left = l right = r where l.a = r.a table2 | fields l.a, r.a, b, c
-    source = table1 | join a table2 | fields a, b, c
-    source = table1 | join a, b table2 | fields a, b, c
-    source = table1 | join type=outer a b table2 | fields a, b, c
-    source = table1 | join type=inner max=1 a, b table2 | fields a, b, c
-    source = table1 | join type=left overwrite=false max=0 a, b [source=table2 | rename d as b] | fields a, b, c
+Basic join syntax: 
+```
+source = table1 | inner join left = l right = r on l.a = r.a table2 | fields l.a, r.a, b, c
+source = table1 | inner join left = l right = r where l.a = r.a table2 | fields l.a, r.a, b, c
+source = table1 | left join left = l right = r on l.a = r.a table2 | fields l.a, r.a, b, c
+source = table1 | right join left = l right = r on l.a = r.a table2 | fields l.a, r.a, b, c
+source = table1 | full left = l right = r on l.a = r.a table2 | fields l.a, r.a, b, c
+source = table1 | cross join left = l right = r on 1=1 table2
+source = table1 | left semi join left = l right = r on l.a = r.a table2
+source = table1 | left anti join left = l right = r on l.a = r.a table2
+source = table1 | join left = l right = r [ source = table2 | where d > 10 | head 5 ]
+source = table1 | inner join on table1.a = table2.a table2 | fields table1.a, table2.a, table1.b, table1.c
+source = table1 | inner join on a = c table2 | fields a, b, c, d
+source = table1 as t1 | join left = l right = r on l.a = r.a table2 as t2 | fields l.a, r.a
+source = table1 as t1 | join left = l right = r on l.a = r.a table2 as t2 | fields t1.a, t2.a
+source = table1 | join left = l right = r on l.a = r.a [ source = table2 ] as s | fields l.a, s.a
+```
+Extended syntax with options:  
+```
+source = table1 | join type=outer left = l right = r on l.a = r.a table2 | fields l.a, r.a, b, c
+source = table1 | join type=left left = l right = r where l.a = r.a table2 | fields l.a, r.a, b, c
+source = table1 | join type=inner max=1 left = l right = r where l.a = r.a table2 | fields l.a, r.a, b, c
+source = table1 | join a table2 | fields a, b, c
+source = table1 | join a, b table2 | fields a, b, c
+source = table1 | join type=outer a b table2 | fields a, b, c
+source = table1 | join type=inner max=1 a, b table2 | fields a, b, c
+source = table1 | join type=left overwrite=false max=0 a, b [source=table2 | rename d as b] | fields a, b, c  
+```
 ## Example 1: Two indices join
 
 This example shows joining two indices using the basic join syntax.
@@ -177,19 +187,16 @@ fetched rows / total rows = 4/4
 
 For basic syntax, if fields in the left outputs and right outputs have the same name. Typically, in the join criteria
 `ON t1.id = t2.id`, the names `id` in output are ambiguous. To avoid ambiguous, the ambiguous
-fields in output rename to `<alias>.id`, or else `<tableName>.id` if no alias existing.
-Assume table1 and table2 only contain field `id`, following PPL queries and their outputs are:
-**Table:**
+fields in output rename to `<alias>.id`, or else `<tableName>.id` if no alias existing.  
 
-   * - Query
-     - Output
-   * - source=table1 | join left=t1 right=t2 on t1.id=t2.id table2 | eval a = 1
-     - t1.id, t2.id, a
-   * - source=table1 | join on table1.id=table2.id table2 | eval a = 1
-     - table1.id, table2.id, a
-   * - source=table1 | join on table1.id=t2.id table2 as t2 | eval a = 1
-     - table1.id, t2.id, a
-   * - source=table1 | join right=tt on table1.id=t2.id [ source=table2 as t2 | eval b = id ] | eval a = 1
-     - table1.id, tt.id, tt.b, a
-For extended syntax (join with field list), when duplicate-named fields in output results are deduplicated, the fields in output determined by the value of 'overwrite' option.
+Assume table1 and table2 only contain field `id`, following PPL queries and their outputs are:
+
+| Query | Output |
+| --- | --- |
+| source=table1 \| join left=t1 right=t2 on t1.id=t2.id table2 \| eval a = 1 | t1.id, t2.id, a |
+| source=table1 \| join on table1.id=table2.id table2 \| eval a = 1 | table1.id, table2.id, a |
+| source=table1 \| join on table1.id=t2.id table2 as t2 \| eval a = 1 | table1.id, t2.id, a |
+| source=table1 \| join right=tt on table1.id=t2.id [ source=table2 as t2 \| eval b = id ] \| eval a = 1 | table1.id, tt.id, tt.b, a |  
+
+For extended syntax (join with field list), when duplicate-named fields in output results are deduplicated, the fields in output determined by the value of 'overwrite' option.  
 Join types `inner`, `left`, `outer` (alias of `left`), `semi` and `anti` are supported by default. `right`, `full`, `cross` are performance sensitive join types which are disabled by default. Set config `plugins.calcite.all_join_types.allowed = true` to enable.

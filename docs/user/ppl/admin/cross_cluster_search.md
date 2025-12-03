@@ -19,8 +19,6 @@ PUT _cluster/settings
     }
   }
 }
-
-
 ```
 
 ## Using Cross-Cluster Search in PPL
@@ -77,12 +75,12 @@ PUT _plugins/_security/api/roles/ccs_role
     }
   ]
 }
-
+```
+```bash
 PUT _plugins/_security/api/rolesmapping/ccs_role
 {
   "backend_roles" : [],
   "hosts" : [],
   "users" : ["test_user"]
 }
-
 ```

@@ -7,8 +7,6 @@ The PPL query starts with either the `search` command to reference a table to se
 search source=accounts
 | where age > 18
 | fields firstname, lastname
-
-
 ```
 
 ## Required arguments

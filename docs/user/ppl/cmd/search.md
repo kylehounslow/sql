@@ -79,7 +79,7 @@ You can check or modify the default field setting
    * For wildcard searches on non-keyword fields: Add a keyword field copy for better performance. Example: If you need wildcards on a text field, create `message.keyword` alongside `message`
 ## Cross-Cluster Search
 
-Cross-cluster search lets any node in a cluster execute search requests against other clusters. Refer to [Cross-Cluster Search](admin/cross_cluster_search.md) for configuration.
+Cross-cluster search lets any node in a cluster execute search requests against other clusters. Refer to [Cross-Cluster Search](../admin/cross_cluster_search.md) for configuration.
 ## Example 1: Text Search
 
 **Basic Text Search** (unquoted single term)

@@ -61,7 +61,6 @@ By default the plugin return JDBC format. JDBC format is provided for JDBC drive
 ### Example 1
 
 Here is an example for normal response. The `schema` includes field name and its type and `datarows` includes the result set.
-PPL query
 
 ```bash ppl
 curl -sS -H 'Content-Type: application/json' \
@@ -109,7 +108,6 @@ Expected output:
 ### Example 2
 
 If any error occurred, error message and the cause will be returned instead.
-PPL query
 
 ```bash ppl
 curl -sS -H 'Content-Type: application/json' \
