@@ -1012,7 +1012,7 @@ INTEGER/LONG/FLOAT/DOUBLE -> DOUBLE
 
 Example::
 
-    opensearchsql> source=location | eval `CBRT(8)` = CBRT(8), `CBRT(9.261)` = CBRT(9.261), `CBRT(-27)` = CBRT(-27) | fields `CBRT(8)`, `CBRT(9.261)`, `CBRT(-27)`;
+    os> source=location | eval `CBRT(8)` = CBRT(8), `CBRT(9.261)` = CBRT(9.261), `CBRT(-27)` = CBRT(-27) | fields `CBRT(8)`, `CBRT(9.261)`, `CBRT(-27)`;
     fetched rows / total rows = 2/2
     +---------+-------------+-----------+
     | CBRT(8) | CBRT(9.261) | CBRT(-27) |

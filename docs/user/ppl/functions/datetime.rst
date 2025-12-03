@@ -1656,7 +1656,7 @@ Return type: TIMESTAMP
 
 Example::
 
-    OS> source=people | eval `str_to_date("01,5,2013", "%d,%m,%Y")` = str_to_date("01,5,2013", "%d,%m,%Y") | fields = `str_to_date("01,5,2013", "%d,%m,%Y")`
+    os> source=people | eval `str_to_date("01,5,2013", "%d,%m,%Y")` = str_to_date("01,5,2013", "%d,%m,%Y") | fields `str_to_date("01,5,2013", "%d,%m,%Y")`
     fetched rows / total rows = 1/1
     +--------------------------------------+
     | str_to_date("01,5,2013", "%d,%m,%Y") |

@@ -7,7 +7,7 @@
     "user/ppl/interfaces/endpoint.rst",
     "user/ppl/interfaces/protocol.rst"
   ],
-  "ppl_cli_markdown": [
+  "ppl_cli_markdown_calcite": [
     "user/ppl/cmd/ad.md",
     "user/ppl/cmd/append.md",
     "user/ppl/cmd/bin.md",
@@ -42,7 +42,21 @@
     "user/ppl/cmd/search.md",
     "user/ppl/cmd/top.md",
     "user/ppl/cmd/trendline.md",
-    "user/ppl/cmd/where.md"
+    "user/ppl/cmd/where.md",
+    "user/ppl/functions/aggregations.md",
+    "user/ppl/functions/collection.md",
+    "user/ppl/functions/condition.md",
+    "user/ppl/functions/conversion.md",
+    "user/ppl/functions/cryptographic.md",
+    "user/ppl/functions/datetime.md",
+    "user/ppl/functions/expressions.md",
+    "user/ppl/functions/ip.md",
+    "user/ppl/functions/json.md",
+    "user/ppl/functions/math.md",
+    "user/ppl/functions/relevance.md",
+    "user/ppl/functions/statistical.md",
+    "user/ppl/functions/string.md",
+    "user/ppl/functions/system.md"
   ],
   "sql_cli": [
     "user/dql/expressions.rst",

@@ -135,11 +135,11 @@ You can use this function with the eval commands and as part of eval expressions
 
 Format types:
 
-a) "binary" Converts a number to a binary value.
-b) "hex" Converts the number to a hexadecimal value.
-c) "commas" Formats the number with commas. If the number includes a decimal, the function rounds the number to nearest two decimal places.
-d) "duration" Converts the value in seconds to the readable time format HH:MM:SS.
-e) "duration_millis" Converts the value in milliseconds to the readable time format HH:MM:SS.
+1. "binary" Converts a number to a binary value.
+2. "hex" Converts the number to a hexadecimal value.
+3. "commas" Formats the number with commas. If the number includes a decimal, the function rounds the number to nearest two decimal places.
+4. "duration" Converts the value in seconds to the readable time format HH:MM:SS.
+5. "duration_millis" Converts the value in milliseconds to the readable time format HH:MM:SS.
 
 The format argument is optional and is only used when the value argument is a number. The tostring function supports the following formats.
 
@@ -147,7 +147,6 @@ Basic examples:
 
 You can use this function to convert a number to a string of its binary representation.
 Example::
-city, city.name, city.location.latitude
     os> source=accounts |  where firstname = "Amber" |  eval balance_binary = tostring(balance, "binary") | fields firstname, balance_binary, balance
     fetched rows / total rows = 1/1
     +-----------+------------------+---------+
