@@ -56,7 +56,10 @@
     "user/ppl/functions/relevance.md",
     "user/ppl/functions/statistical.md",
     "user/ppl/functions/string.md",
-    "user/ppl/functions/system.md"
+    "user/ppl/functions/system.md",
+    "user/ppl/general/comments.md",
+    "user/ppl/general/datatypes.md",
+    "user/ppl/general/identifiers.md"
   ],
   "sql_cli": [
     "user/dql/expressions.rst",
