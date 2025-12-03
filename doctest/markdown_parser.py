@@ -30,9 +30,9 @@ class MarkdownDocTestParser:
         ```
     """
     
-    # Regex to match Markdown code fences
+    # Regex to match Markdown code fences with optional attributes
     CODE_FENCE_PATTERN = re.compile(
-        r'^```(\w+)\s*\n'           # ```language
+        r'^```(\w+)(\s+.*?)?\s*\n'   # ```language [attributes]
         r'(.*?)'                     # code content (non-greedy)
         r'^```\s*$',                 # closing ```
         re.MULTILINE | re.DOTALL
@@ -108,16 +108,28 @@ class MarkdownDocTestParser:
     
     def _extract_code_blocks(self, text: str) -> List[Tuple[str, str, int]]:
         """
-        Extract all code blocks from Markdown text.
+        Extract all code blocks from Markdown text, skipping those with 'ignore' attribute.
         
         Returns list of (language, code, line_number) tuples.
         """
         blocks = []
+        ignored_count = 0
         for match in self.CODE_FENCE_PATTERN.finditer(text):
             language = match.group(1).lower()
-            code = match.group(2)
+            attributes = match.group(2) or ""
+            code = match.group(3)
             lineno = text[:match.start()].count('\n') + 1
+            
+            # Skip blocks with 'ignore' attribute
+            if 'ignore' in attributes:
+                ignored_count += 1
+                continue
+                
             blocks.append((language, code, lineno))
+        
+        if ignored_count > 0:
+            print(f"         🚫 Ignored {ignored_count} code block(s)")
+        
         return blocks
 
 
@@ -163,7 +175,12 @@ def sql_markdown_transform(code: str) -> str:
 
 def ppl_markdown_transform(code: str) -> str:
     """Transform PPL code for execution."""
-    return f'ppl_cmd.process({repr(code.strip().rstrip(";"))})'
+    # Join multi-line PPL queries into a single line
+    # Remove leading/trailing whitespace and join lines with space
+    single_line = " ".join(
+        line.strip() for line in code.strip().split("\n") if line.strip()
+    )
+    return f'ppl_cmd.process({repr(single_line.rstrip(";"))})'
 
 
 def bash_markdown_transform(code: str) -> str:

@@ -30,7 +30,7 @@ ad [number_of_trees] [sample_size] [output_after] [training_data_size] [anomaly_
 ## Example 1: Detecting events in New York City from taxi ridership data with time-series data
 
 This example trains an RCF model and uses the model to detect anomalies in the time-series ridership data.
-```ppl
+```ppl ignore
 source=nyc_taxi
 | fields value, timestamp
 | AD time_field='timestamp'
@@ -51,7 +51,7 @@ fetched rows / total rows = 1/1
 ## Example 2: Detecting events in New York City from taxi ridership data with time-series data independently with each category
 
 This example trains an RCF model and uses the model to detect anomalies in the time-series ridership data with multiple category values.
-```ppl
+```ppl ignore
 source=nyc_taxi
 | fields category, value, timestamp
 | AD time_field='timestamp' category_field='category'
@@ -73,7 +73,7 @@ fetched rows / total rows = 2/2
 ## Example 3: Detecting events in New York City from taxi ridership data with non-time-series data
 
 This example trains an RCF model and uses the model to detect anomalies in the non-time-series ridership data.
-```ppl
+```ppl ignore
 source=nyc_taxi
 | fields value
 | AD
@@ -94,7 +94,7 @@ fetched rows / total rows = 1/1
 ## Example 4: Detecting events in New York City from taxi ridership data with non-time-series data independently with each category
 
 This example trains an RCF model and uses the model to detect anomalies in the non-time-series ridership data with multiple category values.
-```ppl
+```ppl ignore
 source=nyc_taxi
 | fields category, value
 | AD category_field='category'

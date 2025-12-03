@@ -15,12 +15,7 @@ append <sub-search>
 
 This example appends rows from "count by gender" to "sum by gender, state".
 ```ppl
-source=accounts
-| stats sum(age) by gender, state
-| sort -`sum(age)`
-| head 5
-| append [ source=accounts
-| stats count(age) by gender ]
+source=accounts | stats sum(age) by gender, state | sort -`sum(age)` | head 5 | append [ source=accounts | stats count(age) by gender ]
 ```
 
 Expected output:
@@ -43,12 +38,7 @@ fetched rows / total rows = 6/6
 
 This example appends rows from "sum by gender" to "sum by gender, state" with merged column of same field name and type.
 ```ppl
-source=accounts
-| stats sum(age) as sum by gender, state
-| sort -sum
-| head 5
-| append [ source=accounts
-| stats sum(age) as sum by gender ]
+source=accounts | stats sum(age) as sum by gender, state | sort -sum | head 5 | append [ source=accounts | stats sum(age) as sum by gender ]
 ```
 
 Expected output:
