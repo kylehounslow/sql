@@ -421,23 +421,51 @@ def create_markdown_suite(filepaths, category_name, setup_func):
         input_langs = ["sql"]
         print(f"   Language: SQL")
     elif "ppl" in category_name:
-        transform = ppl_markdown_transform
-        input_langs = ["ppl"]
+        from markdown_parser import mixed_ppl_transform
+        transform = mixed_ppl_transform
+        input_langs = ["ppl", "bash ppl"]
         print(f"   Language: PPL")
+    elif "bash" in category_name:
+        from markdown_parser import mixed_ppl_transform
+        transform = mixed_ppl_transform
+        input_langs = ["bash", "bash ppl", "sh"]
+        print(f"   Language: Bash")
     else:
         # Default to PPL
-        transform = ppl_markdown_transform
-        input_langs = ["ppl", "sql"]
+        from markdown_parser import mixed_ppl_transform
+        transform = mixed_ppl_transform
+        input_langs = ["ppl", "sql", "bash ppl"]
         print(f"   Language: PPL/SQL (default)")
 
     parser = MarkdownDocTestParser(
         input_languages=input_langs,
-        output_languages=["text", "console", "output"],
+        output_languages=["text", "console", "output", "json", "yaml"],
         transform=transform,
     )
     print(f"   ✓ Markdown parser initialized")
 
-    all_tests = []
+    # Prepare globs for bash commands
+    test_globs = {}
+    if "bash" in category_name:
+        test_globs = {
+            'sh': partial(
+                subprocess.run,
+                stdin=subprocess.PIPE,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                timeout=60,
+                shell=True
+            ),
+            'pretty_print': pretty_print
+        }
+
+    # Use docsuite approach like bash tests
+    return docsuite(
+        *filepaths,
+        parser=parser,
+        setUp=setup_func,
+        globs=test_globs,
+    )
 
     print(f"   📋 Processing {len(filepaths)} file(s)...")
 
@@ -477,12 +505,28 @@ def create_markdown_suite(filepaths, category_name, setup_func):
     # Create test suite manually
     suite = unittest.TestSuite()
 
+    # Prepare globs for bash commands
+    test_globs = {}
+    if "bash" in category_name:
+        test_globs = {
+            'sh': partial(
+                subprocess.run,
+                stdin=subprocess.PIPE,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                timeout=60,
+                shell=True
+            ),
+            'pretty_print': pretty_print
+        }
+
     for doctest_obj in all_tests:
         # Create a test case for each doctest
         test_case = doctest.DocTestCase(
             doctest_obj,
             optionflags=doctest.NORMALIZE_WHITESPACE | doctest.ELLIPSIS,
             setUp=setup_func,
+            globs=test_globs,
         )
         suite.addTest(test_case)
 

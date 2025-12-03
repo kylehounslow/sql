@@ -45,8 +45,8 @@ class MarkdownDocTestParser:
             output_languages: List of languages for output blocks (e.g., ['text', 'console'])
             transform: Function to transform input code before execution
         """
-        self.input_languages = input_languages or ['sql', 'ppl', 'bash', 'sh']
-        self.output_languages = output_languages or ['text', 'console', 'output']
+        self.input_languages = input_languages or ['sql', 'ppl', 'bash', 'sh', 'bash ppl']
+        self.output_languages = output_languages or ['text', 'console', 'output', 'json', 'yaml']
         self.transform = transform or (lambda x: x)
     
     def parse(self, text: str, name: str = '<string>') -> doctest.DocTest:
@@ -77,7 +77,16 @@ class MarkdownDocTestParser:
                 want = code2.rstrip('\n') + '\n'  # doctest expects trailing newline
                 
                 # Apply transform to source
-                transformed_source = self.transform(source)
+                if callable(self.transform):
+                    # Check if transform accepts language parameter
+                    import inspect
+                    sig = inspect.signature(self.transform)
+                    if len(sig.parameters) > 1:
+                        transformed_source = self.transform(source, lang1)
+                    else:
+                        transformed_source = self.transform(source)
+                else:
+                    transformed_source = source
                 
                 example = doctest.Example(
                     source=transformed_source,
@@ -105,6 +114,20 @@ class MarkdownDocTestParser:
             lineno=0,
             docstring=text
         )
+    
+    def get_doctest(self, docstring, globs, name, filename, lineno):
+        """
+        Extract a DocTest object from the given docstring.
+        This method is required for compatibility with DocFileSuite.
+        """
+        # Read the file content
+        with open(filename, 'r', encoding='utf-8') as f:
+            content = f.read()
+        
+        # Parse the markdown content and update globs
+        doctest_obj = self.parse(content, name=filename)
+        doctest_obj.globs.update(globs)
+        return doctest_obj
     
     def _extract_code_blocks(self, text: str) -> List[Tuple[str, str, int]]:
         """
@@ -168,12 +191,12 @@ def create_markdown_suite(filepath: str, transform=None, setup=None, globs=None)
 
 
 # Transform functions for different languages
-def sql_markdown_transform(code: str) -> str:
+def sql_markdown_transform(code: str, lang: str = "sql") -> str:
     """Transform SQL code for execution."""
     return f'sql_cmd.process({repr(code.strip().rstrip(";"))})'
 
 
-def ppl_markdown_transform(code: str) -> str:
+def ppl_markdown_transform(code: str, lang: str = "ppl") -> str:
     """Transform PPL code for execution."""
     # Join multi-line PPL queries into a single line
     # Remove leading/trailing whitespace and join lines with space
@@ -183,7 +206,7 @@ def ppl_markdown_transform(code: str) -> str:
     return f'ppl_cmd.process({repr(single_line.rstrip(";"))})'
 
 
-def bash_markdown_transform(code: str) -> str:
+def bash_markdown_transform(code: str, lang: str = "bash") -> str:
     """Transform bash code for execution."""
     if code.strip().startswith("opensearchsql"):
         match = re.search(r'opensearchsql\s+-q\s+"(.*?)"', code)
@@ -191,6 +214,19 @@ def bash_markdown_transform(code: str) -> str:
             query = match.group(1)
             return f'cmd.process({repr(query.strip().rstrip(";"))})'
     return f'pretty_print(sh("""{code}""").stdout.decode("utf-8"))'
+
+
+def bash_ppl_markdown_transform(code: str, lang: str = "bash ppl") -> str:
+    """Transform bash ppl code for execution (curl commands with PPL queries)."""
+    return f'pretty_print(sh("""{code}""").stdout.decode("utf-8"))'
+
+
+def mixed_ppl_transform(code: str, lang: str = "ppl") -> str:
+    """Mixed transform that handles both ppl and bash ppl."""
+    if lang == "bash ppl" or "curl" in code.lower():
+        return bash_ppl_markdown_transform(code, lang)
+    else:
+        return ppl_markdown_transform(code, lang)
 
 
 def detect_markdown_format(filepath: str) -> bool:

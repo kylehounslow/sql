@@ -7,6 +7,10 @@
     "user/ppl/interfaces/endpoint.rst",
     "user/ppl/interfaces/protocol.rst"
   ],
+  "bash_markdown_calcite": [
+    "user/ppl/interfaces/endpoint.md",
+    "user/ppl/interfaces/protocol.md"
+  ],
   "ppl_cli_markdown_calcite": [
     "user/ppl/cmd/ad.md",
     "user/ppl/cmd/append.md",
