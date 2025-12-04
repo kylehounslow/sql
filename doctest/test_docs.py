@@ -21,6 +21,8 @@ from opensearch_sql_cli.formatter import Formatter
 from opensearch_sql_cli.opensearch_connection import OpenSearchConnection
 from opensearch_sql_cli.utils import OutputSettings
 from opensearchpy import OpenSearch, helpers
+from markdown_parser import mixed_ppl_transform
+
 
 # Import Markdown parser
 from markdown_parser import (
@@ -412,54 +414,43 @@ def create_markdown_suite(filepaths, category_name, setup_func):
     Returns:
         doctest.DocTestSuite
     """
-    print(f"📝 Creating Markdown test suite...")
-    print(f"   Category: {category_name}")
 
     # Determine transform based on category
     if "sql" in category_name:
         transform = sql_markdown_transform
         input_langs = ["sql"]
-        print(f"   Language: SQL")
     elif "ppl" in category_name:
-        from markdown_parser import mixed_ppl_transform
         transform = mixed_ppl_transform
         input_langs = ["ppl", "bash ppl"]
-        print(f"   Language: PPL")
     elif "bash" in category_name:
-        from markdown_parser import mixed_ppl_transform
         transform = mixed_ppl_transform
         input_langs = ["bash", "bash ppl", "sh"]
-        print(f"   Language: Bash")
     else:
         # Default to PPL
-        from markdown_parser import mixed_ppl_transform
         transform = mixed_ppl_transform
         input_langs = ["ppl", "sql", "bash ppl"]
-        print(f"   Language: PPL/SQL (default)")
 
     parser = MarkdownDocTestParser(
         input_languages=input_langs,
         output_languages=["text", "console", "output", "json", "yaml"],
         transform=transform,
     )
-    print(f"   ✓ Markdown parser initialized")
 
     # Prepare globs for bash commands
     test_globs = {}
     if "bash" in category_name:
         test_globs = {
-            'sh': partial(
+            "sh": partial(
                 subprocess.run,
                 stdin=subprocess.PIPE,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT,
                 timeout=60,
-                shell=True
+                shell=True,
             ),
-            'pretty_print': pretty_print
+            "pretty_print": pretty_print,
         }
 
-    # Use docsuite approach like bash tests
     return docsuite(
         *filepaths,
         parser=parser,
@@ -467,81 +458,13 @@ def create_markdown_suite(filepaths, category_name, setup_func):
         globs=test_globs,
     )
 
-    print(f"   📋 Processing {len(filepaths)} file(s)...")
-
-    for filepath in filepaths:
-        print(f"   📄 Parsing: {filepath}")
-
-        # Check if file exists
-        import os
-
-        if not os.path.exists(filepath):
-            print(f"      ✗ ERROR: File not found: {filepath}")
-            print(f"      Current directory: {os.getcwd()}")
-            continue
-
-        try:
-            with open(filepath, "r", encoding="utf-8") as f:
-                content = f.read()
-
-            print(f"      ✓ File read successfully ({len(content)} bytes)")
-
-            doctest_obj = parser.parse(content, name=filepath)
-
-            # Only add if there are examples
-            if doctest_obj.examples:
-                print(f"      ✓ Found {len(doctest_obj.examples)} test example(s)")
-                all_tests.append(doctest_obj)
-            else:
-                print(f"      ⚠ No test examples found")
-        except Exception as e:
-            print(f"      ✗ ERROR parsing file: {e}")
-            import traceback
-
-            traceback.print_exc()
-
-    print(f"   ✓ Total: {len(all_tests)} file(s) with tests")
-
-    # Create test suite manually
-    suite = unittest.TestSuite()
-
-    # Prepare globs for bash commands
-    test_globs = {}
-    if "bash" in category_name:
-        test_globs = {
-            'sh': partial(
-                subprocess.run,
-                stdin=subprocess.PIPE,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-                timeout=60,
-                shell=True
-            ),
-            'pretty_print': pretty_print
-        }
-
-    for doctest_obj in all_tests:
-        # Create a test case for each doctest
-        test_case = doctest.DocTestCase(
-            doctest_obj,
-            optionflags=doctest.NORMALIZE_WHITESPACE | doctest.ELLIPSIS,
-            setUp=setup_func,
-            globs=test_globs,
-        )
-        suite.addTest(test_case)
-
-    print(
-        f"   ✓ Markdown test suite created with {suite.countTestCases()} test case(s)\n"
-    )
-    return suite
-
 
 # Entry point for unittest discovery
 def load_tests(loader, suite, ignore):
     tests = []
     settings_tests = []
     category_manager = CategoryManager()
-    
+
     for category_name in category_manager.get_all_categories():
         docs = category_manager.get_category_files(category_name)
         if not docs:
@@ -552,7 +475,6 @@ def load_tests(loader, suite, ignore):
             settings_tests.append(suite)
         else:
             tests.append(suite)
-
     random.shuffle(tests)
     if settings_tests:
         random.shuffle(settings_tests)
@@ -562,17 +484,8 @@ def load_tests(loader, suite, ignore):
 def get_test_suite(category_manager: CategoryManager, category_name, filepaths):
     setup_func = category_manager.get_setup_function(category_name)
 
-    # Check if this is a Markdown category
     if category_manager.is_markdown_category(category_name):
-        # Convert generator to list to avoid consumption issues
-        filepaths_list = list(filepaths)
-        print(f"\n{'='*60}")
-        print(f"🔵 MARKDOWN TEST SUITE DETECTED")
-        print(f"{'='*60}")
-        print(f"Category: {category_name}")
-        print(f"Files: {filepaths_list}")
-        print(f"{'='*60}\n")
-        return create_markdown_suite(filepaths_list, category_name, setup_func)
+        return create_markdown_suite(list(filepaths), category_name, setup_func)
     elif category_name.startswith("bash"):
         return create_bash_suite(filepaths, setup_func)
     else:
@@ -664,6 +577,7 @@ Performance Tips:
         all_success = all_success and result.wasSuccessful()
 
     sys.exit(0 if all_success else 1)
+
 
 if __name__ == '__main__':
     main()

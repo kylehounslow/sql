@@ -90,14 +90,14 @@ Expected output:
 
 ```text
 fetched rows / total rows = 4/4
-+---------------+---------------------+
-| firstname     | greeting            |
-|---------------+---------------------|
-| Amber JOHnny  | Hello Amber JOHnny  |
-| Hattie        | Hello Hattie        |
-| Nanette       | Hello Nanette       |
-| Dale          | Hello Dale          |
-+---------------+---------------------+
++-----------+---------------+
+| firstname | greeting      |
+|-----------+---------------|
+| Amber     | Hello Amber   |
+| Hattie    | Hello Hattie  |
+| Nanette   | Hello Nanette |
+| Dale      | Hello Dale    |
++-----------+---------------+
 ```
 ## Example 5: Multiple string concatenation with type casting
 
@@ -110,14 +110,14 @@ Expected output:
 
 ```text
 fetched rows / total rows = 4/4
-+---------------+-----+-------------------------------+
-| firstname     | age | full_info                     |
-|---------------+-----+-------------------------------|
-| Amber JOHnny  | 32  | Name: Amber JOHnny, Age: 32   |
-| Hattie        | 36  | Name: Hattie, Age: 36         |
-| Nanette       | 28  | Name: Nanette, Age: 28        |
-| Dale          | 33  | Name: Dale, Age: 33           |
-+---------------+-----+-------------------------------+
++-----------+-----+------------------------+
+| firstname | age | full_info              |
+|-----------+-----+------------------------|
+| Amber     | 32  | Name: Amber, Age: 32   |
+| Hattie    | 36  | Name: Hattie, Age: 36  |
+| Nanette   | 28  | Name: Nanette, Age: 28 |
+| Dale      | 33  | Name: Dale, Age: 33    |
++-----------+-----+------------------------+
 ```
 
 ## Limitations

@@ -12,15 +12,15 @@ from typing import List, Tuple
 class MarkdownDocTestParser:
     """
     Parses Markdown files looking for paired code blocks:
-    1. Input code block (sql, ppl, or bash)
-    2. Output code block (text, console, or output)
-    
+    1. Input code block (sql, ppl, sh, bash, bash ppl)
+    2. Output code block (text, console, json, yaml, or output)
+
     Example Markdown format:
-    
+
         ```sql
         SELECT * FROM accounts
         ```
-        
+
         ```text
         +------+
         | name |
@@ -29,7 +29,7 @@ class MarkdownDocTestParser:
         +------+
         ```
     """
-    
+
     # Regex to match Markdown code fences with optional attributes
     CODE_FENCE_PATTERN = re.compile(
         r'^```(\w+)([^\n]*?)\s*\n'   # ```language [attributes] (no newlines in attributes)
@@ -37,7 +37,7 @@ class MarkdownDocTestParser:
         r'^```\s*$',                 # closing ```
         re.MULTILINE | re.DOTALL
     )
-    
+
     def __init__(self, input_languages=None, output_languages=None, transform=None):
         """
         Args:
@@ -48,7 +48,7 @@ class MarkdownDocTestParser:
         self.input_languages = input_languages or ['sql', 'ppl', 'bash', 'sh', 'bash ppl']
         self.output_languages = output_languages or ['text', 'console', 'output', 'json', 'yaml']
         self.transform = transform or (lambda x: x)
-    
+
     def parse(self, text: str, name: str = '<string>') -> doctest.DocTest:
         """
         Parse Markdown text and extract test cases from code fence pairs.
@@ -57,25 +57,19 @@ class MarkdownDocTestParser:
         """
         examples = []
         blocks = self._extract_code_blocks(text)
-        
-        print(f"         🔍 Extracted {len(blocks)} code block(s) from Markdown")
-        
+
         # Find pairs of input/output blocks
         i = 0
-        pairs_found = 0
         while i < len(blocks) - 1:
             lang1, code1, lineno1 = blocks[i]
             lang2, code2, lineno2 = blocks[i + 1]
-            
+
             # Check if this is an input/output pair
             if lang1 in self.input_languages and lang2 in self.output_languages:
-                pairs_found += 1
-                print(f"         ✓ Pair {pairs_found}: {lang1} → {lang2} (line {lineno1})")
-                
-                # Create a doctest Example
+                # Create a doctest example
                 source = code1.rstrip('\n')
                 want = code2.rstrip('\n') + '\n'  # doctest expects trailing newline
-                
+
                 # Apply transform to source
                 if callable(self.transform):
                     # Check if transform accepts language parameter
@@ -87,7 +81,7 @@ class MarkdownDocTestParser:
                         transformed_source = self.transform(source)
                 else:
                     transformed_source = source
-                
+
                 example = doctest.Example(
                     source=transformed_source,
                     want=want,
@@ -96,16 +90,13 @@ class MarkdownDocTestParser:
                     options={}
                 )
                 examples.append(example)
-                
+
                 # Skip the output block since we've paired it
                 i += 2
             else:
                 # Not a pair, move to next block
                 i += 1
-        
-        if pairs_found == 0:
-            print(f"         ⚠ No input/output pairs found")
-        
+
         return doctest.DocTest(
             examples=examples,
             globs={},
@@ -114,7 +105,7 @@ class MarkdownDocTestParser:
             lineno=0,
             docstring=text
         )
-    
+
     def get_doctest(self, docstring, globs, name, filename, lineno):
         """
         Extract a DocTest object from the given docstring.
@@ -123,12 +114,12 @@ class MarkdownDocTestParser:
         # Read the file content
         with open(filename, 'r', encoding='utf-8') as f:
             content = f.read()
-        
+
         # Parse the markdown content and update globs
         doctest_obj = self.parse(content, name=filename)
         doctest_obj.globs.update(globs)
         return doctest_obj
-    
+
     def _extract_code_blocks(self, text: str) -> List[Tuple[str, str, int]]:
         """
         Extract all code blocks from Markdown text, skipping those with 'ignore' attribute.
@@ -136,23 +127,18 @@ class MarkdownDocTestParser:
         Returns list of (language, code, line_number) tuples.
         """
         blocks = []
-        ignored_count = 0
         for match in self.CODE_FENCE_PATTERN.finditer(text):
             language = match.group(1).lower()
             attributes = match.group(2) or ""
             code = match.group(3)
             lineno = text[:match.start()].count('\n') + 1
-            
+
             # Skip blocks with 'ignore' attribute
-            if 'ignore' in attributes:
-                ignored_count += 1
+            if "ignore" in attributes:
                 continue
-                
+
             blocks.append((language, code, lineno))
-        
-        if ignored_count > 0:
-            print(f"         🚫 Ignored {ignored_count} code block(s)")
-        
+
         return blocks
 
 
@@ -297,40 +283,3 @@ def create_hybrid_markdown_suite(filepaths, doc_type, setup_func):
     )
     
     return suite
-
-
-if __name__ == '__main__':
-    # Test the Markdown parser
-    test_md = """
-# Example Test
-
-Query example:
-
-```sql
-SELECT * FROM accounts
-```
-
-Expected output:
-
-```text
-+------+
-| name |
-+------+
-| John |
-+------+
-```
-"""
-    
-    parser = MarkdownDocTestParser(
-        input_languages=['sql'],
-        output_languages=['text']
-    )
-    
-    doctest_obj = parser.parse(test_md, 'test.md')
-    
-    print(f"Found {len(doctest_obj.examples)} example(s)")
-    
-    if doctest_obj.examples:
-        example = doctest_obj.examples[0]
-        print(f"\nInput code:\n{example.source}")
-        print(f"\nExpected output:\n{example.want}")
