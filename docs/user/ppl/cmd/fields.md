@@ -5,8 +5,8 @@
 The `fields` command keeps or removes fields from the search result.
 ## Syntax
 
-fields [+|-] \<field-list\>
-* +|-: optional. If the plus (+) is used, only the fields specified in the field list will be kept. If the minus (-) is used, all the fields specified in the field list will be removed. **Default:** +.
+fields [+\|-] \<field-list\>
+* +\|-: optional. If the plus (+) is used, only the fields specified in the field list will be kept. If the minus (-) is used, all the fields specified in the field list will be removed. **Default:** +.
 * field-list: mandatory. Comma-delimited or space-delimited list of fields to keep or remove. Supports wildcard patterns.
 ## Example 1: Select specified fields from result
 

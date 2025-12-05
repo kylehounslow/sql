@@ -5,8 +5,8 @@
 The `table` command is an alias for the [`fields`](fields.md) command and provides the same field selection capabilities. It allows you to keep or remove fields from the search result using enhanced syntax options.
 ## Syntax
 
-table [+|-] \<field-list\>
-* [+|-]: optional. If the plus (+) is used, only the fields specified in the field list will be kept. If the minus (-) is used, all the fields specified in the field list will be removed. **Default:** +.
+table [+\|-] \<field-list\>
+* [+\|-]: optional. If the plus (+) is used, only the fields specified in the field list will be kept. If the minus (-) is used, all the fields specified in the field list will be removed. **Default:** +.
 * field-list: mandatory. Comma-delimited or space-delimited list of fields to keep or remove. Supports wildcard patterns.
 ## Example 1: Basic table command usage
 

@@ -5,10 +5,10 @@
 The `sort` command sorts all the search results by the specified fields.
 ## Syntax
 
-sort [count] <[+|-] sort-field | sort-field [asc|a|desc|d]>...
+sort [count] <[+\|-] sort-field \| sort-field [asc\|a\|desc\|d]>...
 * count: optional. The number of results to return. Specifying a count of 0 or less than 0 returns all results. **Default:** 0.
-* [+|-]: optional. The plus [+] stands for ascending order and NULL/MISSING first and a minus [-] stands for descending order and NULL/MISSING last. **Default:** ascending order and NULL/MISSING first.
-* [asc|a|desc|d]: optional. asc/a stands for ascending order and NULL/MISSING first. desc/d stands for descending order and NULL/MISSING last. **Default:** ascending order and NULL/MISSING first.
+* [+\|-]: optional. The plus [+] stands for ascending order and NULL/MISSING first and a minus [-] stands for descending order and NULL/MISSING last. **Default:** ascending order and NULL/MISSING first.
+* [asc\|a\|desc\|d]: optional. asc/a stands for ascending order and NULL/MISSING first. desc/d stands for descending order and NULL/MISSING last. **Default:** ascending order and NULL/MISSING first.
 * sort-field: mandatory. The field used to sort. Can use `auto(field)`, `str(field)`, `ip(field)`, or `num(field)` to specify how to interpret field values.
 > **Note:**
 > You cannot mix +/- and asc/desc in the same sort command. Choose one approach for all fields in a single sort command.

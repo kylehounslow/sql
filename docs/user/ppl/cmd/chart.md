@@ -5,7 +5,7 @@
 The `chart` command transforms search results by applying a statistical aggregation function and optionally grouping the data by one or two fields. The results are suitable for visualization as a two-dimension chart when grouping by two fields, where unique values in the second group key can be pivoted to column names.
 ## Syntax
 
-chart [limit=(top|bottom) \<number\>] [useother=\<boolean\>] [usenull=\<boolean\>] [nullstr=\<string\>] [otherstr=\<string\>] \<aggregation_function\> [ by \<row_split\> \<column_split\> ] | [over \<row_split\> ] [ by \<column_split\>]
+chart [limit=(top\|bottom) \<number\>] [useother=\<boolean\>] [usenull=\<boolean\>] [nullstr=\<string\>] [otherstr=\<string\>] \<aggregation_function\> [ by \<row_split\> \<column_split\> ] \| [over \<row_split\> ] [ by \<column_split\>]
 * limit: optional. Specifies the number of categories to display when using column split. Each unique value in the column split field represents a category. **Default:** top10.
   * Syntax: `limit=(top|bottom)<number>` or `limit=<number>` (defaults to top)
   * When `limit=K` is set, the top or bottom K categories from the column split field are retained; the remaining categories are grouped into an "OTHER" category if `useother` is not set to false.

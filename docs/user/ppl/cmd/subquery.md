@@ -10,7 +10,7 @@ Subqueries are useful for:
 4. Creating complex joins with dynamic conditions
 ## Syntax
 
-subquery: [ source=... | ... | ... ]  
+subquery: [ source=... \| ... \| ... ]  
 
 Subqueries use the same syntax as regular PPL queries but must be enclosed in square brackets. There are four main types of subqueries:  
 

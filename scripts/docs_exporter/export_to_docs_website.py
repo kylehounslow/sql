@@ -56,24 +56,28 @@ def process_file(source_file, target_file, parent=None, nav_order=1):
 
 def export_docs():
     """Export PPL docs to documentation website."""
-    source_dir = Path("docs/user/ppl")
-    target_dir = Path("../documentation-website/_search-plugins/sql/ppl")
-    
+    source_dir = Path("../../docs/user/ppl")
+    target_dir = Path("../../../documentation-website/_ppl-reference")
+
     if not source_dir.exists():
         print(f"Source directory {source_dir} not found")
         return
-    
+
     # Get all markdown files
     md_files = list(source_dir.glob('**/*.md'))
-    
+
     for i, md_file in enumerate(md_files, 1):
         # Calculate relative path from source
         rel_path = md_file.relative_to(source_dir)
         target_file = target_dir / rel_path
-        
+
         # Determine parent based on directory structure
-        parent = "SQL and PPL" if rel_path.parent == Path('.') else rel_path.parent.name.replace('-', ' ').title()
-        
+        parent = (
+            "PPL Reference Manual"
+            if rel_path.parent == Path(".")
+            else rel_path.parent.name.replace("-", " ").title()
+        )
+
         process_file(md_file, target_file, parent, i)
         print(f"Exported: {md_file} -> {target_file}")
 

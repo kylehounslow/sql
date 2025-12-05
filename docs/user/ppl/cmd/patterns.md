@@ -10,7 +10,7 @@ Calcite engine by default labels the variables with '\<*\>' placeholder. If `sho
 
 ## Syntax
 
-patterns \<field\> [by byClause...] [method=simple_pattern | brain] [mode=label | aggregation] [max_sample_count=integer] [buffer_limit=integer] [show_numbered_token=boolean] [new_field=\<new-field-name\>] (algorithm parameters...)
+patterns \<field\> [by byClause...] [method=simple_pattern \| brain] [mode=label \| aggregation] [max_sample_count=integer] [buffer_limit=integer] [show_numbered_token=boolean] [new_field=\<new-field-name\>] (algorithm parameters...)
 * field: mandatory. The text field to analyze for patterns.
 * byClause: optional. Fields or scalar functions used to group logs for labeling/aggregation.
 * method: optional. Algorithm choice: `simple_pattern` or `brain`. **Default:** `simple_pattern`.

@@ -5,10 +5,10 @@
 The `trendline` command calculates moving averages of fields.
 ## Syntax
 
-trendline [sort <[+|-] sort-field>] [sma|wma](number-of-datapoints, field) [as \<alias\>] [[sma|wma](number-of-datapoints, field) [as \<alias\>]]...
-* [+|-]: optional. The plus [+] stands for ascending order and NULL/MISSING first and a minus [-] stands for descending order and NULL/MISSING last. **Default:** ascending order and NULL/MISSING first.
+trendline [sort <[+\|-] sort-field>] [sma\|wma](number-of-datapoints, field) [as \<alias\>] [[sma\|wma](number-of-datapoints, field) [as \<alias\>]]...
+* [+\|-]: optional. The plus [+] stands for ascending order and NULL/MISSING first and a minus [-] stands for descending order and NULL/MISSING last. **Default:** ascending order and NULL/MISSING first.
 * sort-field: mandatory when sorting is used. The field used to sort.
-* sma|wma: mandatory. Simple Moving Average (sma) applies equal weighting to all values, Weighted Moving Average (wma) applies greater weight to more recent values.
+* sma\|wma: mandatory. Simple Moving Average (sma) applies equal weighting to all values, Weighted Moving Average (wma) applies greater weight to more recent values.
 * number-of-datapoints: mandatory. The number of datapoints to calculate the moving average (must be greater than zero).
 * field: mandatory. The name of the field the moving average should be calculated for.
 * alias: optional. The name of the resulting column containing the moving average. **Default:** field name with "_trendline".
