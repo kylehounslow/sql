@@ -127,9 +127,35 @@ class CategoryManager:
                     for category, docs in categories.items()
                 }
             debug(f"Loaded {len(categories)} categories from {file_path}")
+
+            # Validate markdown-only categories
+            for category_name in categories.keys():
+                self._validate_category_files(category_name, categories[category_name])
+
             return categories
         except Exception as e:
             raise Exception(f"Failed to load categories from {file_path}: {e}")
+
+    def _validate_category_files(self, category_name, docs):
+        """Internal method to validate category files during loading."""
+        if self.is_markdown_category(category_name):
+            # Markdown-only categories should not contain .rst files
+            rst_files = [doc for doc in docs if doc.endswith(".rst")]
+            if rst_files:
+                raise Exception(
+                    f"Only markdown files supported for category: {category_name}"
+                )
+            debug(
+                f"Category {category_name} validation passed - all files are markdown"
+            )
+        else:
+            # Non-markdown categories should only contain .rst files
+            md_files = [doc for doc in docs if doc.endswith(".md")]
+            if md_files:
+                raise Exception(
+                    f"Only .rst files supported for category: {category_name}. Markdown not yet supported."
+                )
+            debug(f"Category {category_name} validation passed - all files are .rst")
 
     def get_all_categories(self):
         return list(self._categories.keys())
@@ -165,7 +191,16 @@ class CategoryManager:
 
     def is_markdown_category(self, category_name):
         """Check if category uses Markdown files."""
-        return "_markdown" in category_name
+        return category_name in ("ppl_cli_calcite", "bash_calcite", "bash_settings")
+
+    def validate_category_files(self, category_name):
+        """Validate that categories contain only the correct file types.
+
+        Markdown categories should only contain .md files.
+        Non-markdown categories should only contain .rst files.
+        """
+        docs = self.get_category_files(category_name)
+        self._validate_category_files(category_name, docs)
 
     def get_setup_function(self, category_name):
         if self.requires_calcite(category_name):
@@ -408,7 +443,7 @@ def create_markdown_suite(filepaths, category_name, setup_func):
 
     Args:
         filepaths: List of Markdown file paths
-        category_name: Category name (e.g., 'ppl_cli_markdown', 'sql_cli_markdown')
+        category_name: Category name (e.g., 'ppl_cli_calcite')
         setup_func: Setup function to initialize test environment
 
     Returns:

@@ -4,14 +4,10 @@
     "user/admin/settings.rst"
   ],
   "bash_calcite": [
-    "user/ppl/interfaces/endpoint.rst",
-    "user/ppl/interfaces/protocol.rst"
-  ],
-  "bash_markdown_calcite": [
     "user/ppl/interfaces/endpoint.md",
     "user/ppl/interfaces/protocol.md"
   ],
-  "ppl_cli_markdown_calcite": [
+  "ppl_cli_calcite": [
     "user/ppl/cmd/ad.md",
     "user/ppl/cmd/append.md",
     "user/ppl/cmd/bin.md",
@@ -79,60 +75,7 @@
     "user/dql/complex.rst",
     "user/dql/metadata.rst"
   ],
-  "ppl_cli_calcite": [
-    "user/ppl/cmd/ad.rst",
-    "user/ppl/cmd/append.rst",
-    "user/ppl/cmd/bin.rst",
-    "user/ppl/cmd/dedup.rst",
-    "user/ppl/cmd/describe.rst",
-    "user/ppl/cmd/eventstats.rst",
-    "user/ppl/cmd/eval.rst",
-    "user/ppl/cmd/fields.rst",
-    "user/ppl/cmd/fillnull.rst",
-    "user/ppl/cmd/grok.rst",
-    "user/ppl/cmd/head.rst",
-    "user/ppl/cmd/join.rst",
-    "user/ppl/cmd/lookup.rst",
-    "user/ppl/cmd/parse.rst",
-    "user/ppl/cmd/patterns.rst",
-    "user/ppl/cmd/rare.rst",
-    "user/ppl/cmd/regex.rst",
-    "user/ppl/cmd/rename.rst",
-    "user/ppl/cmd/multisearch.rst",
-    "user/ppl/cmd/replace.rst",
-    "user/ppl/cmd/rex.rst",
-    "user/ppl/cmd/search.rst",
-    "user/ppl/cmd/showdatasources.rst",
-    "user/ppl/cmd/sort.rst",
-    "user/ppl/cmd/spath.rst",
-    "user/ppl/cmd/stats.rst",
-    "user/ppl/cmd/streamstats.rst",
-    "user/ppl/cmd/subquery.rst",
-    "user/ppl/cmd/syntax.rst",
-    "user/ppl/cmd/chart.rst",
-    "user/ppl/cmd/timechart.rst",
-    "user/ppl/cmd/search.rst",
-    "user/ppl/cmd/top.rst",
-    "user/ppl/cmd/trendline.rst",
-    "user/ppl/cmd/where.rst",
-    "user/ppl/functions/collection.rst",
-    "user/ppl/functions/condition.rst",
-    "user/ppl/functions/datetime.rst",
-    "user/ppl/functions/expressions.rst",
-    "user/ppl/functions/ip.rst",
-    "user/ppl/functions/json.rst",
-    "user/ppl/functions/math.rst",
-    "user/ppl/functions/relevance.rst",
-    "user/ppl/functions/statistical.rst",
-    "user/ppl/functions/string.rst",
-    "user/ppl/functions/conversion.rst",
-    "user/ppl/general/datatypes.rst",
-    "user/ppl/general/identifiers.rst"
-  ],
   "bash_settings": [
-    "user/ppl/admin/settings.rst"
-  ],
-  "bash_markdown_settings": [
     "user/ppl/admin/settings.md"
   ]
 }

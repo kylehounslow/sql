@@ -7,7 +7,7 @@ This cheat sheet helps Splunk users transition to OpenSearch's PPL. It maps comm
 | Aspect | Splunk SPL | OpenSearch PPL | Notes |
 |--------|------------|---------------|-------|
 | Query structure | `search terms \| command` | `search term source = index \| command` | PPL requires explicit source at the beginning |
-| Index reference | `index=name*` | `source=name*` | Different command to specify data source, [PPL support refering to multiple indices](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/general/identifiers.rst#multiple-indices)|
+| Index reference | `index=name*` | `source=name*` | Different command to specify data source, [PPL support refering to multiple indices](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/general/identifiers.md#multiple-indices)|
 | Raw field | Special `_raw` field |  Identify a field in your OpenSearch data that contains the text content you want to work with (often `message` or `content` fields in log data) | default field configured by the index.query.default_field setting (defaults to * which searches all fields) |
 | Time field | Special `_time` field | User-specified timestamp field | PPL use @timestamp by default |
 
@@ -18,34 +18,34 @@ This table provides a mapping between Splunk SPL commands and their OpenSearch P
 
 | Splunk SPL | OpenSearch PPL | Purpose |
 |------------|---------------|---------|
-| append | [append](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/append.rst) | Append results from subsearch |
-| appendcols | [appendcols](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/appendcol.rst) | Append columns from subsearch |
-| bin | [bin](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/bin.rst) | Group numeric values into bins |
-| bucket | [bin](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/bin.rst) | Group numeric values into bins |
-| dedup | [dedup](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/dedup.rst) | Remove duplicate results |
-| eval | [eval](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/eval.rst) | Calculate and create new fields |
-| eventstats | [eventstats](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/eventstats.rst) | Calculate statistics while preserving events |
-| mvexpand | [expand](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/expand.rst) | Expand multi-value fields |
-| fields | [fields](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/fields.rst) | Include or exclude fields |
-| fillnull | [fillnull](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/fillnull.rst) | Replace null values |
-| head | [head](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/head.rst) | Retrieve the first N results |
-| join | [join](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/join.rst) | Combine results from multiple sources |
-| lookup | [lookup](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/lookup.rst) | Enrich data with lookups |
-| rare | [rare](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/rare.rst) | Find the least common values |
-| regex | [regex](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/regex.rst) | Filter with regular expression pattern |
-| rename | [rename](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/rename.rst) | Rename fields in results |
-| reverse | [reverse](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/reverse.rst) | Reverse the order of search results |
-| rex | [rex](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/rex.rst) | Extract with regular expression pattern |
-| search | [search](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/search.rst) | Basic searching of data |
-| sort | [sort](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/sort.rst) | Sort results by specified fields |
-| spath | [spath](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/spath.rst) | Extracting fields from structured text data |
-| stats | [stats](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/stats.rst) | Statistical aggregation of data |
-| subsearch | [subsearch](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/subquery.rst) | Enrich main search |
-| table | [table](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/table.rst) | Select specific fields to display |
-| timechart | [timechart](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/timechart.rst) | Statistical aggregation of time-series data |
-| top | [top](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/top.rst) | Find the most common values |
-| trendline | [trendline](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/trendline.rst) | Calculate moving averages of fields |
-| where | [where](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/where.rst) | Filter results based on conditions |
+| append | [append](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/append.md) | Append results from subsearch |
+| appendcols | [appendcols](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/appendcol.md) | Append columns from subsearch |
+| bin | [bin](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/bin.md) | Group numeric values into bins |
+| bucket | [bin](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/bin.md) | Group numeric values into bins |
+| dedup | [dedup](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/dedup.md) | Remove duplicate results |
+| eval | [eval](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/eval.md) | Calculate and create new fields |
+| eventstats | [eventstats](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/eventstats.md) | Calculate statistics while preserving events |
+| mvexpand | [expand](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/expand.md) | Expand multi-value fields |
+| fields | [fields](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/fields.md) | Include or exclude fields |
+| fillnull | [fillnull](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/fillnull.md) | Replace null values |
+| head | [head](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/head.md) | Retrieve the first N results |
+| join | [join](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/join.md) | Combine results from multiple sources |
+| lookup | [lookup](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/lookup.md) | Enrich data with lookups |
+| rare | [rare](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/rare.md) | Find the least common values |
+| regex | [regex](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/regex.md) | Filter with regular expression pattern |
+| rename | [rename](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/rename.md) | Rename fields in results |
+| reverse | [reverse](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/reverse.md) | Reverse the order of search results |
+| rex | [rex](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/rex.md) | Extract with regular expression pattern |
+| search | [search](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/search.md) | Basic searching of data |
+| sort | [sort](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/sort.md) | Sort results by specified fields |
+| spath | [spath](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/spath.md) | Extracting fields from structured text data |
+| stats | [stats](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/stats.md) | Statistical aggregation of data |
+| subsearch | [subsearch](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/subquery.md) | Enrich main search |
+| table | [table](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/table.md) | Select specific fields to display |
+| timechart | [timechart](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/timechart.md) | Statistical aggregation of time-series data |
+| top | [top](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/top.md) | Find the most common values |
+| trendline | [trendline](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/trendline.md) | Calculate moving averages of fields |
+| where | [where](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/where.md) | Filter results based on conditions |
 
 
 ## Example Query Conversions

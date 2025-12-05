@@ -40,7 +40,8 @@ Argument type: STRING, STRING/IP, STRING
 Return type: OBJECT  
 Example:
 ```ppl ignore
-source=weblogs | eval LookupResult = geoip("dataSourceName", "50.68.18.229", "country_iso_code,city_name")
+source=weblogs 
+| eval LookupResult = geoip("dataSourceName", "50.68.18.229", "country_iso_code,city_name")
 ```
 ```text
 fetched rows / total rows = 1/1
