@@ -1,23 +1,25 @@
-# describe
+# describe  
 
-## Description
+## Description  
 
 Use the `describe` command to query metadata of the index. `describe` command can only be used as the first command in the PPL query.
-## Syntax
+## Syntax  
 
 describe [dataSource.][schema.]\<tablename\>
-* dataSource: optional. If dataSource is not provided, it resolves to opensearch dataSource.
-* schema: optional.  If schema is not provided, it resolves to default schema.
-* tablename: mandatory. describe command must specify which tablename to query from.
-## Example 1: Fetch all the metadata
+* dataSource: optional. If dataSource is not provided, it resolves to opensearch dataSource.  
+* schema: optional.  If schema is not provided, it resolves to default schema.  
+* tablename: mandatory. describe command must specify which tablename to query from.  
+  
+## Example 1: Fetch all the metadata  
 
 This example describes the accounts index.
+  
 ```ppl
 describe accounts
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 11/11
 +----------------+-------------+------------+----------------+-----------+-----------+-------------+---------------+----------------+----------------+----------+---------+------------+---------------+------------------+-------------------+------------------+-------------+---------------+--------------+-------------+------------------+------------------+--------------------+
@@ -36,18 +38,19 @@ fetched rows / total rows = 11/11
 | docTestCluster | null        | accounts   | lastname       | null      | string    | null        | null          | null           | 10             | 2        | null    | null       | null          | null             | null              | 10               |             | null          | null         | null        | null             | NO               |                    |
 +----------------+-------------+------------+----------------+-----------+-----------+-------------+---------------+----------------+----------------+----------+---------+------------+---------------+------------------+-------------------+------------------+-------------+---------------+--------------+-------------+------------------+------------------+--------------------+
 ```
-
-## Example 2: Fetch metadata with condition and filter
+  
+## Example 2: Fetch metadata with condition and filter  
 
 This example retrieves columns with type bigint in the accounts index.
+  
 ```ppl
 describe accounts
 | where TYPE_NAME="bigint"
 | fields COLUMN_NAME
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 3/3
 +----------------+
@@ -58,7 +61,7 @@ fetched rows / total rows = 3/3
 | age            |
 +----------------+
 ```
-
-## Example 3: Fetch metadata for table in Prometheus datasource
+  
+## Example 3: Fetch metadata for table in Prometheus datasource  
 
 See [Fetch metadata for table in Prometheus datasource](../admin/datasources.md) for more context.

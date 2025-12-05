@@ -1,23 +1,25 @@
-# table
+# table  
 
-## Description
+## Description  
 
 The `table` command is an alias for the [`fields`](fields.md) command and provides the same field selection capabilities. It allows you to keep or remove fields from the search result using enhanced syntax options.
-## Syntax
+## Syntax  
 
 table [+\|-] \<field-list\>
-* [+\|-]: optional. If the plus (+) is used, only the fields specified in the field list will be kept. If the minus (-) is used, all the fields specified in the field list will be removed. **Default:** +.
-* field-list: mandatory. Comma-delimited or space-delimited list of fields to keep or remove. Supports wildcard patterns.
-## Example 1: Basic table command usage
+* [+\|-]: optional. If the plus (+) is used, only the fields specified in the field list will be kept. If the minus (-) is used, all the fields specified in the field list will be removed. **Default:** +.  
+* field-list: mandatory. Comma-delimited or space-delimited list of fields to keep or remove. Supports wildcard patterns.  
+  
+## Example 1: Basic table command usage  
 
 This example shows basic field selection using the table command.
+  
 ```ppl
 source=accounts
 | table firstname lastname age
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 4/4
 +-----------+----------+-----+
@@ -29,7 +31,7 @@ fetched rows / total rows = 4/4
 | Dale      | Adams    | 33  |
 +-----------+----------+-----+
 ```
+  
+## See Also  
 
-## See Also
-
-- [fields](fields.md) - Alias command with identical functionality
+- [fields](fields.md) - Alias command with identical functionality  

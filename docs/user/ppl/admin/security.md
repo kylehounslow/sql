@@ -1,14 +1,14 @@
-# Security Settings
+# Security Settings  
 
-## Introduction
+## Introduction  
 
 User needs `cluster:admin/opensearch/ppl` permission to use PPL plugin. User also needs indices level permission `indices:admin/mappings/get` to get field mappings, `indices:monitor/settings/get` to get cluster settings, and `indices:data/read/search*` to search index.
-## Using Rest API
+## Using Rest API  
 
 **--INTRODUCED 2.1--**
 Example: Create the ppl_role for test_user. then test_user could use PPL to query `ppl-security-demo` index.
-1. Create the ppl_role and grand permission to access PPL plugin and access ppl-security-demo index
-
+1. Create the ppl_role and grand permission to access PPL plugin and access ppl-security-demo index  
+  
 ```bash
 PUT _plugins/_security/api/roles/ppl_role
 {
@@ -28,9 +28,9 @@ PUT _plugins/_security/api/roles/ppl_role
 }
 
 ```
-
-2. Mapping the test_user to the ppl_role
-
+  
+2. Mapping the test_user to the ppl_role  
+  
 ```bash
 PUT _plugins/_security/api/rolesmapping/ppl_role
 {
@@ -41,13 +41,13 @@ PUT _plugins/_security/api/rolesmapping/ppl_role
 
 
 ```
-
-## Using Security Dashboard
+  
+## Using Security Dashboard  
 
 **--INTRODUCED 2.1--**
 Example: Create ppl_access permission and add to existing role
-1. Create the ppl_access permission
-
+1. Create the ppl_access permission  
+  
 ```bash
 PUT _plugins/_security/api/actiongroups/ppl_access
 {
@@ -57,6 +57,7 @@ PUT _plugins/_security/api/actiongroups/ppl_access
 }
 
 ```
-
-2. Grant the ppl_access permission to ppl_test_role
+  
+2. Grant the ppl_access permission to ppl_test_role  
+  
 ![Image](https://user-images.githubusercontent.com/2969395/185448976-6c0aed6b-7540-4b99-92c3-362da8ae3763.png)

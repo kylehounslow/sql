@@ -1,11 +1,11 @@
-# Monitoring
+# Monitoring  
 
-## Introduction
+## Introduction  
 
 By a stats endpoint, you are able to collect metrics for the plugin within the interval. Note that only node level statistics collecting is implemented for now. In other words, you only get the metrics for the node you're accessing. Cluster level statistics have yet to be implemented.
-## Node Stats
+## Node Stats  
 
-### Description
+### Description  
 
 The meaning of fields in the response is as follows:
 +--------------------------------+-------------------------------------------------------------------+
@@ -19,10 +19,11 @@ ppl_failed_request_count_syserr|Count of failed PPL request due to system error 
 +--------------------------------+-------------------------------------------------------------------+
 ppl_failed_request_count_cuserr| Count of failed PPL request due to bad request within the interval|
 +--------------------------------+-------------------------------------------------------------------+
-### Example
+### Example  
 
 SQL query
 	>> curl -H 'Content-Type: application/json' -X GET localhost:9200/_plugins/_ppl/stats
+  
 ```bash
 {
   "ppl_request_total": 10,
@@ -34,3 +35,4 @@ SQL query
 
 
 ```
+  

@@ -1,76 +1,79 @@
-# timechart
+# timechart  
 
-## Description
+## Description  
 
 The `timechart` command creates a time-based aggregation of data. It groups data by time intervals and optionally by a field, then applies an aggregation function to each group. The results are returned in an unpivoted format with separate rows for each time-field combination.
-## Syntax
+## Syntax  
 
 timechart [timefield=\<field_name\>] [span=\<time_interval\>] [limit=\<number\>] [useother=\<boolean\>] \<aggregation_function\> [by \<field\>]
-* timefield:  optional. Specifies the timestamp field to use for time interval grouping. **Default**: `@timestamp`.
-* span: optional. Specifies the time interval for grouping data. **Default:** 1m (1 minute).
-  * Available time units:
-    * millisecond (ms)
-    * second (s)
-    * minute (m, case sensitive)
-    * hour (h)
-    * day (d)
-    * week (w)
-    * month (M, case sensitive)
-    * quarter (q)
-    * year (y)
-* limit: optional. Specifies the maximum number of distinct values to display when using the "by" clause. **Default:** 10.
-  * When there are more distinct values than the limit, the additional values are grouped into an "OTHER" category if useother is not set to false.
-  * The "most distinct" values are determined by calculating the sum of the aggregation values across all time intervals for each distinct field value. The top N values with the highest sums are displayed individually, while the rest are grouped into the "OTHER" category.
-  * Set to 0 to show all distinct values without any limit (when limit=0, useother is automatically set to false).
-  * The parameters can be specified in any order before the aggregation function.
-  * Only applies when using the "by" clause to group results.
-* useother: optional. Controls whether to create an "OTHER" category for values beyond the limit. **Default:** true.
-  * When set to false, only the top N values (based on limit) are shown without an "OTHER" column.
-  * When set to true, values beyond the limit are grouped into an "OTHER" category.
-  * Only applies when using the "by" clause and when there are more distinct values than the limit.
-* aggregation_function: mandatory. The aggregation function to apply to each time bucket.
-  * Currently, only a single aggregation function is supported.
-  * Available functions: All aggregation functions supported by the :doc:`stats <stats>` command, as well as the timechart-specific aggregations listed below.
-* by: optional. Groups the results by the specified field in addition to time intervals. If not specified, the aggregation is performed across all documents in each time interval.
-## PER_SECOND
+* timefield:  optional. Specifies the timestamp field to use for time interval grouping. **Default**: `@timestamp`.  
+* span: optional. Specifies the time interval for grouping data. **Default:** 1m (1 minute).  
+  * Available time units:  
+    * millisecond (ms)  
+    * second (s)  
+    * minute (m, case sensitive)  
+    * hour (h)  
+    * day (d)  
+    * week (w)  
+    * month (M, case sensitive)  
+    * quarter (q)  
+    * year (y)  
+* limit: optional. Specifies the maximum number of distinct values to display when using the "by" clause. **Default:** 10.  
+  * When there are more distinct values than the limit, the additional values are grouped into an "OTHER" category if useother is not set to false.  
+  * The "most distinct" values are determined by calculating the sum of the aggregation values across all time intervals for each distinct field value. The top N values with the highest sums are displayed individually, while the rest are grouped into the "OTHER" category.  
+  * Set to 0 to show all distinct values without any limit (when limit=0, useother is automatically set to false).  
+  * The parameters can be specified in any order before the aggregation function.  
+  * Only applies when using the "by" clause to group results.  
+* useother: optional. Controls whether to create an "OTHER" category for values beyond the limit. **Default:** true.  
+  * When set to false, only the top N values (based on limit) are shown without an "OTHER" column.  
+  * When set to true, values beyond the limit are grouped into an "OTHER" category.  
+  * Only applies when using the "by" clause and when there are more distinct values than the limit.  
+* aggregation_function: mandatory. The aggregation function to apply to each time bucket.  
+  * Currently, only a single aggregation function is supported.  
+  * Available functions: All aggregation functions supported by the :doc:`stats <stats>` command, as well as the timechart-specific aggregations listed below.  
+* by: optional. Groups the results by the specified field in addition to time intervals. If not specified, the aggregation is performed across all documents in each time interval.  
+  
+## PER_SECOND  
 
 Usage: per_second(field) calculates the per-second rate for a numeric field within each time bucket.
 The calculation formula is: `per_second(field) = sum(field) / span_in_seconds`, where `span_in_seconds` is the span interval in seconds.
 Return type: DOUBLE
-## PER_MINUTE
+## PER_MINUTE  
 
 Usage: per_minute(field) calculates the per-minute rate for a numeric field within each time bucket.
 The calculation formula is: `per_minute(field) = sum(field) * 60 / span_in_seconds`, where `span_in_seconds` is the span interval in seconds.
 Return type: DOUBLE
-## PER_HOUR
+## PER_HOUR  
 
 Usage: per_hour(field) calculates the per-hour rate for a numeric field within each time bucket.
 The calculation formula is: `per_hour(field) = sum(field) * 3600 / span_in_seconds`, where `span_in_seconds` is the span interval in seconds.
 Return type: DOUBLE
-## PER_DAY
+## PER_DAY  
 
 Usage: per_day(field) calculates the per-day rate for a numeric field within each time bucket.
 The calculation formula is: `per_day(field) = sum(field) * 86400 / span_in_seconds`, where `span_in_seconds` is the span interval in seconds.
 Return type: DOUBLE
-## Notes
+## Notes  
 
-* The `timechart` command requires a timestamp field in the data. By default, it uses the `@timestamp` field, but you can specify a different field using the `timefield` parameter.
-* Results are returned in an unpivoted format with separate rows for each time-field combination that has data.
-* Only combinations with actual data are included in the results - empty combinations are omitted rather than showing null or zero values.
-* The "top N" values for the `limit` parameter are selected based on the sum of values across all time intervals for each distinct field value.
-* When using the `limit` parameter, values beyond the limit are grouped into an "OTHER" category (unless `useother=false`).
-* Examples 6 and 7 use different datasets: Example 6 uses the `events` dataset with fewer hosts for simplicity, while Example 7 uses the `events_many_hosts` dataset with 11 distinct hosts.
-* **Null values**: Documents with null values in the "by" field are treated as a separate category and appear as null in the results.
-## Example 1: Count events by hour
+* The `timechart` command requires a timestamp field in the data. By default, it uses the `@timestamp` field, but you can specify a different field using the `timefield` parameter.  
+* Results are returned in an unpivoted format with separate rows for each time-field combination that has data.  
+* Only combinations with actual data are included in the results - empty combinations are omitted rather than showing null or zero values.  
+* The "top N" values for the `limit` parameter are selected based on the sum of values across all time intervals for each distinct field value.  
+* When using the `limit` parameter, values beyond the limit are grouped into an "OTHER" category (unless `useother=false`).  
+* Examples 6 and 7 use different datasets: Example 6 uses the `events` dataset with fewer hosts for simplicity, while Example 7 uses the `events_many_hosts` dataset with 11 distinct hosts.  
+* **Null values**: Documents with null values in the "by" field are treated as a separate category and appear as null in the results.  
+  
+## Example 1: Count events by hour  
 
 This example counts events for each hour and groups them by host.
+  
 ```ppl
 source=events
 | timechart span=1h count() by host
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 2/2
 +---------------------+---------+---------+
@@ -80,17 +83,18 @@ fetched rows / total rows = 2/2
 | 2023-01-01 10:00:00 | server2 | 4       |
 +---------------------+---------+---------+
 ```
-
-## Example 2: Count events by minute
+  
+## Example 2: Count events by minute  
 
 This example counts events for each minute and groups them by host.
+  
 ```ppl
 source=events
 | timechart span=1m count() by host
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 8/8
 +---------------------+---------+---------+
@@ -106,17 +110,18 @@ fetched rows / total rows = 8/8
 | 2023-01-01 10:35:00 | server2 | 1       |
 +---------------------+---------+---------+
 ```
-
-## Example 3: Calculate average number of packets by minute
+  
+## Example 3: Calculate average number of packets by minute  
 
 This example calculates the average packets for each minute without grouping by any field.
+  
 ```ppl
 source=events
 | timechart span=1m avg(packets)
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 8/8
 +---------------------+--------------+
@@ -132,17 +137,18 @@ fetched rows / total rows = 8/8
 | 2023-01-01 10:35:00 | 90.0         |
 +---------------------+--------------+
 ```
-
-## Example 4: Calculate average number of packets by every 20 minutes and status
+  
+## Example 4: Calculate average number of packets by every 20 minutes and status  
 
 This example calculates the average number of packets for every 20 minutes and groups them by status.
+  
 ```ppl
 source=events
 | timechart span=20m avg(packets) by status
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 8/8
 +---------------------+------------+--------------+
@@ -158,17 +164,18 @@ fetched rows / total rows = 8/8
 | 2023-01-01 10:20:00 | pending    | 30.0         |
 +---------------------+------------+--------------+
 ```
-
-## Example 5: Count events by hour and category
+  
+## Example 5: Count events by hour and category  
 
 This example counts events for each second and groups them by category
+  
 ```ppl
 source=events
 | timechart span=1h count() by category
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 2/2
 +---------------------+----------+---------+
@@ -178,18 +185,19 @@ fetched rows / total rows = 2/2
 | 2023-01-01 10:00:00 | users    | 4       |
 +---------------------+----------+---------+
 ```
-
-## Example 6: Using the limit parameter with count() function
+  
+## Example 6: Using the limit parameter with count() function  
 
 When there are many distinct values in the "by" field, the timechart command will display the top values based on the limit parameter and group the rest into an "OTHER" category.
 This query will display the top 2 hosts with the highest count values, and group the remaining hosts into an "OTHER" category.
+  
 ```ppl
 source=events
 | timechart span=1m limit=2 count() by host
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 8/8
 +---------------------+---------+---------+
@@ -205,17 +213,18 @@ fetched rows / total rows = 8/8
 | 2023-01-01 10:35:00 | server2 | 1       |
 +---------------------+---------+---------+
 ```
-
-## Example 7: Using limit=0 with count() to show all values
+  
+## Example 7: Using limit=0 with count() to show all values  
 
 To display all distinct values without any limit, set limit=0:
+  
 ```ppl
 source=events_many_hosts
 | timechart span=1h limit=0 count() by host
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 11/11
 +---------------------+--------+---------+
@@ -234,18 +243,19 @@ fetched rows / total rows = 11/11
 | 2024-07-01 00:00:00 | web-11 | 1       |
 +---------------------+--------+---------+
 ```
-
+  
 This shows all 11 hosts as separate rows without an "OTHER" category.
-## Example 8: Using useother=false with count() function
+## Example 8: Using useother=false with count() function  
 
 Limit to top 10 hosts without OTHER category (useother=false):
+  
 ```ppl
 source=events_many_hosts
 | timechart span=1h useother=false count() by host
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 10/10
 +---------------------+--------+---------+
@@ -263,17 +273,18 @@ fetched rows / total rows = 10/10
 | 2024-07-01 00:00:00 | web-10 | 1       |
 +---------------------+--------+---------+
 ```
-
-## Example 9: Using limit with useother parameter and avg() function
+  
+## Example 9: Using limit with useother parameter and avg() function  
 
 Limit to top 3 hosts with OTHER category (default useother=true):
+  
 ```ppl
 source=events_many_hosts
 | timechart span=1h limit=3 avg(cpu_usage) by host
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 4/4
 +---------------------+--------+----------------+
@@ -285,15 +296,16 @@ fetched rows / total rows = 4/4
 | 2024-07-01 00:00:00 | web-09 | 67.8           |
 +---------------------+--------+----------------+
 ```
-
+  
 Limit to top 3 hosts without OTHER category (useother=false):
+  
 ```ppl
 source=events_many_hosts
 | timechart span=1h limit=3 useother=false avg(cpu_usage) by host
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 3/3
 +---------------------+--------+----------------+
@@ -304,18 +316,19 @@ fetched rows / total rows = 3/3
 | 2024-07-01 00:00:00 | web-09 | 67.8           |
 +---------------------+--------+----------------+
 ```
-
-## Example 10: Handling null values in the "by" field
+  
+## Example 10: Handling null values in the "by" field  
 
 This example shows how null values in the "by" field are treated as a separate category. The dataset events_null has 1 entry that does not have a host field.
 It is put into a separate "NULL" category because the defaults for `usenull` and `nullstr` are `true` and `"NULL"` respectively.
+  
 ```ppl
 source=events_null
 | timechart span=1h count() by host
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 4/4
 +---------------------+--------+---------+
@@ -327,17 +340,18 @@ fetched rows / total rows = 4/4
 | 2024-07-01 00:00:00 | web-02 | 2       |
 +---------------------+--------+---------+
 ```
-
-## Example 11: Calculate packets per second rate
+  
+## Example 11: Calculate packets per second rate  
 
 This example calculates the per-second packet rate for network traffic data using the per_second() function.
+  
 ```ppl
 source=events
 | timechart span=30m per_second(packets) by host
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 4/4
 +---------------------+---------+---------------------+
@@ -349,8 +363,8 @@ fetched rows / total rows = 4/4
 | 2023-01-01 10:30:00 | server2 | 0.05                |
 +---------------------+---------+---------------------+
 ```
+  
+## Limitations  
 
-## Limitations
-
-* Only a single aggregation function is supported per timechart command.
-* The `bins` parameter and other bin options are not supported since the `bin` command is not implemented yet. Use the `span` parameter to control time intervals.
+* Only a single aggregation function is supported per timechart command.  
+* The `bins` parameter and other bin options are not supported since the `bin` command is not implemented yet. Use the `span` parameter to control time intervals.  

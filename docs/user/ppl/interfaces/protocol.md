@@ -1,23 +1,23 @@
-# Protocol
+# Protocol  
 
-## Introduction
+## Introduction  
 
 For the protocol, PPL endpoint provides response formats in the JDBC format. JDBC format is widely used because it provides schema information and more functionality such as pagination. Besides JDBC driver, various clients can benefit from the detailed and well formatted response.
-## Request/Response Format
+## Request/Response Format  
 
-### Description
+### Description  
 
 The body of HTTP POST request can take PPL query.
-### Example 1
-
+### Example 1  
+  
 ```bash ppl
 curl -sS -H 'Content-Type: application/json' \
 -X POST localhost:9200/_plugins/_ppl \
 -d '{"query" : "source=accounts | fields firstname, lastname"}'
 ```
-
+  
 Expected output:
-
+  
 ```json
 {
   "schema": [
@@ -52,24 +52,24 @@ Expected output:
   "size": 4
 }
 ```
+  
+## JDBC Format  
 
-## JDBC Format
-
-### Description
+### Description  
 
 By default the plugin return JDBC format. JDBC format is provided for JDBC driver and client side that needs both schema and result set well formatted.
-### Example 1
+### Example 1  
 
 Here is an example for normal response. The `schema` includes field name and its type and `datarows` includes the result set.
-
+  
 ```bash ppl
 curl -sS -H 'Content-Type: application/json' \
 -X POST localhost:9200/_plugins/_ppl \
 -d '{"query" : "source=accounts | fields firstname, lastname"}'
 ```
-
+  
 Expected output:
-
+  
 ```json
 {
   "schema": [
@@ -104,18 +104,19 @@ Expected output:
   "size": 4
 }
 ```
-
-### Example 2
+  
+### Example 2  
 
 If any error occurred, error message and the cause will be returned instead.
-
+  
 ```bash ppl
 curl -sS -H 'Content-Type: application/json' \
 -X POST localhost:9200/_plugins/_ppl \
 -d '{"query" : "source=unknown | fields firstname, lastname"}'
 ```
+  
 Expected output:
-
+  
 ```json
 {
   "error": {
@@ -126,3 +127,4 @@ Expected output:
   "status": 404
 }
 ```
+  

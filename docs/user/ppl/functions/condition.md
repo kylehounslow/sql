@@ -1,26 +1,27 @@
-# Condition Functions
+# Condition Functions  
 
-## ISNULL
+## ISNULL  
 
-### Description
+### Description  
 
 Usage: isnull(field) returns TRUE if field is NULL, FALSE otherwise.
 The `isnull()` function is commonly used:
-- In `eval` expressions to create conditional fields
-- With the `if()` function to provide default values
-- In `where` clauses to filter null records
+- In `eval` expressions to create conditional fields  
+- With the `if()` function to provide default values  
+- In `where` clauses to filter null records  
+  
 Argument type: all the supported data types.
 Return type: BOOLEAN
 Example
-
+  
 ```ppl
 source=accounts
 | eval result = isnull(employer)
 | fields result, employer, firstname
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 4/4
 +--------+----------+-----------+
@@ -32,17 +33,17 @@ fetched rows / total rows = 4/4
 | True   | null     | Dale      |
 +--------+----------+-----------+
 ```
-
+  
 Using with if() to label records
-
+  
 ```ppl
 source=accounts
 | eval status = if(isnull(employer), 'unemployed', 'employed')
 | fields firstname, employer, status
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 4/4
 +-----------+----------+------------+
@@ -54,17 +55,17 @@ fetched rows / total rows = 4/4
 | Dale      | null     | unemployed |
 +-----------+----------+------------+
 ```
-
+  
 Filtering with where clause
-
+  
 ```ppl
 source=accounts
 | where isnull(employer)
 | fields account_number, firstname, employer
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 1/1
 +----------------+-----------+----------+
@@ -73,30 +74,31 @@ fetched rows / total rows = 1/1
 | 18             | Dale      | null     |
 +----------------+-----------+----------+
 ```
+  
+## ISNOTNULL  
 
-## ISNOTNULL
-
-### Description
+### Description  
 
 Usage: isnotnull(field) returns TRUE if field is NOT NULL, FALSE otherwise.
 The `isnotnull()` function is commonly used:
-- In `eval` expressions to create boolean flags
-- In `where` clauses to filter out null values
-- With the `if()` function for conditional logic
-- To validate data presence
+- In `eval` expressions to create boolean flags  
+- In `where` clauses to filter out null values  
+- With the `if()` function for conditional logic  
+- To validate data presence  
+  
 Argument type: all the supported data types.
 Return type: BOOLEAN
 Synonyms: [ISPRESENT](#ispresent)
 Example
-
+  
 ```ppl
 source=accounts
 | eval has_employer = isnotnull(employer)
 | fields firstname, employer, has_employer
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 4/4
 +-----------+----------+--------------+
@@ -108,17 +110,17 @@ fetched rows / total rows = 4/4
 | Dale      | null     | False        |
 +-----------+----------+--------------+
 ```
-
+  
 Filtering with where clause
-
+  
 ```ppl
 source=accounts
 | where not isnotnull(employer)
 | fields account_number, employer
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 1/1
 +----------------+----------+
@@ -127,17 +129,17 @@ fetched rows / total rows = 1/1
 | 18             | null     |
 +----------------+----------+
 ```
-
+  
 Using with if() for validation messages
-
+  
 ```ppl
 source=accounts
 | eval validation = if(isnotnull(employer), 'valid', 'missing employer')
 | fields firstname, employer, validation
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 4/4
 +-----------+----------+------------------+
@@ -149,20 +151,20 @@ fetched rows / total rows = 4/4
 | Dale      | null     | missing employer |
 +-----------+----------+------------------+
 ```
-
-## EXISTS
+  
+## EXISTS  
 
 [Since OpenSearch doesn't differentiate null and missing](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-exists-query.html), we can't provide functions like ismissing/isnotmissing to test if a field exists or not. But you can still use isnull/isnotnull for such purpose.
 Example, the account 13 doesn't have email field
-
+  
 ```ppl
 source=accounts
 | where isnull(email)
 | fields account_number, email
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 1/1
 +----------------+-------+
@@ -171,24 +173,24 @@ fetched rows / total rows = 1/1
 | 13             | null  |
 +----------------+-------+
 ```
+  
+## IFNULL  
 
-## IFNULL
-
-### Description
+### Description  
 
 Usage: ifnull(field1, field2) returns field2 if field1 is null.
 Argument type: all the supported data types (NOTE : if two parameters have different types, you will fail semantic check).
 Return type: any
 Example
-
+  
 ```ppl
 source=accounts
 | eval result = ifnull(employer, 'default')
 | fields result, employer, firstname
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 4/4
 +---------+----------+-----------+
@@ -200,21 +202,21 @@ fetched rows / total rows = 4/4
 | default | null     | Dale      |
 +---------+----------+-----------+
 ```
-
-### Nested IFNULL Pattern
+  
+### Nested IFNULL Pattern  
 
 For OpenSearch versions prior to 3.1, COALESCE-like functionality can be achieved using nested IFNULL statements. This pattern is particularly useful in observability use cases where field names may vary across different data sources.
 Usage: ifnull(field1, ifnull(field2, ifnull(field3, default_value)))
 Example
-
+  
 ```ppl
 source=accounts
 | eval result = ifnull(employer, ifnull(firstname, ifnull(lastname, "unknown")))
 | fields result, employer, firstname, lastname
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 4/4
 +---------+----------+-----------+----------+
@@ -226,24 +228,24 @@ fetched rows / total rows = 4/4
 | Dale    | null     | Dale      | Adams    |
 +---------+----------+-----------+----------+
 ```
+  
+## NULLIF  
 
-## NULLIF
-
-### Description
+### Description  
 
 Usage: nullif(field1, field2) returns null if two parameters are same, otherwise returns field1.
 Argument type: all the supported data types (NOTE : if two parameters have different types, you will fail semantic check).
 Return type: any
 Example
-
+  
 ```ppl
 source=accounts
 | eval result = nullif(employer, 'Pyrami')
 | fields result, employer, firstname
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 4/4
 +---------+----------+-----------+
@@ -255,24 +257,24 @@ fetched rows / total rows = 4/4
 | null    | null     | Dale      |
 +---------+----------+-----------+
 ```
+  
+## IF  
 
-## IF
-
-### Description
+### Description  
 
 Usage: if(condition, expr1, expr2) returns expr1 if condition is true, otherwise returns expr2.
 Argument type: all the supported data types (NOTE : if expr1 and expr2 are different types, you will fail semantic check).
 Return type: any
 Example
-
+  
 ```ppl
 source=accounts
 | eval result = if(true, firstname, lastname)
 | fields result, firstname, lastname
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 4/4
 +---------+-----------+----------+
@@ -284,15 +286,15 @@ fetched rows / total rows = 4/4
 | Dale    | Dale      | Adams    |
 +---------+-----------+----------+
 ```
-
+  
 ```ppl
 source=accounts
 | eval result = if(false, firstname, lastname)
 | fields result, firstname, lastname
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 4/4
 +--------+-----------+----------+
@@ -304,15 +306,15 @@ fetched rows / total rows = 4/4
 | Adams  | Dale      | Adams    |
 +--------+-----------+----------+
 ```
-
+  
 ```ppl
 source=accounts
 | eval is_vip = if(age > 30 AND isnotnull(employer), true, false)
 | fields is_vip, firstname, lastname
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 4/4
 +--------+-----------+----------+
@@ -324,29 +326,30 @@ fetched rows / total rows = 4/4
 | False  | Dale      | Adams    |
 +--------+-----------+----------+
 ```
+  
+## CASE  
 
-## CASE
-
-### Description
+### Description  
 
 Usage: case(condition1, expr1, condition2, expr2, ... conditionN, exprN else default) returns expr1 if condition1 is true, or returns expr2 if condition2 is true, ... if no condition is true, then returns the value of ELSE clause. If the ELSE clause is not defined, returns NULL.
 Argument type: all the supported data types (NOTE : there is no comma before "else").
 Return type: any
-### Limitations
+### Limitations  
 
 When each condition is a field comparison with a numeric literal and each result expression is a string literal, the query will be optimized as [range aggregations](https://docs.opensearch.org/latest/aggregations/bucket/range) if pushdown optimization is enabled. However, this optimization has the following limitations:
-- Null values will not be grouped into any bucket of a range aggregation and will be ignored
-- The default ELSE clause will use the string literal `"null"` instead of actual NULL values
+- Null values will not be grouped into any bucket of a range aggregation and will be ignored  
+- The default ELSE clause will use the string literal `"null"` instead of actual NULL values  
+  
 Example
-
+  
 ```ppl
 source=accounts
 | eval result = case(age > 35, firstname, age < 30, lastname else employer)
 | fields result, firstname, lastname, age, employer
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 4/4
 +--------+-----------+----------+-----+----------+
@@ -358,15 +361,15 @@ fetched rows / total rows = 4/4
 | null   | Dale      | Adams    | 33  | null     |
 +--------+-----------+----------+-----+----------+
 ```
-
+  
 ```ppl
 source=accounts
 | eval result = case(age > 35, firstname, age < 30, lastname)
 | fields result, firstname, lastname, age
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 4/4
 +--------+-----------+----------+-----+
@@ -378,15 +381,15 @@ fetched rows / total rows = 4/4
 | null   | Dale      | Adams    | 33  |
 +--------+-----------+----------+-----+
 ```
-
+  
 ```ppl
 source=accounts
 | where true = case(age > 35, false, age < 30, false else true)
 | fields firstname, lastname, age
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 2/2
 +-----------+----------+-----+
@@ -396,38 +399,41 @@ fetched rows / total rows = 2/2
 | Dale      | Adams    | 33  |
 +-----------+----------+-----+
 ```
+  
+## COALESCE  
 
-## COALESCE
-
-### Description
+### Description  
 
 Usage: coalesce(field1, field2, ...) returns the first non-null, non-missing value in the argument list.
 Argument type: all the supported data types. Supports mixed data types with automatic type coercion.
 Return type: determined by the least restrictive common type among all arguments, with fallback to string if no common type can be determined
 Behavior:
-- Returns the first value that is not null and not missing (missing includes non-existent fields)
-- Empty strings ("") and whitespace strings (" ") are considered valid values
-- If all arguments are null or missing, returns null
-- Automatic type coercion is applied to match the determined return type
-- If type conversion fails, the value is converted to string representation
-- For best results, use arguments of the same data type to avoid unexpected type conversions
+- Returns the first value that is not null and not missing (missing includes non-existent fields)  
+- Empty strings ("") and whitespace strings (" ") are considered valid values  
+- If all arguments are null or missing, returns null  
+- Automatic type coercion is applied to match the determined return type  
+- If type conversion fails, the value is converted to string representation  
+- For best results, use arguments of the same data type to avoid unexpected type conversions  
+  
 Performance Considerations:
-- Optimized for multiple field evaluation, more efficient than nested IFNULL patterns
-- Evaluates arguments sequentially, stopping at the first non-null value
-- Consider field order based on likelihood of containing values to minimize evaluation overhead
+- Optimized for multiple field evaluation, more efficient than nested IFNULL patterns  
+- Evaluates arguments sequentially, stopping at the first non-null value  
+- Consider field order based on likelihood of containing values to minimize evaluation overhead  
+  
 Limitations:
-- Type coercion may result in unexpected string conversions for incompatible types
-- Performance may degrade with very large numbers of arguments
+- Type coercion may result in unexpected string conversions for incompatible types  
+- Performance may degrade with very large numbers of arguments  
+  
 Example
-
+  
 ```ppl
 source=accounts
 | eval result = coalesce(employer, firstname, lastname)
 | fields result, firstname, lastname, employer
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 4/4
 +---------+-----------+----------+----------+
@@ -439,18 +445,18 @@ fetched rows / total rows = 4/4
 | Dale    | Dale      | Adams    | null     |
 +---------+-----------+----------+----------+
 ```
-
+  
 Empty String Handling Examples
-
+  
 ```ppl
 source=accounts
 | eval empty_field = ""
 | eval result = coalesce(empty_field, firstname)
 | fields result, empty_field, firstname
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 4/4
 +--------+-------------+-----------+
@@ -462,15 +468,15 @@ fetched rows / total rows = 4/4
 |        |             | Dale      |
 +--------+-------------+-----------+
 ```
-
+  
 ```ppl
 source=accounts
 | eval result = coalesce(" ", firstname)
 | fields result, firstname
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 4/4
 +--------+-----------+
@@ -482,17 +488,17 @@ fetched rows / total rows = 4/4
 |        | Dale      |
 +--------+-----------+
 ```
-
+  
 Mixed Data Types with Auto Coercion
-
+  
 ```ppl
 source=accounts
 | eval result = coalesce(employer, balance, "fallback")
 | fields result, employer, balance
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 4/4
 +---------+----------+---------+
@@ -504,17 +510,17 @@ fetched rows / total rows = 4/4
 | 4180    | null     | 4180    |
 +---------+----------+---------+
 ```
-
+  
 Non-existent Field Handling
-
+  
 ```ppl
 source=accounts
 | eval result = coalesce(nonexistent_field, firstname, "unknown")
 | fields result, firstname
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 4/4
 +---------+-----------+
@@ -526,25 +532,25 @@ fetched rows / total rows = 4/4
 | Dale    | Dale      |
 +---------+-----------+
 ```
+  
+## ISPRESENT  
 
-## ISPRESENT
-
-### Description
+### Description  
 
 Usage: ispresent(field) returns true if the field exists.
 Argument type: all the supported data types.
 Return type: BOOLEAN
 Synonyms: [ISNOTNULL](#isnotnull)
 Example
-
+  
 ```ppl
 source=accounts
 | where ispresent(employer)
 | fields employer, firstname
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 3/3
 +----------+-----------+
@@ -555,25 +561,25 @@ fetched rows / total rows = 3/3
 | Quility  | Nanette   |
 +----------+-----------+
 ```
+  
+## ISBLANK  
 
-## ISBLANK
-
-### Description
+### Description  
 
 Usage: isblank(field) returns true if the field is null, an empty string, or contains only white space.
 Argument type: all the supported data types.
 Return type: BOOLEAN
 Example
-
+  
 ```ppl
 source=accounts
 | eval temp = ifnull(employer, '   ')
 | eval `isblank(employer)` = isblank(employer), `isblank(temp)` = isblank(temp)
 | fields `isblank(temp)`, temp, `isblank(employer)`, employer
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 4/4
 +---------------+---------+-------------------+----------+
@@ -585,25 +591,25 @@ fetched rows / total rows = 4/4
 | True          |         | True              | null     |
 +---------------+---------+-------------------+----------+
 ```
+  
+## ISEMPTY  
 
-## ISEMPTY
-
-### Description
+### Description  
 
 Usage: isempty(field) returns true if the field is null or is an empty string.
 Argument type: all the supported data types.
 Return type: BOOLEAN
 Example
-
+  
 ```ppl
 source=accounts
 | eval temp = ifnull(employer, '   ')
 | eval `isempty(employer)` = isempty(employer), `isempty(temp)` = isempty(temp)
 | fields `isempty(temp)`, temp, `isempty(employer)`, employer
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 4/4
 +---------------+---------+-------------------+----------+
@@ -615,32 +621,37 @@ fetched rows / total rows = 4/4
 | False         |         | True              | null     |
 +---------------+---------+-------------------+----------+
 ```
+  
+## EARLIEST  
 
-## EARLIEST
-
-### Description
+### Description  
 
 Usage: earliest(relative_string, field) returns true if the value of field is after the timestamp derived from relative_string relative to the current time. Otherwise, returns false.
 relative_string: 
 The relative string can be one of the following formats:
 1. `"now"` or `"now()"`:  
+  
    Uses the current system time.
-2. Absolute format (`MM/dd/yyyy:HH:mm:ss` or `yyyy-MM-dd HH:mm:ss`):
+2. Absolute format (`MM/dd/yyyy:HH:mm:ss` or `yyyy-MM-dd HH:mm:ss`):  
+  
    Converts the string to a timestamp and compares it with the data.
 3. Relative format: `(+|-)<time_integer><time_unit>[+<...>]@<snap_unit>`  
+  
    Steps to specify a relative time:
    - **a. Time offset:** Indicate the offset from the current time using `+` or `-`.  
    - **b. Time amount:** Provide a numeric value followed by a time unit (`s`, `m`, `h`, `d`, `w`, `M`, `y`).  
-   - **c. Snap to unit:** Optionally specify a snap unit with `@<unit>` to round the result down to the nearest unit (e.g., hour, day, month).
+   - **c. Snap to unit:** Optionally specify a snap unit with `@<unit>` to round the result down to the nearest unit (e.g., hour, day, month).  
+  
    **Examples** (assuming current time is `2025-05-28 14:28:34`):
    - `-3d+2y` → `2027-05-25 14:28:34`  
    - `+1d@m` → `2025-05-29 14:28:00`  
-   - `-3M+1y@M` → `2026-02-01 00:00:00`
+   - `-3M+1y@M` → `2026-02-01 00:00:00`  
+  
 Read more details [here](https://github.com/opensearch-project/opensearch-spark/blob/main/docs/ppl-lang/functions/ppl-datetime.md#relative_timestamp)
 Argument type: relative_string:STRING, field: TIMESTAMP
 Return type: BOOLEAN
 Example
-
+  
 ```ppl
 source=accounts
 | eval now = utc_timestamp()
@@ -648,9 +659,9 @@ source=accounts
 | fields a, b
 | head 1
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 1/1
 +-------+------+
@@ -659,15 +670,15 @@ fetched rows / total rows = 1/1
 | False | True |
 +-------+------+
 ```
-
+  
 ```ppl
 source=nyc_taxi
 | where earliest('07/01/2014:00:30:00', timestamp)
 | stats COUNT() as cnt
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 1/1
 +-----+
@@ -676,16 +687,16 @@ fetched rows / total rows = 1/1
 | 972 |
 +-----+
 ```
+  
+## LATEST  
 
-## LATEST
-
-### Description
+### Description  
 
 Usage: latest(relative_string, field) returns true if the value of field is before the timestamp derived from relative_string relative to the current time. Otherwise, returns false.
 Argument type: relative_string:STRING, field: TIMESTAMP
 Return type: BOOLEAN
 Example
-
+  
 ```ppl
 source=accounts
 | eval now = utc_timestamp()
@@ -693,9 +704,9 @@ source=accounts
 | fields a, b
 | head 1
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 1/1
 +------+------+
@@ -704,15 +715,15 @@ fetched rows / total rows = 1/1
 | True | True |
 +------+------+
 ```
-
+  
 ```ppl
 source=nyc_taxi
 | where latest('07/21/2014:04:00:00', timestamp)
 | stats COUNT() as cnt
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 1/1
 +-----+
@@ -721,19 +732,21 @@ fetched rows / total rows = 1/1
 | 969 |
 +-----+
 ```
+  
+## REGEXP_MATCH  
 
-## REGEXP_MATCH
-
-### Description
+### Description  
 
 Usage: regexp_match(string, pattern) returns true if the regular expression pattern finds a match against any substring of the string value, otherwise returns false.
 The function uses Java regular expression syntax for the pattern.
 Argument type: STRING, STRING
 Return type: BOOLEAN
 Example
+  
 ``` ppl ignore
 source=logs | where regexp_match(message, 'ERROR|WARN|FATAL') | fields timestamp, message
 ```
+  
 ```text
 fetched rows / total rows = 3/100
 +---------------------+------------------------------------------+
@@ -744,9 +757,11 @@ fetched rows / total rows = 3/100
 | 2024-01-15 10:25:33 | FATAL: System crashed unexpectedly      |
 +---------------------+------------------------------------------+
 ```
+  
 ``` ppl ignore
 source=users | where regexp_match(email, '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}') | fields name, email
 ```
+  
 ```text
 fetched rows / total rows = 2/3
 +-------+----------------------+
@@ -756,9 +771,11 @@ fetched rows / total rows = 2/3
 | Alice | alice@company.org    |
 +-------+----------------------+
 ```
+  
 ```ppl ignore
 source=network | where regexp_match(ip_address, '^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$') AND NOT regexp_match(ip_address, '^(10\.|172\.(1[6-9]|2[0-9]|3[01])\.|192\.168\.)') | fields ip_address, status
 ```
+  
 ```text
 fetched rows / total rows = 2/10
 +---------------+--------+
@@ -768,9 +785,11 @@ fetched rows / total rows = 2/10
 | 1.1.1.1       | active |
 +---------------+--------+
 ```
+  
 ```ppl ignore
 source=products | eval category = if(regexp_match(name, '(?i)(laptop|computer|desktop)'), 'Computing', if(regexp_match(name, '(?i)(phone|tablet|mobile)'), 'Mobile', 'Other')) | fields name, category
 ```
+  
 ```text
 fetched rows / total rows = 4/4
 +------------------------+----------+

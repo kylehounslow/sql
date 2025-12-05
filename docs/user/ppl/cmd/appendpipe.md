@@ -1,16 +1,18 @@
-# appendpipe
+# appendpipe  
 
-## Description
+## Description  
 
 The `appendpipe` command appends the result of the subpipeline to the search results. Unlike a subsearch, the subpipeline is not run first.The subpipeline is run when the search reaches the appendpipe command.
 The command aligns columns with the same field names and types. For different column fields between the main search and sub-search, NULL values are filled in the respective rows.
-## Syntax
+## Syntax  
 
 appendpipe [\<subpipeline\>]
-* subpipeline: mandatory. A list of commands that are applied to the search results from the commands that occur in the search before the `appendpipe` command.
-## Example 1: Append rows from a total count to existing search result
+* subpipeline: mandatory. A list of commands that are applied to the search results from the commands that occur in the search before the `appendpipe` command.  
+  
+## Example 1: Append rows from a total count to existing search result  
 
 This example appends rows from "total by gender" to "sum by gender, state" with merged column of same field name and type.
+  
 ```ppl
 source=accounts
 | stats sum(age) as part by gender, state
@@ -18,9 +20,9 @@ source=accounts
 | head 5
 | appendpipe [ stats sum(part) as total by gender ]
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 6/6
 +------+--------+-------+-------+
@@ -34,10 +36,11 @@ fetched rows / total rows = 6/6
 | null | M      | null  | 101   |
 +------+--------+-------+-------+
 ```
-
-## Example 2: Append rows with merged column names
+  
+## Example 2: Append rows with merged column names  
 
 This example appends rows from "count by gender" to "sum by gender, state".
+  
 ```ppl
 source=accounts
 | stats sum(age) as total by gender, state
@@ -45,9 +48,9 @@ source=accounts
 | head 5
 | appendpipe [ stats sum(total) as total by gender ]
 ```
-
+  
 Expected output:
-
+  
 ```text
 fetched rows / total rows = 6/6
 +----------+--------+-------+
@@ -61,7 +64,7 @@ fetched rows / total rows = 6/6
 | 101      | M      | null  |
 +----------+--------+-------+
 ```
+  
+## Limitations  
 
-## Limitations
-
-* **Schema Compatibility**: Same as command `append`, when fields with the same name exist between the main search and sub-search but have incompatible types, the query will fail with an error. To avoid type conflicts, ensure that fields with the same name have the same data type, or use different field names (e.g., by renaming with `eval` or using `fields` to select non-conflicting columns).
+* **Schema Compatibility**: Same as command `append`, when fields with the same name exist between the main search and sub-search but have incompatible types, the query will fail with an error. To avoid type conflicts, ensure that fields with the same name have the same data type, or use different field names (e.g., by renaming with `eval` or using `fields` to select non-conflicting columns).  

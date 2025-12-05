@@ -1,10 +1,11 @@
-# Limitations
+# Limitations  
 
-## Inconsistent Field Types across indices
+## Inconsistent Field Types across indices  
 
-* If the same field has different types across indices (e.g., `field` is a `string` in one index and an `integer` in another), PPL selects a field type from one of the indices—this selection is non-deterministic. Fields with other types are ignored during query execution.
-* For `object` fields, [PPL merges subfields from different indices to tolerate schema variations](https://github.com/opensearch-project/sql/issues/3625).
-## Unsupported OpenSearch Field Types
+* If the same field has different types across indices (e.g., `field` is a `string` in one index and an `integer` in another), PPL selects a field type from one of the indices—this selection is non-deterministic. Fields with other types are ignored during query execution.  
+* For `object` fields, [PPL merges subfields from different indices to tolerate schema variations](https://github.com/opensearch-project/sql/issues/3625).  
+  
+## Unsupported OpenSearch Field Types  
 
 PPL does not support all [OpenSearch data types](https://docs.opensearch.org/latest/mappings/supported-field-types/index/). (e.g., `flattened`, some complex `nested` usages). Unsupported fields are excluded from `DESCRIBE` and `SOURCE` outputs. At runtime: Queries referencing unsupported fields fail with semantic or resolution errors. Such fields are ignored in projections unless explicitly filtered out or removed at ingestion.
 | OpenSearch Data Type | PPL |
@@ -24,8 +25,8 @@ PPL does not support all [OpenSearch data types](https://docs.opensearch.org/lat
 | Star-tree | Ignored |
 | derived | Ignored |
 | Percolator | Ignored |
-
-## Field Parameters
+  
+## Field Parameters  
 
 For a field to be queryable in PPL, the following index settings must be enabled:
 | Setting | Description | Required For |
@@ -33,11 +34,12 @@ For a field to be queryable in PPL, the following index settings must be enabled
 | _source: true | Stores the original JSON document | Required for fetch raw data. |
 | index: true | Enables field indexing | Required for filtering, search, and aggregations |
 | doc_values: true | Enables columnar access for aggregations/sorting | Required for `stats`, `sort` |
+  
+## Nested Field Behavior  
 
-## Nested Field Behavior
-
-* There are [limitations](https://github.com/opensearch-project/sql/issues/52) regarding the nested levels and query types that needs improvement.
-## Multi-value Field Behavior
+* There are [limitations](https://github.com/opensearch-project/sql/issues/52) regarding the nested levels and query types that needs improvement.  
+  
+## Multi-value Field Behavior  
 
 OpenSearch does not natively support the ARRAY data type but does allow multi-value fields implicitly. The
 SQL/PPL plugin adheres strictly to the data type semantics defined in index mappings. When parsing OpenSearch
@@ -46,16 +48,16 @@ plugins.query.field_type_tolerance setting is enabled, the SQL/PPL plugin will h
 scalar data types, allowing basic queries (e.g., source = tbl \| where condition). However, using multi-value
 fields in expressions or functions will result in exceptions. If this setting is disabled or absent, only the
 first element of an array is returned, preserving the default behavior.
-## Unsupported Functionalities in Calcite Engine
+## Unsupported Functionalities in Calcite Engine  
 
 Since 3.0.0, we introduce Apache Calcite as an experimental query engine. Please see [introduce v3 engine](../../../dev/intro-v3-engine.md).
 For the following functionalities, the query will be forwarded to the V2 query engine. It means following functionalities cannot work with new PPL commands/functions introduced in 3.0.0 and above.
-* All SQL queries
-* PPL Queries against non-OpenSearch data sources
-* `dedup` with `consecutive=true`
-* Search relevant commands
-    * AD
-    * ML
-    * Kmeans
-* `show datasources` and command
-* Commands with `fetch_size` parameter
+* All SQL queries  
+* PPL Queries against non-OpenSearch data sources  
+* `dedup` with `consecutive=true`  
+* Search relevant commands  
+    * AD  
+    * ML  
+    * Kmeans  
+* `show datasources` and command  
+* Commands with `fetch_size` parameter  

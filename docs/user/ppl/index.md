@@ -1,8 +1,6 @@
-## 
+# OpenSearch PPL Reference Manual  
 
-# OpenSearch PPL Reference Manual
-
-### Overview
+### Overview  
 
 Piped Processing Language (PPL), powered by OpenSearch, enables OpenSearch users with exploration and discovery of, and finding search patterns in data stored in OpenSearch, using a set of commands delimited by pipes (\|). These are essentially read-only requests to process data and return results.  
 
@@ -12,28 +10,31 @@ We expand the capabilities of our Workbench, a comprehensive and integrated visu
 The query start with search command and then flowing a set of command delimited by pipe (\|).  
 
 for example, the following query retrieve firstname and lastname from accounts if age large than 18. 
+  
 ```
 source=accounts
 | where age > 18
 | fields firstname, lastname
 ```
-* **Interfaces**
-  - [Endpoint](interfaces/endpoint.md)
-  - [Protocol](interfaces/protocol.md)
-* **Administration**
-  - [Plugin Settings](admin/settings.md)
-  - [Security Settings](admin/security.md)
-  - [Monitoring](admin/monitoring.md)
-  - [Datasource Settings](admin/datasources.md)
-  - [Prometheus Connector](admin/connectors/prometheus_connector.md)
-  - [Cross-Cluster Search](admin/cross_cluster_search.md)
-* **Language Structure**
-  - [Identifiers](general/identifiers.md)
-  - [Data Types](general/datatypes.md)
-* **Commands**
+  
+* **Interfaces**  
+  - [Endpoint](interfaces/endpoint.md)  
+  - [Protocol](interfaces/protocol.md)  
+* **Administration**  
+  - [Plugin Settings](admin/settings.md)  
+  - [Security Settings](admin/security.md)  
+  - [Monitoring](admin/monitoring.md)  
+  - [Datasource Settings](admin/datasources.md)  
+  - [Prometheus Connector](admin/connectors/prometheus_connector.md)  
+  - [Cross-Cluster Search](admin/cross_cluster_search.md)  
+* **Language Structure**  
+  - [Identifiers](general/identifiers.md)  
+  - [Data Types](general/datatypes.md)  
+* **Commands**  
+  
   The following commands are available in PPL:  
   **Note:** Experimental commands are ready for use, but specific parameters may change based on feedback.
-
+  
 | Command Name | Version Introduced | Current Status | Command Description |
 | --- | --- | --- | --- |
 | [search command](cmd/search.md) | 1.0 | stable (since 1.0) | Retrieve documents from the index. |
@@ -77,22 +78,23 @@ source=accounts
 | [describe command](cmd/describe.md) | 2.1 | stable (since 2.1) | Query the metadata of an index. |
 | [explain command](cmd/explain.md) | 3.1 | stable (since 3.1) | Explain the plan of query. |
 | [show datasources command](cmd/showdatasources.md) | 2.4 | stable (since 2.4) | Query datasources configured in the PPL engine. |
-  - [Syntax](cmd/syntax.md) - PPL query structure and command syntax formatting
-* **Functions**
-  - [Aggregation Functions](functions/aggregation.md)
-  - [Collection Functions](functions/collection.md)
-  - [Condition Functions](functions/condition.md)
-  - [Cryptographic Functions](functions/cryptographic.md)
-  - [Date and Time Functions](functions/datetime.md)
-  - [Expressions](functions/expressions.md)
-  - [IP Address Functions](functions/ip.md)
-  - [JSON Functions](functions/json.md)
-  - [Math Functions](functions/math.md)
-  - [Relevance Functions](functions/relevance.md)
-  - [String Functions](functions/string.md)
-  - [System Functions](functions/system.md)
-  - [Type Conversion Functions](functions/conversion.md)
-* **Optimization**
-  - [Optimization](../../user/optimization/optimization.md)
-* **Limitations**
-  - [Limitations](limitations/limitations.md)
+  
+  - [Syntax](cmd/syntax.md) - PPL query structure and command syntax formatting  
+* **Functions**  
+  - [Aggregation Functions](functions/aggregation.md)  
+  - [Collection Functions](functions/collection.md)  
+  - [Condition Functions](functions/condition.md)  
+  - [Cryptographic Functions](functions/cryptographic.md)  
+  - [Date and Time Functions](functions/datetime.md)  
+  - [Expressions](functions/expressions.md)  
+  - [IP Address Functions](functions/ip.md)  
+  - [JSON Functions](functions/json.md)  
+  - [Math Functions](functions/math.md)  
+  - [Relevance Functions](functions/relevance.md)  
+  - [String Functions](functions/string.md)  
+  - [System Functions](functions/system.md)  
+  - [Type Conversion Functions](functions/conversion.md)  
+* **Optimization**  
+  - [Optimization](../../user/optimization/optimization.md)  
+* **Limitations**  
+  - [Limitations](limitations/limitations.md)  
