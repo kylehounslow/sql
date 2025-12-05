@@ -57,7 +57,7 @@ def process_file(source_file, target_file, parent=None, nav_order=1):
 def export_docs():
     """Export PPL docs to documentation website."""
     source_dir = Path("../../docs/user/ppl")
-    target_dir = Path("../../../documentation-website/_ppl-reference")
+    target_dir = Path("../../../documentation-website/_sql-and-ppl/ppl-reference")
 
     if not source_dir.exists():
         print(f"Source directory {source_dir} not found")
@@ -73,7 +73,7 @@ def export_docs():
 
         # Determine parent based on directory structure
         parent = (
-            "PPL Reference Manual"
+            "SQL and PPL"
             if rel_path.parent == Path(".")
             else rel_path.parent.name.replace("-", " ").title()
         )
