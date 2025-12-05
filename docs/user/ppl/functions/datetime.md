@@ -1755,55 +1755,82 @@ The following table describes the available specifier arguments.
 
 
 Examples
-    #os> source=people | eval `strftime(1521467703, "%Y-%m-%dT%H:%M:%S")` = strftime(1521467703, "%Y-%m-%dT%H:%M:%S") | fields `strftime(1521467703, "%Y-%m-%dT%H:%M:%S")`
-    fetched rows / total rows = 1/1
+```ppl ignore
+source=people | eval `strftime(1521467703, "%Y-%m-%dT%H:%M:%S")` = strftime(1521467703, "%Y-%m-%dT%H:%M:%S") | fields `strftime(1521467703, "%Y-%m-%dT%H:%M:%S")`
+```
+```text
+fetched rows / total rows = 1/1
++-------------------------------------------+
 | strftime(1521467703, "%Y-%m-%dT%H:%M:%S") |
-| --- |
-| ------------------------------------------- |
-| 2018-03-19T13:55:03 |
-
-    #os> source=people | eval `strftime(1521467703, "%F %T")` = strftime(1521467703, "%F %T") | fields `strftime(1521467703, "%F %T")`
-    fetched rows / total rows = 1/1
-| strftime(1521467703, "%F %T") |
-| --- |
-| ------------------------------- |
-| 2018-03-19 13:55:03 |
-
-    #os> source=people | eval `strftime(1521467703, "%a %b %d, %Y")` = strftime(1521467703, "%a %b %d, %Y") | fields `strftime(1521467703, "%a %b %d, %Y")`
-    fetched rows / total rows = 1/1
+|-------------------------------------------|
+| 2018-03-19T13:55:03                       |
++-------------------------------------------+
+```
+```ppl ignore
+source=people | eval `strftime(1521467703, "%F %T")` = strftime(1521467703, "%F %T") | fields `strftime(1521467703, "%F %T")`
+```
+```text
+fetched rows / total rows = 1/1
++-------------------------------------------+
+| strftime(1521467703, "%Y-%m-%dT%H:%M:%S") |
+|-------------------------------------------|
+| 2018-03-19T13:55:03                       |
++-------------------------------------------+
+```
+```ppl ignore
+source=people | eval `strftime(1521467703, "%a %b %d, %Y")` = strftime(1521467703, "%a %b %d, %Y") | fields `strftime(1521467703, "%a %b %d, %Y")`
+```
+```text
+fetched rows / total rows = 1/1
++--------------------------------------+
 | strftime(1521467703, "%a %b %d, %Y") |
-| --- |
-| -------------------------------------- |
-| Mon Mar 19, 2018 |
-
-    #os> source=people | eval `strftime(1521467703, "%%Y")` = strftime(1521467703, "%%Y") | fields `strftime(1521467703, "%%Y")`
-    fetched rows / total rows = 1/1
+|--------------------------------------|
+| Mon Mar 19, 2018                     |
++--------------------------------------+
+```
+```ppl ignore
+source=people | eval `strftime(1521467703, "%%Y")` = strftime(1521467703, "%%Y") | fields `strftime(1521467703, "%%Y")`
+```
+```text
+fetched rows / total rows = 1/1
++---------------------------+
 | strftime(1521467703, "%%Y") |
-| --- |
-| --------------------------- |
-| %Y |
-
-    #os> source=people | eval `strftime(date('2020-09-16'), "%Y-%m-%d")` = strftime(date('2020-09-16'), "%Y-%m-%d") | fields `strftime(date('2020-09-16'), "%Y-%m-%d")`
-    fetched rows / total rows = 1/1
+|---------------------------|
+| %Y                        |
++---------------------------+
+```
+```ppl ignore
+source=people | eval `strftime(date('2020-09-16'), "%Y-%m-%d")` = strftime(date('2020-09-16'), "%Y-%m-%d") | fields `strftime(date('2020-09-16'), "%Y-%m-%d")`
+```text
+fetched rows / total rows = 1/1
++----------------------------------------+
 | strftime(date('2020-09-16'), "%Y-%m-%d") |
-| --- |
-| ----------------------------------------- |
-| 2020-09-16 |
-
-    #os> source=people | eval `strftime(timestamp('2020-09-16 14:30:00'), "%F %T")` = strftime(timestamp('2020-09-16 14:30:00'), "%F %T") | fields `strftime(timestamp('2020-09-16 14:30:00'), "%F %T")`
-    fetched rows / total rows = 1/1
+|-----------------------------------------|
+| 2020-09-16                             |
++----------------------------------------+
+```
+```ppl ignore
+source=people | eval `strftime(timestamp('2020-09-16 14:30:00'), "%F %T")` = strftime(timestamp('2020-09-16 14:30:00'), "%F %T") | fields `strftime(timestamp('2020-09-16 14:30:00'), "%F %T")`
+```
+```text
+fetched rows / total rows = 1/1
++--------------------------------------------------+
 | strftime(timestamp('2020-09-16 14:30:00'), "%F %T") |
-| --- |
-| --------------------------------------------------- |
-| 2020-09-16 14:30:00 |
-
-    #os> source=people | eval `strftime(now(), "%Y-%m-%d %H:%M:%S")` = strftime(now(), "%Y-%m-%d %H:%M:%S") | fields `strftime(now(), "%Y-%m-%d %H:%M:%S")`
-    fetched rows / total rows = 1/1
+|---------------------------------------------------|
+| 2020-09-16 14:30:00                              |
++--------------------------------------------------+
+```
+```ppl ignore
+source=people | eval `strftime(now(), "%Y-%m-%d %H:%M:%S")` = strftime(now(), "%Y-%m-%d %H:%M:%S") | fields `strftime(now(), "%Y-%m-%d %H:%M:%S")`
+```
+```text
+fetched rows / total rows = 1/1
++------------------------------------+
 | strftime(now(), "%Y-%m-%d %H:%M:%S") |
-| --- |
-| ------------------------------------- |
-| 2025-09-03 12:30:45 |
-
+|-------------------------------------|
+| 2025-09-03 12:30:45                |
++------------------------------------+
+```
 ## STR_TO_DATE
 
 ### Description

@@ -69,18 +69,20 @@ For detailed documentation of each function, see [Aggregation Functions](../func
 ## Usage
 
 Streamstats
-    source = table | streamstats avg(a)
-    source = table | streamstats current = false avg(a)
-    source = table | streamstats window = 5 sum(b)
-    source = table | streamstats current = false window = 2 max(a)
-    source = table | where a < 50 | streamstats count(c)
-    source = table | streamstats min(c), max(c) by b
-    source = table | streamstats count(c) as count_by by b | where count_by > 1000
-    source = table | streamstats dc(field) as distinct_count
-    source = table | streamstats distinct_count(category) by region
-    source = table | streamstats current=false window=2 global=false avg(a) by b
-    source = table | streamstats window=2 reset_before=a>31 avg(b)
-    source = table | streamstats current=false reset_after=a>31 avg(b) by c
+```
+source = table | streamstats avg(a)
+source = table | streamstats current = false avg(a)
+source = table | streamstats window = 5 sum(b)
+source = table | streamstats current = false window = 2 max(a)
+source = table | where a < 50 | streamstats count(c)
+source = table | streamstats min(c), max(c) by b
+source = table | streamstats count(c) as count_by by b | where count_by > 1000
+source = table | streamstats dc(field) as distinct_count
+source = table | streamstats distinct_count(category) by region
+source = table | streamstats current=false window=2 global=false avg(a) by b
+source = table | streamstats window=2 reset_before=a>31 avg(b)
+source = table | streamstats current=false reset_after=a>31 avg(b) by c
+```
 ## Example 1: Calculate the running average, sum, and count of a field by group
 
 This example calculates the running average age, running sum of age, and running count of events for all the accounts, grouped by gender.

@@ -171,7 +171,11 @@ one can refer the corresponding entity as table in the source command.
 For example in prometheus connector, each metric is abstracted as a table.
 so we can refer a metric and apply stats over it in the following way.
 Example source command with prometheus datasource
-    >> source = my_prometheus.prometheus_http_requests_total | stats avg(@value) by job;
+
+```ppl ignore
+source = my_prometheus.prometheus_http_requests_total | stats avg(@value) by job;
+```
+
 ## Authorization of PPL commands on datasources
 
 In case of secure opensearch domains, only admins and users with roles mentioned in datasource configuration are allowed to make queries.
