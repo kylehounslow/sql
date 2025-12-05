@@ -263,7 +263,7 @@ Error: Query returned no data
 ```
   
 ## Comparison with Related Commands  
-
+  
 | Feature | rex | parse |
 | --- | --- | --- |
 | Pattern Type | Java Regex | Java Regex |

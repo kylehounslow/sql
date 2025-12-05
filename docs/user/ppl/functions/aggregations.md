@@ -4,6 +4,7 @@
 
 Aggregation functions perform calculations across multiple rows to return a single result value. These functions are used with `stats` and `eventstats` commands to analyze and summarize data.
 The following table shows how NULL/MISSING values are handled by aggregation functions:
+  
 | Function | NULL | MISSING |
 | --- | --- | --- |
 | COUNT | Not counted | Not counted |

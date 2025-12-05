@@ -5,6 +5,7 @@
 ### Description  
 
 Usage: cast(expr as dateType) cast the expr to dataType. return the value of dataType. The following conversion rules are used:
+  
 | Src/Target | STRING | NUMBER | BOOLEAN | TIMESTAMP | DATE | TIME | IP |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | STRING |  | Note1 | Note1 | TIMESTAMP() | DATE() | TIME() | IP() |

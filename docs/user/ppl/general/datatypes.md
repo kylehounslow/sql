@@ -7,6 +7,7 @@
 ### PPL Data Types  
 
 The PPL support the following data types.
+  
 | PPL Data Type |
 | --- |
 | boolean |
@@ -30,6 +31,7 @@ The PPL support the following data types.
 ### Data Types Mapping  
 
 The table below list the mapping between OpenSearch Data Type, PPL Data Type and SQL Type.
+  
 | OpenSearch Type | PPL Type | SQL Type |
 | --- | --- | --- |
 | boolean | boolean | BOOLEAN |
@@ -60,6 +62,7 @@ The date and time data types are the types that represent temporal values and PP
 ### Date  
 
 Date represents the calendar date regardless of the time zone. A given date value represents a 24-hour period, or say a day, but this period varies in different timezones and might have flexible hours during Daylight Savings Time programs. Besides, the date type does not contain time information as well. The supported range is '1000-01-01' to '9999-12-31'.
+  
 | Type | Syntax | Range |
 | --- | --- | --- |
 | Date | 'yyyy-MM-dd' | '0001-01-01' to '9999-12-31' |
@@ -67,6 +70,7 @@ Date represents the calendar date regardless of the time zone. A given date valu
 ### Time  
 
 Time represents the time on the clock or watch with no regard for which timezone it might be related with. Time type data does not have date information.
+  
 | Type | Syntax | Range |
 | --- | --- | --- |
 | Time | 'hh:mm:ss[.fraction]' | '00:00:00.000000' to '23:59:59.999999' |
@@ -74,6 +78,7 @@ Time represents the time on the clock or watch with no regard for which timezone
 ### Timestamp  
 
 A timestamp instance is an absolute instant independent of timezone or convention. For example, for a given point of time, if we set the timestamp of this time point into another timezone, the value should also be different accordingly. Besides, the storage of timestamp type is also different from the other types. The timestamp is converted from the current timezone to UTC for storage, and is converted back to the set timezone from UTC when retrieving.
+  
 | Type | Syntax | Range |
 | --- | --- | --- |
 | Timestamp | 'yyyy-MM-dd hh:mm:ss[.fraction]' | '0001-01-01 00:00:01.000000' UTC to '9999-12-31 23:59:59.999999' |
@@ -81,6 +86,7 @@ A timestamp instance is an absolute instant independent of timezone or conventio
 ### Interval  
 
 Interval data type represents a temporal duration or a period. The syntax is as follows:
+  
 | Type | Syntax |
 | --- | --- |
 | Interval | INTERVAL expr unit |

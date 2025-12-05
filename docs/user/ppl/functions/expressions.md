@@ -55,7 +55,7 @@ fetched rows / total rows = 3/3
 
 Predicate operator is an expression that evaluated to be ture. The MISSING and NULL value comparison has following the rule. MISSING value only equal to MISSING value and less than all the other values. NULL value equals to NULL value, large than MISSING value, but less than all the other values.
 #### Operators  
-
+  
 | name | description |
 | --- | --- |
 | > | Greater than operator |

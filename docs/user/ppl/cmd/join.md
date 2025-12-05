@@ -202,7 +202,7 @@ For basic syntax, if fields in the left outputs and right outputs have the same 
 fields in output rename to `<alias>.id`, or else `<tableName>.id` if no alias existing.  
 
 Assume table1 and table2 only contain field `id`, following PPL queries and their outputs are:
-
+  
 | Query | Output |
 | --- | --- |
 | source=table1 \| join left=t1 right=t2 on t1.id=t2.id table2 \| eval a = 1 | t1.id, t2.id, a |

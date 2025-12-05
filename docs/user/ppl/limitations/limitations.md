@@ -8,6 +8,7 @@
 ## Unsupported OpenSearch Field Types  
 
 PPL does not support all [OpenSearch data types](https://docs.opensearch.org/latest/mappings/supported-field-types/index/). (e.g., `flattened`, some complex `nested` usages). Unsupported fields are excluded from `DESCRIBE` and `SOURCE` outputs. At runtime: Queries referencing unsupported fields fail with semantic or resolution errors. Such fields are ignored in projections unless explicitly filtered out or removed at ingestion.
+  
 | OpenSearch Data Type | PPL |
 | --- | --- |
 | knn_vector | Ignored |
@@ -29,6 +30,7 @@ PPL does not support all [OpenSearch data types](https://docs.opensearch.org/lat
 ## Field Parameters  
 
 For a field to be queryable in PPL, the following index settings must be enabled:
+  
 | Setting | Description | Required For |
 | --- | --- | --- |
 | _source: true | Stores the original JSON document | Required for fetch raw data. |

@@ -3,7 +3,7 @@
 This cheat sheet helps Splunk users transition to OpenSearch's PPL. It maps common Splunk Search Processing Language (SPL) commands to their PPL equivalents with examples.
 
 ## Structure and Concepts  
-
+  
 | Aspect | Splunk SPL | OpenSearch PPL | Notes |
 |--------|------------|---------------|-------|
 | Query structure | `search terms \| command` | `search term source = index \| command` | PPL requires explicit source at the beginning |
@@ -15,7 +15,7 @@ This cheat sheet helps Splunk users transition to OpenSearch's PPL. It maps comm
 ## Command Reference  
 
 This table provides a mapping between Splunk SPL commands and their OpenSearch PPL equivalents:
-
+  
 | Splunk SPL | OpenSearch PPL | Purpose |
 |------------|---------------|---------|
 | append | [append](https://github.com/opensearch-project/sql/blob/main/docs/user/ppl/cmd/append.md) | Append results from subsearch |
@@ -67,7 +67,7 @@ This table provides a mapping between Splunk SPL commands and their OpenSearch P
 - PPL: `... | eval mb=bytes/1024/1024 | stats avg(mb) as avg_mb by host | where avg_mb > 100`  
 
 ## Basic Search Syntax  
-
+  
 | Operation | Splunk SPL | OpenSearch PPL | Notes |
 |-----------|------------|---------------|-------|
 | Basic search | `error` | `error` | Same syntax |
@@ -79,7 +79,7 @@ This table provides a mapping between Splunk SPL commands and their OpenSearch P
 | Wildcard search | `field=value*` | `field=value*` | Same syntax  |
   
 ## Field Selection and Manipulation  
-
+  
 | Operation | Splunk SPL | OpenSearch PPL | Notes |
 |-----------|------------|---------------|-------|
 | Select fields | `... \| fields field1, field2` | `... \| fields field1, field2` | Same syntax |
@@ -88,7 +88,7 @@ This table provides a mapping between Splunk SPL commands and their OpenSearch P
 | Calculate field | `... \| eval new_field=field1 + field2` | `... \| eval new_field = field1 + field2` | Same syntax |
   
 ## Filtering  
-
+  
 | Operation | Splunk SPL | OpenSearch PPL | Notes |
 |-----------|------------|---------------|-------|
 | Filter results | `... \| where field > 100` | `... \| where field > 100` | Same syntax |
@@ -96,7 +96,7 @@ This table provides a mapping between Splunk SPL commands and their OpenSearch P
   
 
 ## Aggregation  
-
+  
 | Operation | Splunk SPL | OpenSearch PPL | Notes |
 |-----------|------------|---------------|-------|
 | Count | `... \| stats count` | `... \| stats count` | Same syntax |
@@ -107,7 +107,7 @@ This table provides a mapping between Splunk SPL commands and their OpenSearch P
 | Percentiles | `... \| stats perc95(field)` | `... \| stats perc95(field)` | Same syntax |
   
 ## Sorting and Limiting  
-
+  
 | Operation | Splunk SPL | OpenSearch PPL | Notes |
 |-----------|------------|---------------|-------|
 | Sort ascending | `... \| sort field` | `... \| sort field` | Same syntax |
@@ -117,7 +117,7 @@ This table provides a mapping between Splunk SPL commands and their OpenSearch P
 | Get last results | `... \| tail 10` | `... \| tail 10` | Same syntax |
   
 ## Rex vs Parse  
-
+  
 | Operation | Splunk SPL | OpenSearch PPL | Notes |
 |-----------|------------|---------------|-------|
 | Basic extraction | `... \| rex field=address "(?<streetNumber>\d+) (?<street>.+)"` | `... \| rex address "(?<streetNumber>\d+) (?<street>.+)"` | Same syntax |
@@ -127,7 +127,7 @@ This table provides a mapping between Splunk SPL commands and their OpenSearch P
 | Default field (_raw) | `... \| rex "(?<streetNumber>\d+) (?<street>.+)"` | Not supported | PPL does not support implicit _raw field and requires explicit field specification |
   
 ## Time Functions  
-
+  
 | Operation | Splunk SPL | OpenSearch PPL | Notes |
 |-----------|------------|---------------|-------|
 | Relative time | `earliest=-1d latest=now()` | `earliest("-1d", @timestamp) and latest("now", @timestamp)` | PPL supports earliest() and latest() functions |
@@ -135,14 +135,14 @@ This table provides a mapping between Splunk SPL commands and their OpenSearch P
 | Time bucket | `... \| bin _time span=5m \| stats count by _time` | `... \| stats count by span(@timestamp, 5m)` | PPL uses `span()` |
   
 ## Dedup  
-
+  
 | Operation | Splunk SPL | OpenSearch PPL | Notes |
 |-----------|------------|---------------|-------|
 | Deduplicate | `... \| dedup field1, field2` | `... \| dedup field1, field2` | Same syntax |
 | Deduplicate with count | `... \| dedup 2 field1` | `... \| dedup 2 field1` | Same syntax |
   
 ## Lookup and Joins  
-
+  
 | Operation | Splunk SPL | OpenSearch PPL | Notes |
 |-----------|------------|---------------|-------|
 | Basic lookup | `... \| lookup vendors product_id` | `... \| lookup vendors product_id` | Same syntax |
@@ -156,7 +156,7 @@ This table provides a mapping between Splunk SPL commands and their OpenSearch P
 | Append columns | `... \| appendcols [search source=other_index \| fields id, status]` | `... \| appendcols [source=other_index \| fields id, status]` | Similar syntax |
   
 ## Field Manipulation  
-
+  
 | Operation | Splunk SPL | OpenSearch PPL | Notes |
 |-----------|------------|---------------|-------|
 | Include fields | `... \| fields field1, field2` | `... \| fields field1, field2` | Same syntax |
@@ -165,14 +165,14 @@ This table provides a mapping between Splunk SPL commands and their OpenSearch P
 | Replace null values | `... \| fillnull value=0 field1, field2` | `... \| fillnull with 0 in field1, field2` | Similar syntax but different format |
   
 ## Handling Null Values  
-
+  
 | Operation | Splunk SPL | OpenSearch PPL | Notes |
 |-----------|------------|---------------|-------|
 | Basic null replacement | `... \| fillnull value=0 field1` | `... \| fillnull with 0 in field1` | Similar syntax but uses `with...in` format |
 | Multiple fields | `... \| fillnull value="N/A" field1, field2, field3` | `... \| fillnull with 'N/A' in field1, field2, field3` | Similar syntax but uses `with...in` format |
   
 ## Results Limiting  
-
+  
 | Operation | Splunk SPL | OpenSearch PPL | Notes |
 |-----------|------------|---------------|-------|
 | First N results | `... \| head 10` | `... \| head 10` | Same syntax |
@@ -182,7 +182,7 @@ This table provides a mapping between Splunk SPL commands and their OpenSearch P
 | Rare values | `... \| rare 10 field` | `... \| rare 10 field` | Same syntax |
   
 ## String Functions  
-
+  
 | Operation | Splunk SPL | OpenSearch PPL | Notes |
 |-----------|------------|---------------|-------|
 | String concatenation | `... \| eval result=field1 + " " + field2` | `... \| eval result = concat(field1, ' ', field2)` | PPL requires `concat()` function |
@@ -195,7 +195,7 @@ This table provides a mapping between Splunk SPL commands and their OpenSearch P
 | Contains (wildcard) | `... \| eval result=like(field, "%pattern%")` | `... \| eval result = like(field, '%pattern%')` | Same syntax |
   
 ## Conditional Functions  
-
+  
 | Operation | Splunk SPL | OpenSearch PPL | Notes |
 |-----------|------------|---------------|-------|
 | If condition | `... \| eval result=if(field > 100, "High", "Low")` | `... \| eval result = if(field > 100, 'High', 'Low')` | Same syntax |
@@ -205,7 +205,7 @@ This table provides a mapping between Splunk SPL commands and their OpenSearch P
 | Coalesce (first non-null) | `... \| eval result=coalesce(field1, field2, "default")` | `... \| eval result = coalesce(field1, field2, 'default')` | Same syntax |
   
 ## Math Functions  
-
+  
 | Operation | Splunk SPL | OpenSearch PPL | Notes |
 |-----------|------------|---------------|-------|
 | Addition | `... \| eval sum=field1 + field2` | `... \| eval sum = field1 + field2` | Same syntax |
@@ -221,7 +221,7 @@ This table provides a mapping between Splunk SPL commands and their OpenSearch P
 | Square root | `... \| eval result=sqrt(field)` | `... \| eval result = sqrt(field)` | Same syntax |
   
 ## Date and Time Functions  
-
+  
 | Operation | Splunk SPL | OpenSearch PPL | Notes |
 |-----------|------------|---------------|-------|
 | Current time | `... \| eval now=now()` | `... \| eval now = now()` | Same syntax |
@@ -232,7 +232,7 @@ This table provides a mapping between Splunk SPL commands and their OpenSearch P
 | Time difference | `... \| eval diff=(_time2 - _time1)` | `... \| eval diff = date_diff('second', timestamp1, timestamp2)` | PPL uses function |
   
 ## Other Functions  
-
+  
 | Operation | Splunk SPL | OpenSearch PPL | Notes |
 |-----------|------------|---------------|-------|
 | MD5 hash | Not native | `... \| eval hash = md5('string')` | PPL-specific feature |
