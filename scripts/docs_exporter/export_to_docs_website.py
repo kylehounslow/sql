@@ -39,6 +39,9 @@ def process_file(source_file, target_file, parent=None, nav_order=1):
                      r'```\1\n\2```\n{% include copy.html %}', 
                      content, flags=re.MULTILINE | re.DOTALL)
     
+    # Remove .md extension from relative links (keep http/https links unchanged)
+    content = re.sub(r'\]\((?!https?://)(.*?)\.md(#[^\)]*)?\)', r'](\1\2)', content)
+    
     title = extract_title(content) or source_file.stem.replace('-', ' ').title()
     
     # Check if this directory has child markdown files in subdirectories
