@@ -20,18 +20,12 @@ def fix_markdown_formatting(content):
         # Check if current line is a code block start/end
         is_code_block_marker = line.startswith('```')
         
-        # Check if current line is a table row (but not a separator row)
-        is_table_row = (line.strip().startswith('|') and line.strip().endswith('|') and
-                       not re.match(r'^\s*\|[\s\-\|:]*\|\s*$', line))
+        # Check if current line is any table line (including separator rows)
+        is_table_line = line.strip().startswith('|') and line.strip().endswith('|')
         
-        # Detect table start/end
-        if not in_code_block:
-            if is_table_row and not in_table:
-                # Starting a table
-                in_table = True
-            elif not is_table_row and in_table:
-                # Ending a table
-                in_table = False
+        # Check if it's a data row (not a separator)
+        is_table_separator = re.match(r'^\s*\|[\s\-\|:]*\|\s*$', line)
+        is_table_row = is_table_line and not is_table_separator
         
         # Get previous and next lines for context
         prev_line = lines[i-1] if i > 0 else ''
@@ -45,7 +39,7 @@ def fix_markdown_formatting(content):
             if prev_is_code_end or (prev_is_table_end and not in_table):
                 line = '  '
         
-        # Add spacing BEFORE code blocks and tables
+        # Add spacing BEFORE code blocks and tables (check BEFORE updating in_table)
         if not in_code_block:
             # Opening code block
             if is_code_block_marker:
@@ -60,6 +54,13 @@ def fix_markdown_formatting(content):
                     fixed_lines.append('  ')
                 elif fixed_lines and not fixed_lines[-1].strip():
                     fixed_lines[-1] = '  '
+        
+        # Detect table start/end (AFTER spacing logic) - use is_table_line to include separators
+        if not in_code_block:
+            if is_table_line and not in_table:
+                in_table = True
+            elif not is_table_line and in_table:
+                in_table = False
         
         # Process line for double spaces (only outside code blocks)
         if not in_code_block and not is_code_block_marker and line.strip():
